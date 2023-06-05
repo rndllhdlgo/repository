@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('department');
             $table->string('userlevel');
-            $table->string('status');
+            $table->string('status')->default('ACTIVE');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
