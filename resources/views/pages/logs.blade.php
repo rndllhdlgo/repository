@@ -14,10 +14,10 @@
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
                 </td>
                 <td>
-                    <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
                 </td>
                 <td>
-                    <select class="form-control filter-select form-select" data-column="3" style="border:1px solid #808080">
+                    <select class="form-control filter-select form-select" data-column="2" style="border:1px solid #808080">
                         <option value="" selected></option>
                         @foreach($role as $roles)
                             <option value="{{strtoupper($roles->name)}}">{{strtoupper($roles->name)}}</option>
@@ -25,7 +25,7 @@
                     </select>
                 </td>
                 <td>
-                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
                 </td>
             </tr>
             <tr>

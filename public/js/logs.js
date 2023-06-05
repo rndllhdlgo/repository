@@ -1,5 +1,6 @@
+var table;
 $(document).ready(function(){
-    var table = $('table.userlogsTable').DataTable({
+    table = $('table.userlogsTable').DataTable({
         language: {
             info: "Showing _START_ to _END_ of _TOTAL_ Activities",
             lengthMenu: "Show _MENU_ Activities",
@@ -10,13 +11,6 @@ $(document).ready(function(){
         ajax:{
             url: '/index/data',
         },
-        columnDefs: [
-            {
-                "targets": [0],
-                "visible": false,
-                "searchable": true
-            },
-        ],
         columns: [
             {
                 data: 'created_at',
