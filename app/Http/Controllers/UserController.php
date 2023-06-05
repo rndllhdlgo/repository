@@ -78,6 +78,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
+            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "ADDED USER: User successfully saved details of $name with UserID#$id.";
             $userlogs->save();
         }
@@ -140,6 +141,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
+            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "UPDATED USER: User successfully updated details of $name with the following CHANGES: $name_change $email_change $department_change $userlevel_change.";
             $userlogs->save();
         }
@@ -171,6 +173,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
+            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "USER UPDATED: User successfully updated details of $name with UserID#$request->id with the following CHANGES: $status.";
             $userlogs->save();
         }
@@ -197,6 +200,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
+            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "CHANGE PASSWORD: User successfully changed own account password.";
             $userlogs->save();
         }

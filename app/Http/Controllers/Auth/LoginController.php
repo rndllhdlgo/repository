@@ -48,6 +48,7 @@ class LoginController extends Controller
         }
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
+        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
         $userlogs->activity = 'LOG-IN: User successfully logged in!';
         $userlogs->save();
     }
@@ -56,6 +57,7 @@ class LoginController extends Controller
         if(!Auth::guest()){
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
+            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = 'LOG-OUT: User successfully logged out!';
             $userlogs->save();
 

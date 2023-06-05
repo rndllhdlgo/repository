@@ -19,6 +19,9 @@
     @if(Auth::guest())
         @include('inc.guest')
     @else
+        <script>
+            $('#loading').show();
+        </script>
         @include('inc.navbar')
         {{-- @include('inc.include') --}}
     @endif

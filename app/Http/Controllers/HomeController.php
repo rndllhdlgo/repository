@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Yajra\DataTables\Facades\DataTables;
+
+use App\Models\Role;
+use App\Models\UserLogs;
 
 class HomeController extends Controller
 {
@@ -23,8 +27,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+
+    public function logs(){
+        $role = Role::query()->select()->get()->sortBy('name');
+        return view('pages/logs', compact('role'));
+    }
+
+    public function index_data()
     {
-        return view('home');
+        $list = UserLogs::query()
+            ->select()
+            ->orderBy('user_logs.id', 'DESC')->get();
+        return DataTables::of($list)->make(true);
+    }
+
+    public function logs_reload(){
+        $logs = UserLogs::select()->count();
+        return $logs;
     }
 }

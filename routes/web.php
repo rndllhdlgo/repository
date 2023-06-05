@@ -1,18 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Auth::routes();
+// Auth::routes();
+Auth::routes(['register' => false, 'verify' => false, 'confirm' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+Route::controller(HomeController::class)->group(function(){
+    Route::get('/', 'index');
+    Route::get('/logs', 'logs');
+    Route::get('/index/data', 'index_data');
+    Route::get('/index/logs/reload', 'logs_reload');
+});
 
 Route::controller(UserController::class)->group(function(){
     Route::get('/users', 'users');
