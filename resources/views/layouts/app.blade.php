@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('cdn.head')
 </head>
-<body>
+<body> 
     <div id="loading">
         <strong style="font-size: 40px;">PLEASE WAIT...</strong><br>
         <div style="zoom: 400%;" class="spinner-border"></div><br>
