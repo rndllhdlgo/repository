@@ -39,12 +39,22 @@ class EventController extends Controller
                 return 'DELIVERY RECEIPT not found';
             }
             else{
+                $filename = $request->sales_invoice.'_'.$request->date_created.'.'.$fileExtension;
+                $file->storeAs('public/sales_invoice',$filename);
+
+                SalesInvoice::create([
+                    'sales_invoice' => $request->sales_invoice,
+                    'client_name' => $request->client_name,
+                    'branch_name' => $request->branch_name,
+                    'date_created' => $request->date_created,
+                    'date_received' => $request->date_received,
+                    'purchase_order' => $request->purchase_order,
+                    'sales_order' => $request->sales_order,
+                    'delivery_receipt' => $request->delivery_receipt,
+                    'pdf_file' => $filename
+                ]);
                 return 'success';
             }
-
-            $filename = time().rand(1,100).'_pdf_file.'.$fileExtension;
-            $file->storeAs('public/sales_invoice',$filename);
-            return $filename;
         }
         else{
             return 'Invalid file format';
