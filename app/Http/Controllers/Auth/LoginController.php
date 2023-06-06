@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\Role;
+use Session;
 
 class LoginController extends Controller
 {
@@ -47,6 +48,11 @@ class LoginController extends Controller
             Auth::logout();
             return redirect('/login?user=inactive');
         }
+
+        User::where('id',auth()->user()->id)->update([
+            'session_id' => Session::getId()
+        ]);
+
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;

@@ -52,20 +52,35 @@
 </div>
 
 <script>
-$(document).ready(function(){
-    if($(location).attr('pathname')+window.location.search == '/login?user=inactive'){
-        Swal.fire({
-            title: "INACTIVE ACCOUNT",
-            html: "Your account is currently inactive. Please contact the administrator to resolve the issue.",
-            icon: "warning",
-            allowOutsideClick: false
-        })
-        .then((result) => {
-            if(result.isConfirmed){
-                window.location.href = "/login";
+    $(document).ready(function(){
+        if($(location).attr('pathname')+window.location.search == '/login?user=inactive'){
+            Swal.fire({
+                title: "INACTIVE ACCOUNT",
+                html: "Your account is currently inactive. Please contact the administrator to resolve the issue.",
+                icon: "warning",
+                allowOutsideClick: false
+            })
+            .then((result) => {
+                if(result.isConfirmed){
+                    window.location.href = "/login";
+                }
+            });
+        }
+        else if ($(location).attr('pathname')+window.location.search == '/login?user=session'){
+            if(!document.referrer.includes('/password/reset')){
+                Swal.fire({
+                    title: "SESSION CONFLICT",
+                    html: "<strong>Warning:</strong> You are being kicked out because someone else is logging in.",
+                    icon: "warning",
+                    allowOutsideClick: false
+                })
+                .then((result) => {
+                    if(result.isConfirmed){
+                        window.location.href = "/login";
+                    }
+                });
             }
-        });
-    }
-});
+        }
+    });
 </script>
 @endsection
