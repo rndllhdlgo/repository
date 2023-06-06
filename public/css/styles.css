@@ -512,3 +512,19 @@ input:checked + .slider .off{
     background-color: white !important;
     color: #0d1a80 !important;
 }
+
+.dataTables_wrapper th {
+    white-space: nowrap !important;
+}
+
+.dtfc-fixed-left{
+    background-color: white !important;
+    color: black !important;
+    z-index: 999 !important;
+}
+
+.always-default{
+    background-color: #0d1a80 !important;
+    color: white !important;
+    z-index: 999 !important;
+}

@@ -1,58 +1,65 @@
 @extends('layouts.app')
 @section('content')
 <br>
-
 <div class="row">
     <div class="col">
         <div id="page-name"><h4><span class="page-reload">SALES INVOICE REPOSITORY</span></h4></div>
     </div>
-    <div class="col-md form-group">
-        <button class="form-control btn btn-custom float-end" id="siAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
-    </div>
+    @role('ADMIN|ENCODER')
+        <div class="col-md form-group">
+            <button class="form-control btn btn-custom float-end" id="siAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
+        </div>
+    @endrole
+</div>
+
+<div class="ml-2">
+    <a href="#" id="filter" class="text-default" title="Toggle Visible Columns" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content='@include("inc.columnsSalesInvoice")'>
+        <b class="mr-1">TOGGLE COLUMNS</b>
+        <i class="fas fa-filter fa-lg" aria-hidden="true"></i>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </a>
 </div>
 
 <div class="table-responsive container-fluid pt-2">
     <table id="siTable" class="table siTable table-bordered table-striped table-hover display" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
-                <td>
+                <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    SALES INVOICE NO.
+                </th>
+                <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    CLIENT NAME
+                </th>
+                <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    BRANCH NAME
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    DATE CREATED
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    DATE RECEIVED
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    PURCHASE ORDER NO.
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    SALES ORDER NO.
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    DELIVERY RECEIPT NO.
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
-                </td>
-            </tr>
-            <tr>
-                <th>SALES INVOICE NO.</th>
-                <th>CLIENT NAME</th>
-                <th>BRANCH NAME</th>
-                <th>DATE CREATED</th>
-                <th>DATE RECEIVED</th>
-                <th>PURCHASE ORDER NO.</th>
-                <th>SALES ORDER NO.</th>
-                <th>DELIVERY RECEIPT NO.</th>
-                <th>PDF FILE</th>
+                    PDF FILE
+                </th>
             </tr>
         </thead>
     </table>
