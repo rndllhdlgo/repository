@@ -28,9 +28,18 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+    public function index(){
+        if(auth()->user()->department != 'WAREHOUSE'){
+            return redirect('/si');
+        }
+        else{
+            return redirect('/dr');
+        }
+    }
+
     public function logs(){
         $role = Role::query()->select()->get()->sortBy('name');
-        return view('pages/logs', compact('role'));
+        return view('pages.logs', compact('role'));
     }
 
     public function index_data()

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\RepositoryController;
 use App\Http\Controllers\UserController;
 
 
@@ -19,6 +20,11 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('/logs', 'logs');
     Route::get('/index/data', 'index_data');
     Route::get('/index/logs/reload', 'logs_reload');
+});
+
+Route::controller(RepositoryController::class)->group(function(){
+    Route::get('/si', 'si');
+    Route::get('/dr', 'dr');
 });
 
 Route::controller(UserController::class)->group(function(){

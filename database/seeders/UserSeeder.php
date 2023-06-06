@@ -17,13 +17,21 @@ class UserSeeder extends Seeder
         Role::create(['name' => 'BOSS','guard_name' => 'web']);
 
         $user = User::create([
+            'name' => 'GERARD MALLARI',
+            'department' => 'ADMIN',
+            'userlevel' => '1',
+            'email' => 'mallarig@apsoft.com.ph',
+            'password' => Hash::make('asdasdasd'),
+        ]);
+        $user->assignRole('1');
+
+        $user = User::create([
             'name' => 'JEROME LOPEZ',
             'department' => 'ADMIN',
             'userlevel' => '1',
             'email' => 'emorej046@gmail.com',
             'password' => Hash::make('asdasdasd'),
         ]);
-
         $user->assignRole('1');
 
         $user = User::create([

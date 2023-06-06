@@ -31,7 +31,10 @@
 	<div class="container-fluid">
 		<ul class="navbar-nav">
             <li class="nav-item mr-1">
-                <a class="nav-link {{ Request::is('/') ? 'navactive' : '' }}" href="/">HOME</a>
+                <a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE</a>
+            </li>
+            <li class="nav-item mr-1">
+                <a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT</a>
             </li>
             <li class="nav-item mr-1">
                 <a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
