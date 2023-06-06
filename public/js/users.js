@@ -25,11 +25,21 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
-                    if(row.user_status == 'ACTIVE'){
-                        return '<label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="'+ meta.row +'" checked><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label>';
+                    if(current_department != 'ADMIN' && row.role == '1'){
+                        if(data == 'ACTIVE'){
+                            return `<div style="width: 120px !important;"><center class="text-success"><b>${data}</b></center></div>`;
+                        }
+                        if(data == 'INACTIVE'){
+                            return `<div style="width: 120px !important;"><center class="text-danger"><b>${data}</b></center></div>`;
+                        }
                     }
-                    if(row.user_status == 'INACTIVE'){
-                        return '<label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="'+ meta.row +'"><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label>';
+                    else{
+                        if(data == 'ACTIVE'){
+                            return '<center><label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="'+ meta.row +'" checked><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label></center>';
+                        }
+                        if(data == 'INACTIVE'){
+                            return '<center><label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="'+ meta.row +'"><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label></center>';
+                        }
                     }
                 }
             },
@@ -116,6 +126,9 @@ function btnAddUser(){
 $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
+    if(current_department != 'ADMIN' && data.role == '1'){
+        return false;
+    }
     $('.req').hide();
     $('#user_id').val(data.user_id);
     $('#name').val(data.user_name);
@@ -135,42 +148,70 @@ $('#btnSave').on('click',function(){
     var email = $.trim($('#email').val());
     var role = $('#role').val();
 
-    Swal.fire({
-        title: "ADD NEW USER?",
-        html: "You are about to ADD a new user!",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: '#3085d6',
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Confirm',
-        allowOutsideClick: false
-    })
-    .then((result) => {
-        if(result.isConfirmed){
-            $('#modalUser').modal('hide');
-            $('#loading').show();
-            $.ajax({
-                url: "/users/save",
-                headers:{
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data:{
-                    name: name,
-                    email: email,
-                    role: role,
-                    department: department,
-                },
-                success: function(data){
-                    if(data == 'true'){
-                        $('#loading').hide();
-                        Swal.fire("SAVE SUCCESS", "New user saved successfully!", "success");
+    if(validateEmail(email) == false){
+        Swal.fire('INVALID EMAIL', 'Please enter valid email format.', 'error');
+        return false;
+    }
+    $.ajax({
+        url: "/users/validate/save",
+        type: "POST",
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:{
+            email: email
+        },
+        success: function(data){
+            if(data.result == 'true'){
+                Swal.fire({
+                    title: "ADD NEW USER?",
+                    html: "You are about to ADD a new user!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Confirm',
+                    allowOutsideClick: false
+                })
+                .then((result) => {
+                    if(result.isConfirmed){
+                        $('#modalUser').modal('hide');
+                        $('#loading').show();
+                        $.ajax({
+                            url: "/users/save",
+                            headers:{
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data:{
+                                name: name,
+                                email: email,
+                                role: role,
+                                department: department,
+                            },
+                            success: function(data){
+                                if(data == 'true'){
+                                    $('#loading').hide();
+                                    Swal.fire("SAVE SUCCESS", "New user saved successfully!", "success");
+                                    setTimeout(function(){window.location.href="/users"}, 2000);
+                                }
+                                else{
+                                    $('#loading').hide();
+                                    Swal.fire("SAVE FAILED", "New user save failed!", "error");
+                                }
+                            }
+                        });
                     }
-                    else{
-                        $('#loading').hide();
-                        Swal.fire("SAVE FAILED", "New user save failed!", "error");
-                    }
-                }
-            });
+                });
+            }
+            else if(data.result == 'duplicate'){
+                Swal.fire("DUPLICATE EMAIL", "Email address already exists!", "error");
+                return false;
+            }
+            else{
+                $('#addUser').hide();
+                Swal.fire("SAVE FAILED", "USER ACCOUNT", "error");
+                setTimeout(function(){window.location.href="/users"}, 2000);
+            }
         }
     });
 });
@@ -182,40 +223,80 @@ $('#btnUpdate').on('click',function(){
     var email = $.trim($('#email').val());
     var role = $('#role').val();
 
-    Swal.fire({
-        title: "UPDATE USER DETAILS?",
-        html: "You are about to UPDATE this user!",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: '#3085d6',
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'Confirm',
-        allowOutsideClick: false
-    })
-    .then((result) => {
-        if(result.isConfirmed){
-            $.ajax({
-                url: "/users/update",
-                headers:{
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data:{
-                    user_id: user_id,
-                    name: name,
-                    department: department,
-                    email: email,
-                    role: role,
-                },
-                success: function(data){
-                    if(data == 'true'){
-                        $('#modalUser').modal('hide');
-                        Swal.fire("UPDATE SUCCESS", "User details updated successfully!", "success");
+    if(validateEmail(email) == false){
+        Swal.fire('INVALID EMAIL', 'Please enter valid email format.', 'error');
+        return false;
+    }
+    $.ajax({
+        url: "/users/validate/update",
+        type: "PUT",
+        headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:{
+            user_id: user_id,
+            email: email
+        },
+        success: function(data){
+            if(data == 'true'){
+                Swal.fire({
+                    title: "UPDATE USER DETAILS?",
+                    html: "You are about to UPDATE this user!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Confirm',
+                    allowOutsideClick: false
+                })
+                .then((result) => {
+                    if(result.isConfirmed){
+                        $.ajax({
+                            url: "/users/update",
+                            headers:{
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data:{
+                                user_id: user_id,
+                                name: name,
+                                department: department,
+                                email: email,
+                                role: role,
+                            },
+                            success: function(data){
+                                if(data == 'true'){
+                                    $('#modalUser').modal('hide');
+                                    Swal.fire("UPDATE SUCCESS", "User details updated successfully!", "success");
+                                    setTimeout(function(){window.location.href="/users"}, 2000);
+                                }
+                                else if(data == 'no changes'){
+                                    $('#loading').hide();
+                                    Swal.fire("NO CHANGES FOUND", "User Details are all still the same!", "warning");
+                                }
+                                else{
+                                    Swal.fire("UPDATE FAILED", "User details update failed!", "error");
+                                }
+                            }
+                        });
                     }
-                    else{
-                        Swal.fire("UPDATE FAILED", "User details update failed!", "error");
-                    }
-                }
-            });
+                });
+            }
+            else if(data == 'duplicate'){
+                Swal.fire("DUPLICATE EMAIL", "Email address already exists!", "error");
+            }
+            else{
+                $('#updateUser').hide();
+                Swal.fire("UPDATE FAILED", "USER ACCOUNT", "error");
+                setTimeout(function(){window.location.href="/users"}, 2000);
+            }
         }
     });
 });
+
+setInterval(() => {
+    if(current_department != 'ADMIN'){
+        $('.classDepartment').hide();
+        $('.removeOption').remove();
+        $('#department').val(current_department);
+    }
+}, 0);

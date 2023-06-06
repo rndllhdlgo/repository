@@ -38,9 +38,11 @@
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT</a>
 			</li>
-			<li class="nav-item mr-1">
-				<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
-			</li>
+			@role('ADMIN')
+				<li class="nav-item mr-1">
+					<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
+				</li>
+			@endrole
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('logs') ? 'navactive' : '' }}" href="/logs"> USER LOGS</a>
 			</li>
@@ -56,6 +58,7 @@
 </nav>
 
 <input type="hidden" id="current_user" value="{{auth()->user()->id}}" readonly>
+<input type="hidden" id="current_department" value="{{auth()->user()->department}}" readonly>
 <input type="hidden" id="current_role" value="{{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}" readonly>
 <input type="hidden" id="current_date" value="{{date('Y-m-d')}}" readonly>
 <input type="hidden" id="current_session" value="{{\Session::getId()}}" readonly>

@@ -1,5 +1,6 @@
 var current_location = $(location).attr('pathname')+window.location.search;
 var current_user = $('#current_user').val();
+var current_department = $('#current_department').val();
 var current_role = $('#current_role').val();
 var current_date = $('#current_date').val();
 var current_session = $('#current_session').val();

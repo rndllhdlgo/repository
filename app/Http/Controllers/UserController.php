@@ -22,13 +22,21 @@ class UserController extends Controller
     }
 
     public function users(Request $request){
-        return view('pages/users');
+        if(auth()->user()->userlevel == '1'){
+            return view('pages/users');
+        }
+        else{
+            return redirect('/');
+        }
     }
 
     public function users_data(){
         $list = User::query()->selectRaw('users.id AS user_id, users.name AS user_name, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
-            ->join('roles', 'roles.id', 'users.userlevel')
-            ->orderBy('user_status', 'ASC')
+            ->join('roles', 'roles.id', 'users.userlevel');
+            if(auth()->user()->department != 'ADMIN'){
+                $list->where('department', auth()->user()->department);
+            }
+            $list->orderBy('user_status', 'ASC')
             ->orderBy('role_name', 'ASC')
             ->orderBy('user_name', 'ASC')
             ->orderBy('users.id', 'ASC')
@@ -42,6 +50,20 @@ class UserController extends Controller
         }
         $data_update = User::latest('updated_at')->first()->updated_at;
         return $data_update;
+    }
+
+    public function validate_users_save(Request $request){
+        $email = User::query()->select()
+            ->where('email', $request->email)
+            ->count();
+        if($email > 0){
+            $data = array('result' => 'duplicate');
+            return response()->json($data);
+        }
+        else{
+            $data = array('result' => 'true');
+            return response()->json($data);
+        }
     }
 
     public function users_save(Request $request){
@@ -85,6 +107,25 @@ class UserController extends Controller
         return response($result);
     }
 
+    public function validate_users_update(Request $request){
+        $email1 = User::where('id', $request->user_id)->first()->email;
+        $email2 = strtolower($request->email);
+        if($email1 != $email2){
+            $email = User::query()->select()
+                ->where('email', $email2)
+                ->count();
+        }
+        else{
+            $email = 0;
+        }
+        if($email > 0){
+            return response('duplicate');
+        }
+        else{
+            return response('true');
+        }
+    }
+
     public function users_update(Request $request){
 
         $name = strtoupper($request->name);
@@ -122,6 +163,10 @@ class UserController extends Controller
         }
         else{
             $userlevel_change = NULL;
+        }
+
+        if($name_change == NULL && $email_change == NULL && $department_change == NULL && $userlevel_change == NULL){
+            return response('no changes');
         }
 
         $users = User::find($request->input('user_id'));
