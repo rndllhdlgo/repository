@@ -27,6 +27,7 @@
                             <option value="ADMIN" style="color: Black;">ADMIN</option>
                             <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
                             <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
+                            <option value="BOSS" style="color: Black;">BOSS</option>
                         </select>
                         <label for="department" class="formlabel form-label">DEPARTMENT</label>
                     </div>
@@ -35,9 +36,10 @@
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="role" name="role">
                             <option value="" selected disabled style="color: Gray;">SELECT USER LEVEL</option>
-                            @foreach($role as $roles)
-                                <option value="{{$roles->id}}" style="color: Black;">{{strtoupper($roles->name)}}</option>
-                            @endforeach
+                            <option value="1" style="color: Black;">ADMIN</option>
+                            <option value="2" style="color: Black;">ENCODER</option>
+                            <option value="3" style="color: Black;">VIEWER</option>
+                            <option value="4" style="color: Black;">BOSS</option>
                         </select>
                         <label for="role" class="formlabel form-label">USER LEVEL</label>
                     </div>

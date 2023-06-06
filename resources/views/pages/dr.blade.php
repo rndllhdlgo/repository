@@ -1,14 +1,15 @@
 @extends('layouts.app')
 @section('content')
 <br>
-
 <div class="row">
     <div class="col">
         <div id="page-name"><h4><span class="page-reload">DELIVERY RECEIPT REPOSITORY</span></h4></div>
     </div>
-    <div class="col-md form-group">
-        <button class="form-control btn btn-custom float-end" id="drAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
-    </div>
+    @role('ADMIN|ENCODER')
+        <div class="col-md form-group">
+            <button class="form-control btn btn-custom float-end" id="drAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
+        </div>
+    @endrole
 </div>
 
 <div class="table-responsive container-fluid pt-2">

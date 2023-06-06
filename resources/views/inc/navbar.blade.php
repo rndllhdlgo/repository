@@ -38,11 +38,9 @@
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT</a>
 			</li>
-			@if(auth()->user()->department == 'ADMIN')
-				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
-				</li>
-			@endif
+			<li class="nav-item mr-1">
+				<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
+			</li>
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('logs') ? 'navactive' : '' }}" href="/logs"> USER LOGS</a>
 			</li>

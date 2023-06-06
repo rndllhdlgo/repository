@@ -20,14 +20,21 @@
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
                 </td>
                 <td>
-                    <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
+                    <select class="form-control filter-select form-select" data-column="2" style="border:1px solid #808080">
+                        <option value="" selected></option>
+                        <option value="ADMIN" style="color: Black;">ADMIN</option>
+                        <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
+                        <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
+                        <option value="BOSS" style="color: Black;">BOSS</option>
+                    </select>
                 </td>
                 <td>
                     <select class="form-control filter-select form-select" data-column="3" style="border:1px solid #808080">
                         <option value="" selected></option>
-                        @foreach($role as $roles)
-                            <option value="{{strtoupper($roles->name)}}">{{strtoupper($roles->name)}}</option>
-                        @endforeach
+                        <option value="ADMIN" style="color: Black;">ADMIN</option>
+                        <option value="ENCODER" style="color: Black;">ENCODER</option>
+                        <option value="VIEWER" style="color: Black;">VIEWER</option>
+                        <option value="BOSS" style="color: Black;">BOSS</option>
                     </select>
                 </td>
                 <td>
