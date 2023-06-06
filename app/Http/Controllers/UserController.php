@@ -22,8 +22,13 @@ class UserController extends Controller
     }
 
     public function users(Request $request){
-        $role = Role::select()->where('status', 'ACTIVE')->get()->sortBy('name');
-        return view('pages/users', compact('role'));
+        if(auth()->user()->department == 'ADMIN' && auth()->user()->userlevel == '1'){
+            $role = Role::select()->where('status', 'ACTIVE')->get()->sortBy('name');
+            return view('pages/users', compact('role'));
+        }
+        else{
+            return redirect('/');
+        }
     }
 
     public function users_data(){

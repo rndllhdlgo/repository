@@ -1,19 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\RepositoryController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PdfController;
+use App\Http\Controllers\QueryController;
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 
-
-// Auth::routes();
+Route::fallback(function(){return redirect('/');});
 Auth::routes(['register' => false, 'verify' => false, 'confirm' => false]);
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
 
 Route::controller(HomeController::class)->group(function(){
     Route::get('/', 'index');
@@ -22,7 +23,7 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('/index/logs/reload', 'logs_reload');
 });
 
-Route::controller(RepositoryController::class)->group(function(){
+Route::controller(PageController::class)->group(function(){
     Route::get('/si', 'si');
     Route::get('/dr', 'dr');
 });

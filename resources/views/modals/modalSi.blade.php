@@ -26,6 +26,14 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
+                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="branch_name" name="branch_name" placeholder=" ">
+                            <label for="branch_name" class="formlabel form-label">BRANCH NAME</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="f-outline">
                             <input class="forminput form-control requiredField bg-white text-uppercase" type="date" id="date_created" name="date_created" placeholder=" ">
                             <label for="date_created" class="formlabel form-label">DATE CREATED</label>
                         </div>

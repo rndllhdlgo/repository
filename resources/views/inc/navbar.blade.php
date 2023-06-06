@@ -30,15 +30,19 @@
 <nav class="navbar navbar-expand-sm bg-default w-100 navcontent" style="font-weight: bolder;">
 	<div class="container-fluid">
 		<ul class="navbar-nav">
-            <li class="nav-item mr-1">
-                <a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE</a>
-            </li>
-            <li class="nav-item mr-1">
-                <a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT</a>
-            </li>
-            <li class="nav-item mr-1">
-                <a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
-            </li>
+			@if(auth()->user()->department == 'ADMIN' || auth()->user()->department == 'ACCOUNTING')
+			<li class="nav-item mr-1">
+				<a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE</a>
+			</li>
+			@endif
+			<li class="nav-item mr-1">
+				<a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT</a>
+			</li>
+			@if(auth()->user()->department == 'ADMIN')
+				<li class="nav-item mr-1">
+					<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
+				</li>
+			@endif
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('logs') ? 'navactive' : '' }}" href="/logs"> USER LOGS</a>
 			</li>

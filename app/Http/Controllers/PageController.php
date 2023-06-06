@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class RepositoryController extends Controller
+class PageController extends Controller
 {
     public function __construct()
     {
@@ -12,8 +12,14 @@ class RepositoryController extends Controller
     }
 
     public function si(){
-        return view('pages.si');
+        if(auth()->user()->department == 'WAREHOUSE'){
+            return redirect('/');
+        }
+        else{
+            return view('pages.si');
+        }
     }
+
     public function dr(){
         return view('pages.dr');
     }

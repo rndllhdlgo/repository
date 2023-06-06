@@ -395,12 +395,9 @@ input[type="date"]{
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: #0d1a80;;
+    background: grey;
 }
 ::-webkit-scrollbar-thumb{
-    background: #0d1a80;
-}
-::-webkit-scrollbar-thumb:hover{
     background: #0d1a80;
 }
 .search-choice{

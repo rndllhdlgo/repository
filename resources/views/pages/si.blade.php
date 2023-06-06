@@ -36,15 +36,23 @@
                 <td>
                     <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                 </td>
+                <td>
+                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
+                </td>
+                <td>
+                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
+                </td>
             </tr>
             <tr>
-                <th>SI NO.</th>
+                <th>SALES INVOICE NO.</th>
                 <th>CLIENT NAME</th>
+                <th>BRANCH NAME</th>
                 <th>DATE CREATED</th>
                 <th>DATE RECEIVED</th>
-                <th>PO NO.</th>
-                <th>DR NO.</th>
-                <th>FILENAME</th>
+                <th>PURCHASE ORDER NO.</th>
+                <th>SALES ORDER NO.</th>
+                <th>DELIVERY RECEIPT NO.</th>
+                <th>PDF FILE</th>
             </tr>
         </thead>
     </table>
