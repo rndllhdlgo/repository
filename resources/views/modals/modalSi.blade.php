@@ -52,6 +52,16 @@
                             <label for="purchase_order" class="formlabel form-label">PURCHASE ORDER NO.</label>
                         </div>
                     </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="f-outline">
+                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="sales_order" name="sales_order" placeholder=" ">
+                            <label for="sales_order" class="formlabel form-label">SALES ORDER NO.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="delivery_receipt" name="delivery_receipt" placeholder=" ">
@@ -61,7 +71,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <input type="file" id="sales_invoice_file" name="sales_invoice_file" class="form-control requiredField" accept="image/*,.pdf"/>
+                        <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept="image/*,.pdf"/>
                     </div>
                 </div>
             </div>

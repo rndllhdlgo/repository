@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PdfController;
 use App\Http\Controllers\QueryController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -18,7 +17,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::controller(EventController::class)->group(function(){
     Route::post('/save_sales_invoice', 'save_sales_invoice');
-    Route::post('/save_pdf', 'save_pdf');
 });
 
 Route::controller(HomeController::class)->group(function(){

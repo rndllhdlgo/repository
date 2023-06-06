@@ -76,3 +76,72 @@ $('#siAdd').on('click',function(){
     $('#siModal').modal('show');
 });
 
+var pdf_file;
+function save_pdf(){
+    var sales_invoice = $('#sales_invoice').val();
+    var client_name = $('#client_name').val();
+    var branch_name = $('#branch_name').val();
+    var date_created = $('#date_created').val();
+    var date_received = $('#date_received').val();
+    var purchase_order = $('#purchase_order').val();
+    var sales_order = $('#sales_order').val();
+    var delivery_receipt = $('#delivery_receipt').val();
+    var file = $('#pdf_file').prop('files')[0];
+
+    var formData = new FormData();
+
+    formData.append('pdf_file', file);
+    formData.append('sales_invoice', sales_invoice);
+    formData.append('client_name', client_name);
+    formData.append('branch_name', branch_name);
+    formData.append('date_created', date_created);
+    formData.append('date_received', date_received);
+    formData.append('purchase_order', purchase_order);
+    formData.append('sales_order', sales_order);
+    formData.append('delivery_receipt', delivery_receipt);
+
+    $.ajax({
+        url: '/save_sales_invoice',
+        method: 'post',
+        data: formData,
+        contentType : false,
+        processData : false,
+        async: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+            $('#loading').hide();
+            if(response != 'success'){
+                Swal.fire({
+                    title: 'SAVE FAILED',
+                    html: "<b>"+response+"</b>",
+                    icon: 'error',
+                });
+                return false;
+            }
+        }
+    });
+}
+
+$('#btnSave').on('click', function(){
+    Swal.fire({
+        title: 'Do you want to save?',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showDenyButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+        }
+    }).then((save) => {
+        if(save.isConfirmed){
+            if($('#pdf_file').val()){
+                save_pdf();
+            }
+        }
+    });
+});
