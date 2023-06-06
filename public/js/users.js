@@ -121,7 +121,21 @@ function btnAddUser(){
     $('#department').val('');
     $('#email').val('');
     $('#role').val('');
+    $('.classRole').show();
 }
+
+$('#department').on('change',function(){
+    if($('#department').val() == 'BOSS'){
+        $('.classRole').hide();
+        $('#optionBoss').show();
+        $('#role').val('4');
+    }
+    else{
+        $('.classRole').show();
+        $('#optionBoss').hide();
+        $('#role').val('');
+    }
+});
 
 $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
     if(!table.data().any()){ return false; }
@@ -135,6 +149,16 @@ $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
     $('#department').val(data.department);
     $('#email').val(data.user_email);
     $('#role').val(data.role);
+
+    if($('#department').val() == 'BOSS'){
+        $('.classRole').hide();
+        $('#optionBoss').show();
+        $('#role').val('4');
+    }
+    else{
+        $('.classRole').show();
+        $('#optionBoss').hide();
+    }
 
     $('#modal_title').html('UPDATE USER');
     $('#btnSave').hide();

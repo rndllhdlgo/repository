@@ -16,7 +16,7 @@
 			<tr>
 				<td class="m-0 p-0">
 					<b>{{ auth()->user()->name }}</b>&nbsp;
-                    [{{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}]
+                    [{{ auth()->user()->department }} / {{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}]
 				</td>
 			</tr>
 			<tr>
@@ -30,7 +30,7 @@
 <nav class="navbar navbar-expand-sm bg-default w-100 navcontent" style="font-weight: bolder;">
 	<div class="container-fluid">
 		<ul class="navbar-nav">
-			@if(auth()->user()->department == 'ADMIN' || auth()->user()->department == 'ACCOUNTING')
+			@if(auth()->user()->department != 'WAREHOUSE')
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE</a>
 			</li>

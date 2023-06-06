@@ -90,7 +90,6 @@ function save_pdf(){
 
     var formData = new FormData();
 
-    formData.append('pdf_file', file);
     formData.append('sales_invoice', sales_invoice);
     formData.append('client_name', client_name);
     formData.append('branch_name', branch_name);
@@ -99,6 +98,7 @@ function save_pdf(){
     formData.append('purchase_order', purchase_order);
     formData.append('sales_order', sales_order);
     formData.append('delivery_receipt', delivery_receipt);
+    formData.append('pdf_file', file);
 
     $.ajax({
         url: '/save_sales_invoice',

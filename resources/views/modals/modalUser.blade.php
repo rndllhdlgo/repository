@@ -32,14 +32,14 @@
                         <label for="department" class="formlabel form-label">DEPARTMENT</label>
                     </div>
                 </div>
-                <div class="mb-4">
+                <div class="mb-4 classRole">
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="role" name="role">
                             <option value="" selected disabled style="color: Gray;">SELECT USER LEVEL</option>
                             <option value="1" style="color: Black;" class="removeOption">ADMIN</option>
                             <option value="2" style="color: Black;">ENCODER</option>
                             <option value="3" style="color: Black;">VIEWER</option>
-                            <option value="4" style="color: Black;" class="removeOption">BOSS</option>
+                            <option value="4" style="color: Black;" class="removeOption" id="optionBoss">BOSS</option>
                         </select>
                         <label for="role" class="formlabel form-label">USER LEVEL</label>
                     </div>
