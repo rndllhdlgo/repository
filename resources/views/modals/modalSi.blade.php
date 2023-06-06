@@ -1,5 +1,5 @@
 <div id="siModal" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="margin-top: 150px;">
         <div class="modal-content">
             <div class="modal-header bg-default">
                 <h5 class="modal-title w-100 text-center">ADD SALES INVOICE</h5>
