@@ -24,6 +24,38 @@ $(document).ready(function(){
                 "searchable": true
             },
         ],
+        ajax: {
+            url: 'sales_invoice_data'
+        },
+        columns: [
+            { data: 'sales_invoice', name:'sales_invoice'},
+            { data: 'client_name', name:'client_name'},
+            { data: 'branch_name', name:'branch_name'},
+            {
+                data: 'date_created',
+                name: 'date_created',
+                "render":function(data,type,row){
+                    if(row.date_created){
+                        return formatDate(row.date_created);
+                    }
+                    return '';
+                }
+            },
+            {
+                data: 'date_received',
+                name: 'date_received',
+                "render":function(data,type,row){
+                    if(row.date_received){
+                        return formatDate(row.date_received);
+                    }
+                    return '';
+                }
+            },
+            { data: 'purchase_order', name:'purchase_order'},
+            { data: 'sales_order', name:'sales_order'},
+            { data: 'delivery_receipt', name:'delivery_receipt'},
+            { data: 'pdf_file', name:'pdf_file'}
+        ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
             $('#loading').hide();
@@ -73,7 +105,21 @@ $(document).ready(function(){
 });
 
 $('#siAdd').on('click',function(){
+    $('#siTitle').html('ADD SALES INVOICE');
+    $('.disabled').prop('disabled',false);
+    $('#form_reset').trigger('reset');
+    $('.pdf_file').empty();
+    $('#pdf_file').show();
+    $('#btnSave').show();
+    $('#btnClear').show();
+    $('.req').hide();
+    $('.validation').hide();
+
     $('#siModal').modal('show');
+});
+
+$('#btnClear').on('click',function(){
+    $('.validation').hide();
 });
 
 var pdf_file;
@@ -144,4 +190,26 @@ $('#btnSave').on('click', function(){
             }
         }
     });
+});
+
+$(document).on('click','table.siTable tbody tr',function(){
+    var data = table.row(this).data();
+
+    $('#siTitle').html('SALES INVOICE DETAILS');
+    $('.disabled').prop('disabled',true);
+
+    $('#sales_invoice').val(data.sales_invoice);
+    $('#client_name').val(data.client_name);
+    $('#branch_name').val(data.branch_name);
+    $('#date_created').val(data.date_created);
+    $('#date_received').val(data.date_received);
+    $('#purchase_order').val(data.purchase_order);
+    $('#sales_order').val(data.sales_order);
+    $('#delivery_receipt').val(data.delivery_receipt);
+    $('#pdf_file').hide();
+    $('.pdf_file').html(`<b>PDF FILE:</b> <a href="/storage/sales_invoice/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
+
+    $('#btnSave').hide();
+    $('#btnClear').hide();
+    $('#siModal').modal('show');
 });

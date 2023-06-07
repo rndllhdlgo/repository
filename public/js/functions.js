@@ -91,7 +91,7 @@ $('body').on('cut paste', function(){
 });
 
 function formatDate(dateString){
-    const months = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var date = new Date(dateString);
     var month = months[date.getMonth()];
     var day = date.getDate();

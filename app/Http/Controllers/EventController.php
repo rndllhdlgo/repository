@@ -15,6 +15,10 @@ class EventController extends Controller
     }
 
     public function save_sales_invoice(Request $request){
+        if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->count() > 0) {
+            return 'SALES INVOICE Already Exist';
+        }
+
         $file = $request->file('pdf_file');
         if($file->getClientOriginalExtension() === 'pdf'){
             $fileExtension = $file->getClientOriginalExtension();
@@ -39,7 +43,7 @@ class EventController extends Controller
                 return 'DELIVERY RECEIPT not found';
             }
             else{
-                $filename = $request->sales_invoice.'_'.$request->date_created.'.'.$fileExtension;
+                $filename = $request->sales_invoice.'.'.$fileExtension;
                 $file->storeAs('public/sales_invoice',$filename);
 
                 SalesInvoice::create([

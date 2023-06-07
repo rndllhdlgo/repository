@@ -528,3 +528,7 @@ input:checked + .slider .off{
     color: white !important;
     z-index: 999 !important;
 }
+
+.dataTables_wrapper td {
+    white-space: nowrap !important;
+}

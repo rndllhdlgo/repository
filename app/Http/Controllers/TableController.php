@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\SalesInvoice;
+use DataTables;
 
 class TableController extends Controller
 {
@@ -11,7 +13,7 @@ class TableController extends Controller
        $this->middleware('auth');
     }
 
-    public function dr(){
-        return view('pages.dr');
+    public function sales_invoice_data(){
+        return DataTables::of(SalesInvoice::all())->make(true);
     }
 }

@@ -31,6 +31,10 @@ Route::middleware(['session'])->group(function () {
         Route::get('/dr', 'dr');
     });
 
+    Route::controller(TableController::class)->group(function(){
+        Route::get('/sales_invoice_data', 'sales_invoice_data');
+    });
+
     Route::controller(UserController::class)->group(function(){
         Route::get('/users', 'users');
         Route::get('/users/data', 'users_data');
