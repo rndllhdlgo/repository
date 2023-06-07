@@ -16,32 +16,38 @@
     <table id="drTable" class="table drTable table-bordered table-striped table-hover display" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
-                <td>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    DELIVERY RECEIPT NO.
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    CLIENT NAME
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    BRANCH NAME
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    DATE CREATED
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
-                </td>
-                <td>
+                    DATE RECEIVED
+                </th>
+                <th>
                     <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
-                </td>
-            </tr>
-            <tr>
-                <th>DR NO.</th>
-                <th>CLIENT NAME</th>
-                <th>DATE CREATED</th>
-                <th>DATE RECEIVED</th>
-                <th>PO NO.</th>
-                <th>FILENAME</th>
+                    PURCHASE ORDER NO.
+                </th>
+                <th>
+                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
+                    SALES ORDER NO.
+                </th>
+                <th>
+                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
+                    PDF FILE
+                </th>
             </tr>
         </thead>
     </table>

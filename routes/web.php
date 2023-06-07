@@ -17,6 +17,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['session'])->group(function () {
     Route::controller(EventController::class)->group(function(){
         Route::post('/save_sales_invoice', 'save_sales_invoice');
+        Route::post('/save_delivery_receipt', 'save_delivery_receipt');
     });
 
     Route::controller(HomeController::class)->group(function(){
@@ -32,7 +33,8 @@ Route::middleware(['session'])->group(function () {
     });
 
     Route::controller(TableController::class)->group(function(){
-        Route::get('/sales_invoice_data', 'sales_invoice_data');
+        Route::get('/sales_invoice_data', 'si_data');
+        Route::get('/delivery_receipt_data', 'dr_data');
     });
 
     Route::controller(UserController::class)->group(function(){

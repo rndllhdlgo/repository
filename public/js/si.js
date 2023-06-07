@@ -29,26 +29,32 @@ $(document).ready(function(){
         },
         columns: [
             { data: 'sales_invoice', name:'sales_invoice'},
-            { data: 'client_name', name:'client_name'},
-            { data: 'branch_name', name:'branch_name'},
+            {
+                data: 'client_name',
+                name: 'client_name',
+                "render":function(data,type,row){
+                    return data.toUpperCase();
+                },
+            },
+            {
+                data: 'branch_name',
+                name: 'branch_name',
+                "render":function(data,type,row){
+                    return data.toUpperCase();
+                },
+            },
             {
                 data: 'date_created',
                 name: 'date_created',
                 "render":function(data,type,row){
-                    if(row.date_created){
-                        return formatDate(row.date_created);
-                    }
-                    return '';
+                    return formatDate(data);
                 }
             },
             {
                 data: 'date_received',
                 name: 'date_received',
                 "render":function(data,type,row){
-                    if(row.date_received){
-                        return formatDate(row.date_received);
-                    }
-                    return '';
+                    return formatDate(data);
                 }
             },
             { data: 'purchase_order', name:'purchase_order'},
@@ -113,16 +119,10 @@ $('#siAdd').on('click',function(){
     $('#btnSave').show();
     $('#btnClear').show();
     $('.req').hide();
-    $('.validation').hide();
 
     $('#siModal').modal('show');
 });
 
-$('#btnClear').on('click',function(){
-    $('.validation').hide();
-});
-
-var pdf_file;
 function save_pdf(){
     var sales_invoice = $('#sales_invoice').val();
     var client_name = $('#client_name').val();
@@ -132,7 +132,7 @@ function save_pdf(){
     var purchase_order = $('#purchase_order').val();
     var sales_order = $('#sales_order').val();
     var delivery_receipt = $('#delivery_receipt').val();
-    var file = $('#pdf_file').prop('files')[0];
+    var pdf_file = $('#pdf_file').prop('files')[0];
 
     var formData = new FormData();
 
@@ -144,7 +144,7 @@ function save_pdf(){
     formData.append('purchase_order', purchase_order);
     formData.append('sales_order', sales_order);
     formData.append('delivery_receipt', delivery_receipt);
-    formData.append('pdf_file', file);
+    formData.append('pdf_file', pdf_file);
 
     $.ajax({
         url: '/save_sales_invoice',
@@ -165,6 +165,14 @@ function save_pdf(){
                     icon: 'error',
                 });
                 return false;
+            }
+            else{
+                Swal.fire({
+                    title: 'SAVE SUCCESS',
+                    icon: 'success',
+                    timer: 2000
+                });
+                $('#siModal').modal('hide');
             }
         }
     });

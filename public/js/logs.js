@@ -18,7 +18,7 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
-                    return`<span class="d-none">${data}</span>`+moment(data, 'YYYY-MM-DD HH:mm:ss').format("MMM. DD, YYYY, h:mm A");
+                    return`<span class="d-none">${data}</span>`+moment(data, 'YYYY-MM-DD HH:mm:ss').format("MMMM DD, YYYY, h:mm A");
                 }, width: '16vh'
             },
             { data: 'username', width: '22vh' },
