@@ -1,0 +1,27 @@
+chown www-data:www-data public/storage/name_of_your_folder/ - Change Owner
+chmod 777 -R storage/ - File Permission Denied
+update-alternatives --config php - Update PHP version
+php artisan storage:link - To link storage to public folder
+php artisan make:controller ControllerName
+php artisan make:model ModelName -m
+php artisan cache:clear - The /var/www/html/digital201/bootstrap/cache directory must be present and writable.
+php artisan make:model ModelName -m
+php artisan make:migration add_phone_number_to_users_table --table=users
+php artisan migrate
+php artisan make:middleware TestMiddleware
+source .bash_aliases
+
+Mail::raw('SAMPLE LATEST', function($message) {
+    $message->to('c4lance@yahoo.com')
+            ->subject('Test email');
+}); - To Test Email
+
+config/app.php
+'providers' => [
+    ...,
+    Yajra\DataTables\DataTablesServiceProvider::class,
+]
+'aliases' => [
+    ...,
+    'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+]

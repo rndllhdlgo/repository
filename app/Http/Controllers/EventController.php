@@ -9,6 +9,7 @@ use App\Models\SalesInvoice;
 use App\Models\DeliveryReceipt;
 use App\Models\UserLogs;
 use App\Models\Role;
+use Spatie\PdfToImage\Pdf as Jpg;
 
 class EventController extends Controller
 {
@@ -25,8 +26,14 @@ class EventController extends Controller
         $file = $request->file('pdf_file');
         if($file->getClientOriginalExtension() === 'pdf'){
             $fileExtension = $file->getClientOriginalExtension();
-            $pdfPath = $file->getPathname();
-            $text = strtolower(Pdf::getText($pdfPath));
+            $imagick = new \Imagick();
+            $imagick->readImage($file->getPathname() . '[0]');
+            $imagick->setImageFormat('jpeg');
+
+            $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
+            $imagick->writeImage($imagePath);
+            $text = (new TesseractOCR($imagePath))->run();
+
             if(stripos($text, $request->sales_invoice) === false){
                 return 'SALES INVOICE not found';
             }
@@ -126,6 +133,138 @@ class EventController extends Controller
         }
         else{
             return 'Invalid file format';
+        }
+    }
+
+    public function uploadFile(Request $request){
+        if($request->action == 'RECEIVE'){
+            $files = Requests::where('request_number', $request->reqnum)->first()->receipt_upload;
+            if($files != NULL){
+                $files = str_replace(']','',(str_replace('[','',(explode(',',$files)))));
+                foreach($files as $file){
+                    $file = str_replace('"','',$file);
+                    if(file_exists(public_path('uploads/'.$file))){
+                        unlink(public_path('uploads/'.$file));
+                    }
+                }
+            }
+
+            $x = 1;
+            $receipt_upload = array();
+            foreach($request->reference_upload as $upload){
+                $datetime = Carbon::now()->isoformat('YYYYMMDDHHmmss');
+                $extension = $upload->getClientOriginalExtension();
+                $filename = $datetime.'_'.$request->reqnum.'-'.$x.'.'.$extension;
+                array_push($receipt_upload, $filename);
+                $x++;
+            }
+
+            Requests::where('request_number', $request->reqnum)
+                ->update(['receipt_upload' => $receipt_upload]);
+
+            for($i=0; $i < count($receipt_upload); $i++){
+                $request->reference_upload[$i]->move(public_path('/uploads'), $receipt_upload[$i]);
+            }
+
+            $reference_delete = array();
+            for($c=0; $c < count($receipt_upload); $c++){
+                if(str_contains($receipt_upload[$c], '.pdf') == true){
+                    $pdf = new Pdf(public_path('uploads/'.$receipt_upload[$c]));
+                    $pdfcount = $pdf->getNumberOfPages();
+                    $datetime = Carbon::now()->isoformat('YYYYMMDDHHmmss');
+                    for($a=1; $a < $pdfcount+1; $a++){
+                        $filename = $datetime.'_'.$request->reqnum.'-'.$a.'-'.Str::random(5).'.jpg';
+                        $pdf->setPage($a)
+                            ->setOutputFormat('jpg')
+                            ->saveImage(public_path('uploads/'.$filename));
+                        array_push($receipt_upload, $filename);
+                    }
+                    unlink(public_path('uploads/'.$receipt_upload[$c]));
+                    array_push($reference_delete, $receipt_upload[$c]);
+                }
+            }
+            $receipt_upload = json_encode($receipt_upload);
+            for($d=0; $d < count($reference_delete); $d++){
+                $receipt_upload = str_replace('"'.$reference_delete[$d].'",', "", $receipt_upload);
+                $receipt_upload = str_replace('"'.$reference_delete[$d].'"', "", $receipt_upload);
+                $receipt_upload = str_replace($reference_delete[$d], "", $receipt_upload);
+            }
+
+            Requests::where('request_number', $request->reqnum)
+                ->update(['receipt_upload' => $receipt_upload]);
+        }
+        else{
+            $files = Requests::where('request_number', $request->reqnum)->first()->reference_upload;
+            if($files != NULL){
+                $files = str_replace(']','',(str_replace('[','',(explode(',',$files)))));
+                foreach($files as $file){
+                    $file = str_replace('"','',$file);
+                    if(file_exists(public_path('uploads/'.$file))){
+                        unlink(public_path('uploads/'.$file));
+                    }
+                }
+            }
+
+            $x = 1;
+            $reference_upload = array();
+            foreach($request->reference_upload as $upload){
+                $datetime = Carbon::now()->isoformat('YYYYMMDDHHmmss');
+                $extension = $upload->getClientOriginalExtension();
+                $filename = $datetime.'_'.$request->reqnum.'-'.$x.'.'.$extension;
+                array_push($reference_upload, $filename);
+                $x++;
+            }
+
+            Requests::where('request_number', $request->reqnum)
+                ->update(['reference_upload' => $reference_upload]);
+
+            for($i=0; $i < count($reference_upload); $i++){
+                $request->reference_upload[$i]->move(public_path('/uploads'), $reference_upload[$i]);
+            }
+
+            $reference_delete = array();
+            for($c=0; $c < count($reference_upload); $c++){
+                if(str_contains($reference_upload[$c], '.pdf') == true){
+                    $pdf = new Pdf(public_path('uploads/'.$reference_upload[$c]));
+                    $pdfcount = $pdf->getNumberOfPages();
+                    $datetime = Carbon::now()->isoformat('YYYYMMDDHHmmss');
+                    for($a=1; $a < $pdfcount+1; $a++){
+                        $filename = $datetime.'_'.$request->reqnum.'-'.$a.'-'.Str::random(5).'.jpg';
+                        $pdf->setPage($a)
+                            ->setOutputFormat('jpg')
+                            ->saveImage(public_path('uploads/'.$filename));
+                        array_push($reference_upload, $filename);
+                    }
+                    unlink(public_path('uploads/'.$reference_upload[$c]));
+                    array_push($reference_delete, $reference_upload[$c]);
+                }
+            }
+            $reference_upload = json_encode($reference_upload);
+            for($d=0; $d < count($reference_delete); $d++){
+                $reference_upload = str_replace('"'.$reference_delete[$d].'",', "", $reference_upload);
+                $reference_upload = str_replace('"'.$reference_delete[$d].'"', "", $reference_upload);
+                $reference_upload = str_replace($reference_delete[$d], "", $reference_upload);
+            }
+
+            Requests::where('request_number', $request->reqnum)
+                ->update(['reference_upload' => $reference_upload]);
+        }
+
+        if($request->action == 'SUBMIT'){
+            return redirect()->to('/stockrequest?submit='.$request->reqnum);
+        }
+        else if($request->action == 'ASSET'){
+            return redirect()->to('/stockrequest?asset='.$request->reqnum);
+        }
+        else if($request->action == 'RECEIVE'){
+            return redirect()->to("/stockrequest?receive=$request->reqnum&reqtype=$request->reqtypeid&status=$request->statusid&inctype=$request->inctype");
+        }
+        else if($request->action == 'EDIT'){
+            $reqtype = Requests::where('request_number', $request->reqnum)->first()->request_type;
+            return redirect()->to("/stockrequest?reqtype=$reqtype&status=7&edit=$request->reqnum");
+        }
+        else{
+            return redirect()->to('/stockrequest?sale='.$request->reqnum);
         }
     }
 }

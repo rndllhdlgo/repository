@@ -173,6 +173,7 @@ function save_pdf(){
                     timer: 2000
                 });
                 $('#siModal').modal('hide');
+                window.reload();
             }
         }
     });
@@ -194,7 +195,10 @@ $('#btnSave').on('click', function(){
     }).then((save) => {
         if(save.isConfirmed){
             if($('#pdf_file').val()){
-                save_pdf();
+                $('#loading').show();
+                setTimeout(() => {
+                    save_pdf();
+                }, 200);
             }
         }
     });

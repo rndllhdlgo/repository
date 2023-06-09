@@ -1,0 +1,12 @@
+composer require spatie/pdf-to-image - Spatie Pdf to Image
+composer require thiagoalessio/tesseract_ocr - TesseractOCR
+apt-get install tesseract-ocr
+
+composer require spatie/pdf-to-text - Spatie Pdf to Text
+apt-get install poppler-utils
+
+composer require laravel/ui
+php artisan ui bootstrap
+php artisan ui bootstrap --auth
+composer require yajra/laravel-datatables-oracle
+php artisan vendor:publish --provider="Yajra\DataTables\DataTablesServiceProvider"
