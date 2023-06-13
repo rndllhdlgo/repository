@@ -18,6 +18,19 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
+                            <select class="form-select forminput form-control requiredField disabled" id="company">
+                                <option value="" disabled selected>SELECT COMPANY</option>
+                                <option value="APSOFT">APSOFT</option>
+                                <option value="IDSI">IDSI</option>
+                                <option value="PLSI">PLSI</option>
+                            </select>
+                            <label for="company" class="formlabel form-label">COMPANY</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="f-outline">
                             <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="client_name" name="client_name" placeholder=" ">
                             <label for="client_name" class="formlabel form-label">CLIENT NAME</label>
                         </div>

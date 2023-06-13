@@ -19,7 +19,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [5,6,7],
+                "targets": [6,7,8],
                 "visible": false,
                 "searchable": true
             },
@@ -29,6 +29,7 @@ $(document).ready(function(){
         },
         columns: [
             { data: 'sales_invoice', name:'sales_invoice'},
+            { data: 'company', name:'company'},
             {
                 data: 'client_name',
                 name: 'client_name',
@@ -78,7 +79,7 @@ $(document).ready(function(){
 
     setInterval(() => {
         if($('.popover-header').is(':visible')){
-            for(var i=0; i<=8; i++){
+            for(var i=0; i<=9; i++){
                 if(table.column(i).visible()){
                     $('#filter-'+i).prop('checked', true);
                 }
@@ -125,6 +126,7 @@ $('#siAdd').on('click',function(){
 
 function save_pdf(){
     var sales_invoice = $('#sales_invoice').val();
+    var company = $('#company').val();
     var client_name = $('#client_name').val();
     var branch_name = $('#branch_name').val();
     var date_created = $('#date_created').val();
@@ -137,6 +139,7 @@ function save_pdf(){
     var formData = new FormData();
 
     formData.append('sales_invoice', sales_invoice);
+    formData.append('company', company);
     formData.append('client_name', client_name);
     formData.append('branch_name', branch_name);
     formData.append('date_created', date_created);
@@ -173,7 +176,7 @@ function save_pdf(){
                     timer: 2000
                 });
                 $('#siModal').modal('hide');
-                window.reload();
+                setTimeout(function(){location.reload();}, 2000);
             }
         }
     });
@@ -205,12 +208,14 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.siTable tbody tr',function(){
+    if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#siTitle').html('SALES INVOICE DETAILS');
     $('.disabled').prop('disabled',true);
 
     $('#sales_invoice').val(data.sales_invoice);
+    $('#company').val(data.company);
     $('#client_name').val(data.client_name);
     $('#branch_name').val(data.branch_name);
     $('#date_created').val(data.date_created);

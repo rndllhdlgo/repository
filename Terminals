@@ -11,11 +11,6 @@ php artisan migrate
 php artisan make:middleware TestMiddleware
 source .bash_aliases
 
-Mail::raw('SAMPLE LATEST', function($message) {
-    $message->to('c4lance@yahoo.com')
-            ->subject('Test email');
-}); - To Test Email
-
 config/app.php
 'providers' => [
     ...,
