@@ -1,6 +1,12 @@
 var table;
 $(document).ready(function(){
     table = $('table.drTable').DataTable({
+        scrollY:        "500px",
+        scrollX:        true,
+        scrollCollapse: true,
+        fixedColumns:{
+            left: 3,
+        },
         dom: 'ltrip',
         aLengthMenu:[[10,25,50,100,500,1000,-1], [10,25,50,100,500,1000,"All"]],
         language: {
@@ -11,11 +17,19 @@ $(document).ready(function(){
         processing: true,
         serverSide: false,
         order: [],
+        columnDefs: [
+            {
+                "targets": [6,7],
+                "visible": false,
+                "searchable": true
+            },
+        ],
         ajax: {
             url: 'delivery_receipt_data'
         },
         columns: [
             { data: 'delivery_receipt', name:'delivery_receipt'},
+            { data: 'company', name:'company'},
             {
                 data: 'client_name',
                 name: 'client_name',
@@ -54,11 +68,42 @@ $(document).ready(function(){
         }
     });
 
+    $('body').on('click', '.checkboxFilter', function(){
+        var column = table.column($(this).attr('data-column'));
+        var colnum = $(this).attr('data-column');
+        column.visible(!column.visible());
+        $('.fl-'+colnum).val('');
+        table.column(colnum).search('').draw();
+    });
+
     setInterval(() => {
+        if($('.popover-header').is(':visible')){
+            for(var i=0; i<=8; i++){
+                if(table.column(i).visible()){
+                    $('#filter-'+i).prop('checked', true);
+                }
+                else{
+                    $('#filter-'+i).prop('checked', false);
+                }
+            }
+        }
         $('th input').on('click', function(e){
             e.stopPropagation();
         });
     }, 0);
+
+    $('#filter').popover({
+        html: true,
+        sanitize: false
+    });
+
+    $('html').on('click', function(e){
+        $('#filter').each(function(){
+            if(!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0){
+                $('#filter').popover('hide');
+            }
+        });
+    });
 
     $('.filter-input').on('keyup search', function(){
         table.column($(this).data('column')).search($(this).val()).draw();
@@ -67,14 +112,20 @@ $(document).ready(function(){
 
 $('#drAdd').on('click',function(){
     $('#drTitle').html('ADD DELIVERY RECEIPT');
+    $('.disabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
-
+    $('.pdf_file').empty();
+    $('#pdf_file').show();
+    $('#btnSave').show();
+    $('#btnClear').show();
     $('.req').hide();
+
     $('#drModal').modal('show');
 });
 
 function save_pdf(){
     var delivery_receipt = $('#delivery_receipt').val();
+    var company = $('#company').val();
     var client_name = $('#client_name').val();
     var branch_name = $('#branch_name').val();
     var date_created = $('#date_created').val();
@@ -86,6 +137,7 @@ function save_pdf(){
     var formData = new FormData();
 
     formData.append('delivery_receipt', delivery_receipt);
+    formData.append('company', company);
     formData.append('client_name', client_name);
     formData.append('branch_name', branch_name);
     formData.append('date_created', date_created);
@@ -120,7 +172,8 @@ function save_pdf(){
                     icon: 'success',
                     timer: 2000
                 });
-                $('#siModal').modal('hide');
+                $('#drModal').modal('hide');
+                setTimeout(function(){location.reload();}, 2000);
             }
         }
     });
@@ -142,19 +195,24 @@ $('#btnSave').on('click', function(){
     }).then((save) => {
         if(save.isConfirmed){
             if($('#pdf_file').val()){
-                save_pdf();
+                $('#loading').show();
+                setTimeout(() => {
+                    save_pdf();
+                }, 200);
             }
         }
     });
 });
 
 $(document).on('click','table.drTable tbody tr',function(){
+    if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#drTitle').html('DELIVERY RECEIPT DETAILS');
     $('.disabled').prop('disabled',true);
 
     $('#delivery_receipt').val(data.delivery_receipt);
+    $('#company').val(data.company);
     $('#client_name').val(data.client_name);
     $('#branch_name').val(data.branch_name);
     $('#date_created').val(data.date_created);

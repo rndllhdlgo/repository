@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('delivery_receipts', function (Blueprint $table) {
             $table->id();
             $table->string('delivery_receipt');
+            $table->string('company');
             $table->string('client_name');
             $table->string('branch_name');
             $table->string('date_created');

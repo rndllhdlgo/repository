@@ -37,21 +37,21 @@ class EventController extends Controller
             if(stripos($text, $request->sales_invoice) === false){
                 return 'SALES INVOICE not found';
             }
-            else if(stripos($text, $request->client_name) === false){
-                return 'CLIENT NAME not found';
-            }
-            else if(stripos($text, $request->branch_name) === false){
-                return 'BRANCH NAME not found';
-            }
-            else if(stripos($text, $request->purchase_order) === false){
-                return 'PURCHASE ORDER not found';
-            }
-            else if(stripos($text, $request->sales_order) === false){
-                return 'SALES ORDER not found';
-            }
-            else if(stripos($text, $request->delivery_receipt) === false){
-                return 'DELIVERY RECEIPT not found';
-            }
+            // else if(stripos($text, $request->client_name) === false){
+            //     return 'CLIENT NAME not found';
+            // }
+            // else if(stripos($text, $request->branch_name) === false){
+            //     return 'BRANCH NAME not found';
+            // }
+            // else if(stripos($text, $request->purchase_order) === false){
+            //     return 'PURCHASE ORDER not found';
+            // }
+            // else if(stripos($text, $request->sales_order) === false){
+            //     return 'SALES ORDER not found';
+            // }
+            // else if(stripos($text, $request->delivery_receipt) === false){
+            //     return 'DELIVERY RECEIPT not found';
+            // }
             else{
                 $filename = $request->sales_invoice.'.'.$fileExtension;
                 $file->storeAs('public/sales_invoice',$filename);
@@ -91,29 +91,36 @@ class EventController extends Controller
         $file = $request->file('pdf_file');
         if($file->getClientOriginalExtension() === 'pdf'){
             $fileExtension = $file->getClientOriginalExtension();
-            $pdfPath = $file->getPathname();
-            $text = strtolower(Pdf::getText($pdfPath));
+            $imagick = new \Imagick();
+            $imagick->readImage($file->getPathname() . '[0]');
+            $imagick->setImageFormat('jpeg');
+
+            $imagePath = storage_path("app/public/$request->delivery_receipt.jpeg");
+            $imagick->writeImage($imagePath);
+            $text = (new TesseractOCR($imagePath))->run();
+
             if(stripos($text, $request->delivery_receipt) === false){
                 return 'DELIVERY RECEIPT not found';
             }
-            else if(stripos($text, $request->client_name) === false){
-                return 'CLIENT NAME not found';
-            }
-            else if(stripos($text, $request->branch_name) === false){
-                return 'BRANCH NAME not found';
-            }
-            else if(stripos($text, $request->purchase_order) === false){
-                return 'PURCHASE ORDER not found';
-            }
-            else if(stripos($text, $request->sales_order) === false){
-                return 'SALES ORDER not found';
-            }
+            // else if(stripos($text, $request->client_name) === false){
+            //     return 'CLIENT NAME not found';
+            // }
+            // else if(stripos($text, $request->branch_name) === false){
+            //     return 'BRANCH NAME not found';
+            // }
+            // else if(stripos($text, $request->purchase_order) === false){
+            //     return 'PURCHASE ORDER not found';
+            // }
+            // else if(stripos($text, $request->sales_order) === false){
+            //     return 'SALES ORDER not found';
+            // }
             else{
                 $filename = $request->delivery_receipt.'.'.$fileExtension;
                 $file->storeAs('public/delivery_receipt',$filename);
 
                 DeliveryReceipt::create([
                     'delivery_receipt' => $request->delivery_receipt,
+                    'company' => $request->company,
                     'client_name' => $request->client_name,
                     'branch_name' => $request->branch_name,
                     'date_created' => $request->date_created,

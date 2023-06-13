@@ -12,40 +12,52 @@
     @endrole
 </div>
 
+<div class="ml-2">
+    <a href="#" id="filter" class="text-default" title="Toggle Visible Columns" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content='@include("inc.columnsDeliveryReceipt")'>
+        <b class="mr-1">TOGGLE COLUMNS</b>
+        <i class="fas fa-filter fa-lg" aria-hidden="true"></i>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </a>
+</div>
+
 <div class="table-responsive container-fluid pt-2">
     <table id="drTable" class="table drTable table-bordered table-striped table-hover display" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
-                <th>
+                <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
                     DELIVERY RECEIPT NO.
                 </th>
-                <th>
+                <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
+                    COMPANY
+                </th>
+                <th class="always-default">
+                    <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
                     CLIENT NAME
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
                     BRANCH NAME
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
                     DATE CREATED
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
                     DATE RECEIVED
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     PURCHASE ORDER NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
                     SALES ORDER NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
                     PDF FILE
                 </th>
             </tr>

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sales_invoices', function (Blueprint $table) {
             $table->id();
             $table->string('sales_invoice');
+            $table->string('company');
             $table->string('client_name');
             $table->string('branch_name');
             $table->string('date_created');

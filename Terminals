@@ -8,7 +8,7 @@ php artisan cache:clear - The /var/www/html/digital201/bootstrap/cache directory
 php artisan make:model ModelName -m
 php artisan make:migration add_phone_number_to_users_table --table=users
 php artisan migrate
-php artisan make:middleware TestMiddleware
+php artisan make:middleware MiddlewareName
 source .bash_aliases
 
 config/app.php
