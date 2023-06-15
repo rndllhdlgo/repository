@@ -113,10 +113,12 @@ $(document).ready(function(){
 $('#drAdd').on('click',function(){
     $('#drTitle').html('ADD DELIVERY RECEIPT');
     $('.disabled').prop('disabled',false);
+    $('.enabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#pdf_file').show();
     $('#btnSave').show();
+    $('#btnUpdate').hide();
     $('#btnClear').show();
     $('.req').hide();
 
@@ -210,6 +212,15 @@ $(document).on('click','table.drTable tbody tr',function(){
 
     $('#drTitle').html('DELIVERY RECEIPT DETAILS');
     $('.disabled').prop('disabled',true);
+
+    if(current_role == 'ADMIN' || current_role == 'ENCODER'){
+        $('.enabled').prop('disabled',false);
+        $('#btnUpdate').show();
+    }
+    else{
+        $('.enabled').prop('disabled',true);
+        $('.footer_hide').hide();
+    }
 
     $('#delivery_receipt').val(data.delivery_receipt);
     $('#company').val(data.company);

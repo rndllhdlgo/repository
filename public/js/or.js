@@ -98,10 +98,12 @@ $(document).ready(function(){
 $('#orAdd').on('click',function(){
     $('#orTitle').html('ADD OFFICIAL RECEIPT');
     $('.disabled').prop('disabled',false);
+    $('.enabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#pdf_file').show();
     $('#btnSave').show();
+    $('#btnUpdate').hide();
     $('#btnClear').show();
     $('.req').hide();
 
@@ -191,6 +193,15 @@ $(document).on('click','table.orTable tbody tr',function(){
 
     $('#orTitle').html('OFFICIAL RECEIPT DETAILS');
     $('.disabled').prop('disabled',true);
+
+    if(current_role == 'ADMIN' || current_role == 'ENCODER'){
+        $('.enabled').prop('disabled',false);
+        $('#btnUpdate').show();
+    }
+    else{
+        $('.enabled').prop('disabled',true);
+        $('.footer_hide').hide();
+    }
 
     $('#official_receipt').val(data.official_receipt);
     $('#company').val(data.company);

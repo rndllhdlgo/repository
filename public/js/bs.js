@@ -106,10 +106,12 @@ $(document).ready(function(){
 $('#bsAdd').on('click',function(){
     $('#bsTitle').html('ADD BILLING STATEMENT');
     $('.disabled').prop('disabled',false);
+    $('.enabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#pdf_file').show();
     $('#btnSave').show();
+    $('#btnUpdate').hide();
     $('#btnClear').show();
     $('.req').hide();
 
@@ -201,6 +203,15 @@ $(document).on('click','table.bsTable tbody tr',function(){
 
     $('#bsTitle').html('BILLING STATEMENT DETAILS');
     $('.disabled').prop('disabled',true);
+
+    if(current_role == 'ADMIN' || current_role == 'ENCODER'){
+        $('.enabled').prop('disabled',false);
+        $('#btnUpdate').show();
+    }
+    else{
+        $('.enabled').prop('disabled',true);
+        $('.footer_hide').hide();
+    }
 
     $('#billing_statement').val(data.billing_statement);
     $('#company').val(data.company);

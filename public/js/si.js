@@ -114,10 +114,12 @@ $(document).ready(function(){
 $('#siAdd').on('click',function(){
     $('#siTitle').html('ADD SALES INVOICE');
     $('.disabled').prop('disabled',false);
+    $('.enabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#pdf_file').show();
     $('#btnSave').show();
+    $('#btnUpdate').hide();
     $('#btnClear').show();
     $('.req').hide();
 
@@ -214,6 +216,15 @@ $(document).on('click','table.siTable tbody tr',function(){
     $('#siTitle').html('SALES INVOICE DETAILS');
     $('.disabled').prop('disabled',true);
 
+    if(current_role == 'ADMIN' || current_role == 'ENCODER'){
+        $('.enabled').prop('disabled',false);
+        $('#btnUpdate').show();
+    }
+    else{
+        $('.enabled').prop('disabled',true);
+        $('.footer_hide').hide();
+    }
+
     $('#sales_invoice').val(data.sales_invoice);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);
@@ -230,3 +241,4 @@ $(document).on('click','table.siTable tbody tr',function(){
     $('#btnClear').hide();
     $('#siModal').modal('show');
 });
+

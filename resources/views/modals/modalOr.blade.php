@@ -31,7 +31,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="client_name" name="client_name" placeholder=" ">
+                            <input class="forminput form-control requiredField bg-white text-uppercase enabled" type="search" id="client_name" name="client_name" placeholder=" ">
                             <label for="client_name" class="formlabel form-label">CLIENT NAME</label>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="branch_name" name="branch_name" placeholder=" ">
+                            <input class="forminput form-control requiredField bg-white text-uppercase enabled" type="search" id="branch_name" name="branch_name" placeholder=" ">
                             <label for="branch_name" class="formlabel form-label">BRANCH NAME</label>
                         </div>
                     </div>
@@ -67,9 +67,10 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer footer_hide">
                 <button type="reset"  id="btnClear" class="btn btn-primary float-end bp"><i class="fas fa-eraser"></i> CLEAR</button>
                 <button type="button" id="btnSave"  class="btn btn-primary float-end bp btnRequired"><i class="fas fa-save"></i> SAVE</button>
+                <button type="button" id="btnUpdate"  class="btn btn-primary float-end bp btnRequired" style="display:none;"><i class="fas fa-save"></i> UPDATE</button>
             </div>
         </form>
         </div>
