@@ -30,6 +30,7 @@ $(document).on('click','#btnEdit', function(){
                     if(data == 'true'){
                         $('#loading').hide();
                         Swal.fire("UPDATE SUCCESS", "", "success");
+                        $('.modal').modal('hide');
                     }
                     else{
                         $('#loading').hide();
@@ -40,3 +41,20 @@ $(document).on('click','#btnEdit', function(){
         }
     });
 });
+
+setInterval(function(){
+    if($('#loading').is(':hidden') && standby == false){
+        $.ajax({
+            url: "/table_reload",
+            data:{
+                current_page: $('#current_page').val(),
+            },
+            success: function(data){
+                if(data != data_update){
+                    data_update = data;
+                    table.ajax.reload(null, false);
+                }
+            }
+        });
+    }
+}, 1000);

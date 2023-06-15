@@ -344,4 +344,42 @@ class EventController extends Controller
 
         return $sql ? 'true' : 'false';
     }
+
+    public function table_reload(Request $request){
+        if($request->current_page == 'si'){
+            if(SalesInvoice::count() == 0){
+                return 'NULL';
+            }
+            $data_update = SalesInvoice::latest('updated_at')->first()->updated_at;
+        }
+
+        if($request->current_page == 'cr'){
+            if(CollectionReceipt::count() == 0){
+                return 'NULL';
+            }
+            $data_update = CollectionReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        if($request->current_page == 'bs'){
+            if(BillingStatement::count() == 0){
+                return 'NULL';
+            }
+            $data_update = BillingStatement::latest('updated_at')->first()->updated_at;
+        }
+
+        if($request->current_page == 'or'){
+            if(OfficialReceipt::count() == 0){
+                return 'NULL';
+            }
+            $data_update = OfficialReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        if($request->current_page == 'dr'){
+            if(DeliveryReceipt::count() == 0){
+                return 'NULL';
+            }
+            $data_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
+        }
+        return $data_update;
+    }
 }

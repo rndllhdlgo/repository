@@ -22,6 +22,7 @@ Route::middleware(['session'])->group(function () {
         Route::post('/save_official_receipt', 'save_or');
         Route::post('/save_delivery_receipt', 'save_delivery_receipt');
         Route::post('/edit', 'edit');
+        Route::any('/table_reload', 'table_reload');
     });
 
     Route::controller(HomeController::class)->group(function(){
