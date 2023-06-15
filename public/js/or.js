@@ -130,7 +130,7 @@ function save_pdf(){
     formData.append('pdf_file', pdf_file);
 
     $.ajax({
-        url: '/save_official_receipt',
+        url: '/save_or',
         method: 'post',
         data: formData,
         contentType : false,

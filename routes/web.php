@@ -16,11 +16,11 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['session'])->group(function () {
     Route::controller(EventController::class)->group(function(){
-        Route::post('/save_sales_invoice', 'save_sales_invoice');
-        Route::post('/save_collection_receipt', 'save_cr');
-        Route::post('/save_billing_statement', 'save_bs');
-        Route::post('/save_official_receipt', 'save_or');
-        Route::post('/save_delivery_receipt', 'save_delivery_receipt');
+        Route::post('/save_si', 'save_si');
+        Route::post('/save_cr', 'save_cr');
+        Route::post('/save_bs', 'save_bs');
+        Route::post('/save_or', 'save_or');
+        Route::post('/save_dr', 'save_dr');
         Route::post('/edit', 'edit');
         Route::any('/table_reload', 'table_reload');
     });
@@ -41,11 +41,11 @@ Route::middleware(['session'])->group(function () {
     });
 
     Route::controller(TableController::class)->group(function(){
-        Route::get('/sales_invoice_data', 'si_data');
+        Route::get('/si_data', 'si_data');
         Route::get('/cr_data', 'cr_data');
         Route::get('/bs_data', 'bs_data');
         Route::get('/or_data', 'or_data');
-        Route::get('/delivery_receipt_data', 'dr_data');
+        Route::get('/dr_data', 'dr_data');
     });
 
     Route::controller(UserController::class)->group(function(){

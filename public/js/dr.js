@@ -25,7 +25,7 @@ $(document).ready(function(){
             },
         ],
         ajax: {
-            url: 'delivery_receipt_data'
+            url: 'dr_data'
         },
         columns: [
             { data: 'delivery_receipt', name:'delivery_receipt'},
@@ -149,7 +149,7 @@ function save_pdf(){
     formData.append('pdf_file', pdf_file);
 
     $.ajax({
-        url: '/save_delivery_receipt',
+        url: '/save_dr',
         method: 'post',
         data: formData,
         contentType : false,

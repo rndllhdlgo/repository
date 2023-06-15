@@ -21,7 +21,7 @@ class EventController extends Controller
        $this->middleware('auth');
     }
 
-    public function save_sales_invoice(Request $request){
+    public function save_si(Request $request){
         if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->count() > 0) {
             return 'SALES INVOICE Already Exist';
         }
@@ -38,37 +38,22 @@ class EventController extends Controller
             $text = (new TesseractOCR($imagePath))->run();
 
             if(stripos($text, $request->sales_invoice) === false){
-                return 'SALES INVOICE not found';
+                return 'Input Sales Invoice No. does not match with the uploaded document.';
             }
-            // else if(stripos($text, $request->client_name) === false){
-            //     return 'CLIENT NAME not found';
-            // }
-            // else if(stripos($text, $request->branch_name) === false){
-            //     return 'BRANCH NAME not found';
-            // }
-            // else if(stripos($text, $request->purchase_order) === false){
-            //     return 'PURCHASE ORDER not found';
-            // }
-            // else if(stripos($text, $request->sales_order) === false){
-            //     return 'SALES ORDER not found';
-            // }
-            // else if(stripos($text, $request->delivery_receipt) === false){
-            //     return 'DELIVERY RECEIPT not found';
-            // }
             else{
                 $filename = $request->sales_invoice.'.'.$fileExtension;
                 $file->storeAs('public/sales_invoice',$filename);
 
                 SalesInvoice::create([
-                    'sales_invoice' => $request->sales_invoice,
+                    'sales_invoice' => strtoupper($request->sales_invoice),
                     'company' => $request->company,
-                    'client_name' => $request->client_name,
-                    'branch_name' => $request->branch_name,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
                     'date_created' => $request->date_created,
                     'date_received' => $request->date_received,
-                    'purchase_order' => $request->purchase_order,
-                    'sales_order' => $request->sales_order,
-                    'delivery_receipt' => $request->delivery_receipt,
+                    'purchase_order' => strtoupper($request->purchase_order),
+                    'sales_order' => strtoupper($request->sales_order),
+                    'delivery_receipt' => strtoupper($request->delivery_receipt),
                     'pdf_file' => $filename
                 ]);
 
@@ -103,20 +88,8 @@ class EventController extends Controller
             $text = (new TesseractOCR($imagePath))->run();
 
             if(stripos($text, $request->collection_receipt) === false){
-                return 'COLLECTION RECEIPT not found';
+                return 'Input Collection Receipt No. does not match with the uploaded document.';
             }
-            // else if(stripos($text, $request->client_name) === false){
-            //     return 'CLIENT NAME not found';
-            // }
-            // else if(stripos($text, $request->branch_name) === false){
-            //     return 'BRANCH NAME not found';
-            // }
-            // else if(stripos($text, $request->purchase_order) === false){
-            //     return 'PURCHASE ORDER not found';
-            // }
-            // else if(stripos($text, $request->sales_order) === false){
-            //     return 'SALES ORDER not found';
-            // }
             else{
                 $filename = $request->collection_receipt.'.'.$fileExtension;
                 $file->storeAs('public/collection_receipt',$filename);
@@ -124,11 +97,11 @@ class EventController extends Controller
                 CollectionReceipt::create([
                     'collection_receipt' => $request->collection_receipt,
                     'company' => $request->company,
-                    'client_name' => $request->client_name,
-                    'branch_name' => $request->branch_name,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
                     'date_created' => $request->date_created,
-                    'sales_order' => $request->sales_order,
-                    'sales_invoice' => $request->sales_invoice,
+                    'sales_order' => strtoupper($request->sales_order),
+                    'sales_invoice' => strtoupper($request->sales_invoice),
                     'pdf_file' => $filename
                 ]);
 
@@ -163,8 +136,7 @@ class EventController extends Controller
             $text = (new TesseractOCR($imagePath))->run();
 
             if(stripos($text, $request->billing_statement) === false){
-                // Storage::delete('public/documents/'.$employee_details->empno.'_'.$employee_details->last_name.'_'.$employee_details->first_name.'/'.$document_orig->barangay_clearance_file);
-                return 'BILLING STATEMENT not found';
+                return 'Input Billing Statement No. does not match with the uploaded document.';
             }
             else{
                 $filename = $request->billing_statement.'.'.$fileExtension;
@@ -173,11 +145,11 @@ class EventController extends Controller
                 BillingStatement::create([
                     'billing_statement' => $request->billing_statement,
                     'company' => $request->company,
-                    'client_name' => $request->client_name,
-                    'branch_name' => $request->branch_name,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
                     'date_created' => $request->date_created,
-                    'sales_order' => $request->sales_order,
-                    'purchase_order' => $request->purchase_order,
+                    'sales_order' => strtoupper($request->sales_order),
+                    'purchase_order' => strtoupper($request->purchase_order),
                     'pdf_file' => $filename
                 ]);
 
@@ -211,7 +183,7 @@ class EventController extends Controller
             $text = (new TesseractOCR($imagePath))->run();
 
             if(stripos($text, $request->official_receipt) === false){
-                return 'OFFICIAL RECEIPT NO. not found';
+                return 'Input Official Receipt No. does not match with the uploaded document.';
             }
             else{
                 $filename = $request->official_receipt.'.'.$fileExtension;
@@ -241,7 +213,7 @@ class EventController extends Controller
         }
     }
 
-    public function save_delivery_receipt(Request $request){
+    public function save_dr(Request $request){
         if(DeliveryReceipt::where('delivery_receipt', $request->delivery_receipt)->count() > 0) {
             return 'DELIVERY RECEIPT Already Exist';
         }
@@ -257,20 +229,8 @@ class EventController extends Controller
             $text = (new TesseractOCR($imagePath))->run();
 
             if(stripos($text, $request->delivery_receipt) === false){
-                return 'DELIVERY RECEIPT not found';
+                return 'Input Delivery Receipt No. does not match with the uploaded document.';
             }
-            // else if(stripos($text, $request->client_name) === false){
-            //     return 'CLIENT NAME not found';
-            // }
-            // else if(stripos($text, $request->branch_name) === false){
-            //     return 'BRANCH NAME not found';
-            // }
-            // else if(stripos($text, $request->purchase_order) === false){
-            //     return 'PURCHASE ORDER not found';
-            // }
-            // else if(stripos($text, $request->sales_order) === false){
-            //     return 'SALES ORDER not found';
-            // }
             else{
                 $filename = $request->delivery_receipt.'.'.$fileExtension;
                 $file->storeAs('public/delivery_receipt',$filename);
@@ -278,12 +238,12 @@ class EventController extends Controller
                 DeliveryReceipt::create([
                     'delivery_receipt' => $request->delivery_receipt,
                     'company' => $request->company,
-                    'client_name' => $request->client_name,
-                    'branch_name' => $request->branch_name,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
                     'date_created' => $request->date_created,
                     'date_received' => $request->date_received,
-                    'purchase_order' => $request->purchase_order,
-                    'sales_order' => $request->sales_order,
+                    'purchase_order' => strtoupper($request->purchase_order),
+                    'sales_order' => strtoupper($request->sales_order),
                     'pdf_file' => $filename
                 ]);
 
@@ -470,7 +430,7 @@ class EventController extends Controller
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page DETAILS ($reference_number) $client_name_change $branch_name_change.";
+        $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page DETAILS ($reference_number): $client_name_change $branch_name_change.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';

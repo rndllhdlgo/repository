@@ -25,7 +25,7 @@ $(document).ready(function(){
             },
         ],
         ajax: {
-            url: 'sales_invoice_data'
+            url: 'si_data'
         },
         columns: [
             { data: 'sales_invoice', name:'sales_invoice'},
@@ -152,7 +152,7 @@ function save_pdf(){
     formData.append('pdf_file', pdf_file);
 
     $.ajax({
-        url: '/save_sales_invoice',
+        url: '/save_si',
         method: 'post',
         data: formData,
         contentType : false,

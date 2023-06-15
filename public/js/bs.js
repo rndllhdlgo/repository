@@ -140,7 +140,7 @@ function save_pdf(){
     formData.append('pdf_file', pdf_file);
 
     $.ajax({
-        url: '/save_billing_statement',
+        url: '/save_bs',
         method: 'post',
         data: formData,
         contentType : false,
