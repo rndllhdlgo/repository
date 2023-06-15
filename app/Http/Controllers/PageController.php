@@ -20,6 +20,33 @@ class PageController extends Controller
         }
     }
 
+    public function cr(){
+        if(auth()->user()->department == 'WAREHOUSE'){
+            return redirect('/');
+        }
+        else{
+            return view('pages.cr');
+        }
+    }
+
+    public function bs(){
+        if(auth()->user()->department == 'WAREHOUSE'){
+            return redirect('/');
+        }
+        else{
+            return view('pages.bs');
+        }
+    }
+
+    public function or(){
+        if(auth()->user()->department == 'WAREHOUSE'){
+            return redirect('/');
+        }
+        else{
+            return view('pages.or');
+        }
+    }
+
     public function dr(){
         return view('pages.dr');
     }

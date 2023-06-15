@@ -1,8 +1,8 @@
-<div id="drModal" class="modal fade">
+<div id="crModal" class="modal fade">
     <div class="modal-dialog" style="margin-top: 150px;">
         <div class="modal-content">
             <div class="modal-header bg-default">
-                <h5 class="modal-title w-100 text-center" id="drTitle"></h5>
+                <h5 class="modal-title w-100 text-center" id="crTitle"></h5>
                 <button type="button" class="btn-close btn-close-white close btnClose" data-bs-dismiss="modal"></button>
             </div>
         <div class="modal-body">
@@ -10,8 +10,8 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="delivery_receipt" name="delivery_receipt" placeholder=" ">
-                            <label for="delivery_receipt" class="formlabel form-label">DELIVERY RECEIPT NO.</label>
+                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="collection_receipt" name="collection_receipt" placeholder=" ">
+                            <label for="collection_receipt" class="formlabel form-label">COLLECTION RECEIPT NO.</label>
                         </div>
                     </div>
                 </div>
@@ -51,26 +51,20 @@
                             <label for="date_created" class="formlabel form-label">DATE CREATED</label>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="date" id="date_received" name="date_received" placeholder=" ">
-                            <label for="date_received" class="formlabel form-label">DATE RECEIVED</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="f-outline">
-                            <input class="forminput form-control bg-white spChar text-uppercase disabled" type="search" id="purchase_order" name="purchase_order" placeholder=" ">
-                            <label for="purchase_order" class="formlabel form-label">PURCHASE ORDER NO.</label>
-                        </div>
-                    </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control bg-white spChar text-uppercase disabled" type="search" id="sales_order" name="sales_order" placeholder=" ">
                             <label for="sales_order" class="formlabel form-label">SALES ORDER NO.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="f-outline">
+                            <input class="forminput form-control bg-white spChar text-uppercase disabled" type="search" id="sales_invoice" name="sales_invoice" placeholder=" ">
+                            <label for="sales_invoice" class="formlabel form-label">SALES INVOICE NO.</label>
                         </div>
                     </div>
                 </div>

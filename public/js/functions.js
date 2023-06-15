@@ -203,3 +203,9 @@ $(document).on('focusout', '.requiredField', function(){
 $(document).ready(function(){
     $('.filter-input').attr('title', 'SEARCH');
 });
+
+$(document).on('keypress', '.spChar', function(e){
+    var k;
+    document.all ? k = e.keyCode : k = e.which;
+    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8  || k == 13 || (k >= 48 && k <= 57));
+});

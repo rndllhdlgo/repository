@@ -34,20 +34,29 @@
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE</a>
 			</li>
+			<li class="nav-item mr-1">
+				<a class="nav-link {{ Request::is('cr') ? 'navactive' : '' }}" href="/cr">COLLECTION RECEIPT</a>
+			</li>
+			<li class="nav-item mr-1">
+				<a class="nav-link {{ Request::is('bs') ? 'navactive' : '' }}" href="/bs">BILLING STATEMENT</a>
+			</li>
+			<li class="nav-item mr-1">
+				<a class="nav-link {{ Request::is('or') ? 'navactive' : '' }}" href="/or">OFFICIAL RECEIPT</a>
+			</li>
 			@endif
 			<li class="nav-item mr-1">
 				<a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT</a>
 			</li>
+		</ul>
+		<ul class="navbar-nav mr-right">
 			@role('ADMIN')
 				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">USER ACCOUNTS</a>
+					<a class="nav-link {{ Request::is('users') ? 'navactive' : '' }}" href="/users">ACCOUNTS</a>
 				</li>
 			@endrole
 			<li class="nav-item mr-1">
-				<a class="nav-link {{ Request::is('logs') ? 'navactive' : '' }}" href="/logs"> USER LOGS</a>
+				<a class="nav-link {{ Request::is('logs') ? 'navactive' : '' }}" href="/logs">LOGS</a>
 			</li>
-		</ul>
-		<ul class="navbar-nav mr-right">
 			<li class="nav-item">
 				<a class="nav-link" href="/logout" style="font-size: 16px;" onclick="$('#loading').show();">
 					LOGOUT<i class="fa fa-sign-out ml-2"></i>
