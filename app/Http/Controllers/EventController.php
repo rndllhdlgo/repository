@@ -303,44 +303,175 @@ class EventController extends Controller
 
     public function edit(Request $request){
         if($request->current_page == 'si'){
+            $current_page = 'SALES INVOICE';
+            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
+            $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
+
+            if(strtoupper($request->client_name) != $client_name_orig){
+                $client_name_new = strtoupper($request->client_name);
+                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+            }
+            else{
+                $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->branch_name) != $branch_name_orig){
+                $branch_name_new = strtoupper($request->branch_name);
+                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+            }
+            else{
+                $branch_name_change = NULL;
+            }
+
+            if($client_name_change == NULL && $branch_name_change == NULL){
+                return 'no changes';
+            }
+
             $sql = SalesInvoice::where('id', $request->entry_id)
                         ->update([
-                        'client_name' => $request->client_name,
-                        'branch_name' => $request->branch_name
+                        'client_name' => strtoupper($request->client_name),
+                        'branch_name' => strtoupper($request->branch_name)
             ]);
         }
 
         if($request->current_page == 'cr'){
+            $current_page = 'COLLECTION RECEIPT';
+            $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
+            $client_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->client_name;
+            $branch_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->branch_name;
+
+            if(strtoupper($request->client_name) != $client_name_orig){
+                $client_name_new = strtoupper($request->client_name);
+                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+            }
+            else{
+                $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->branch_name) != $branch_name_orig){
+                $branch_name_new = strtoupper($request->branch_name);
+                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+            }
+            else{
+                $branch_name_change = NULL;
+            }
+
+            if($client_name_change == NULL && $branch_name_change == NULL){
+                return 'no changes';
+            }
+
             $sql = CollectionReceipt::where('id', $request->entry_id)
                         ->update([
-                        'client_name' => $request->client_name,
-                        'branch_name' => $request->branch_name
+                        'client_name' => strtoupper($request->client_name),
+                        'branch_name' => strtoupper($request->branch_name)
             ]);
         }
 
         if($request->current_page == 'bs'){
+            $current_page = 'BILLING STATEMENT';
+            $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
+            $client_name_orig = BillingStatement::where('id', $request->entry_id)->first()->client_name;
+            $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
+
+            if(strtoupper($request->client_name) != $client_name_orig){
+                $client_name_new = strtoupper($request->client_name);
+                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+            }
+            else{
+                $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->branch_name) != $branch_name_orig){
+                $branch_name_new = strtoupper($request->branch_name);
+                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+            }
+            else{
+                $branch_name_change = NULL;
+            }
+
+            if($client_name_change == NULL && $branch_name_change == NULL){
+                return 'no changes';
+            }
+
             $sql = BillingStatement::where('id', $request->entry_id)
                         ->update([
-                        'client_name' => $request->client_name,
-                        'branch_name' => $request->branch_name
+                        'client_name' => strtoupper($request->client_name),
+                        'branch_name' => strtoupper($request->branch_name)
             ]);
         }
 
         if($request->current_page == 'or'){
+            $current_page = 'OFFICIAL RECEIPT';
+            $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+            $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
+            $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
+
+            if(strtoupper($request->client_name) != $client_name_orig){
+                $client_name_new = strtoupper($request->client_name);
+                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+            }
+            else{
+                $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->branch_name) != $branch_name_orig){
+                $branch_name_new = strtoupper($request->branch_name);
+                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+            }
+            else{
+                $branch_name_change = NULL;
+            }
+
+            if($client_name_change == NULL && $branch_name_change == NULL){
+                return 'no changes';
+            }
+
             $sql = OfficialReceipt::where('id', $request->entry_id)
                         ->update([
-                        'client_name' => $request->client_name,
-                        'branch_name' => $request->branch_name
+                        'client_name' => strtoupper($request->client_name),
+                        'branch_name' => strtoupper($request->branch_name)
             ]);
         }
 
         if($request->current_page == 'dr'){
+            $current_page = 'DELIVERY RECEIPT';
+            $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $client_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->client_name;
+            $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
+
+            if(strtoupper($request->client_name) != $client_name_orig){
+                $client_name_new = strtoupper($request->client_name);
+                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+            }
+            else{
+                $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->branch_name) != $branch_name_orig){
+                $branch_name_new = strtoupper($request->branch_name);
+                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+            }
+            else{
+                $branch_name_change = NULL;
+            }
+
+            if($client_name_change == NULL && $branch_name_change == NULL){
+                return 'no changes';
+            }
+
             $sql = DeliveryReceipt::where('id', $request->entry_id)
                         ->update([
-                        'client_name' => $request->client_name,
-                        'branch_name' => $request->branch_name
+                        'client_name' => strtoupper($request->client_name),
+                        'branch_name' => strtoupper($request->branch_name)
             ]);
         }
+
+        $userlogs = new UserLogs;
+        $userlogs->username = auth()->user()->name;
+        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+        $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page DETAILS ($reference_number) $client_name_change $branch_name_change.";
+        $userlogs->save();
 
         return $sql ? 'true' : 'false';
     }

@@ -27,7 +27,11 @@ $(document).on('click','#btnEdit', function(){
                     branch_name: $('#branch_name').val(),
                 },
                 success: function(data){
-                    if(data == 'true'){
+                    if(data == 'no changes'){
+                        $('#loading').hide();
+                        Swal.fire("NO CHANGES FOUND", "", "error");
+                    }
+                    else if(data == 'true'){
                         $('#loading').hide();
                         Swal.fire("UPDATE SUCCESS", "", "success");
                         $('.modal').modal('hide');
