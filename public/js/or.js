@@ -103,7 +103,7 @@ $('#orAdd').on('click',function(){
     $('.pdf_file').empty();
     $('#pdf_file').show();
     $('#btnSave').show();
-    $('#btnUpdate').hide();
+    $('#btnEdit').hide();
     $('#btnClear').show();
     $('.req').hide();
 
@@ -196,13 +196,14 @@ $(document).on('click','table.orTable tbody tr',function(){
 
     if(current_role == 'ADMIN' || current_role == 'ENCODER'){
         $('.enabled').prop('disabled',false);
-        $('#btnUpdate').show();
+        $('#btnEdit').show();
     }
     else{
         $('.enabled').prop('disabled',true);
         $('.footer_hide').hide();
     }
 
+    $('#entry_id').val(data.id);
     $('#official_receipt').val(data.official_receipt);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);

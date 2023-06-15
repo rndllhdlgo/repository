@@ -300,4 +300,48 @@ class EventController extends Controller
             return 'Invalid file format';
         }
     }
+
+    public function edit(Request $request){
+        if($request->current_page == 'si'){
+            $sql = SalesInvoice::where('id', $request->entry_id)
+                        ->update([
+                        'client_name' => $request->client_name,
+                        'branch_name' => $request->branch_name
+            ]);
+        }
+
+        if($request->current_page == 'cr'){
+            $sql = CollectionReceipt::where('id', $request->entry_id)
+                        ->update([
+                        'client_name' => $request->client_name,
+                        'branch_name' => $request->branch_name
+            ]);
+        }
+
+        if($request->current_page == 'bs'){
+            $sql = BillingStatement::where('id', $request->entry_id)
+                        ->update([
+                        'client_name' => $request->client_name,
+                        'branch_name' => $request->branch_name
+            ]);
+        }
+
+        if($request->current_page == 'or'){
+            $sql = OfficialReceipt::where('id', $request->entry_id)
+                        ->update([
+                        'client_name' => $request->client_name,
+                        'branch_name' => $request->branch_name
+            ]);
+        }
+
+        if($request->current_page == 'dr'){
+            $sql = DeliveryReceipt::where('id', $request->entry_id)
+                        ->update([
+                        'client_name' => $request->client_name,
+                        'branch_name' => $request->branch_name
+            ]);
+        }
+
+        return $sql ? 'true' : 'false';
+    }
 }

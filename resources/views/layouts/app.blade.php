@@ -29,6 +29,7 @@
     @endif
     @if(!Auth::guest())
         <script src="/js/functions.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
+        <script src="/js/edit.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
     @endif
     <main class="container-fluid content">
         @yield('content')

@@ -6,6 +6,7 @@
                 <button type="button" class="btn-close btn-close-white close btnClose" data-bs-dismiss="modal"></button>
             </div>
         <div class="modal-body">
+            <input type="hidden" id="entry_id">
             <form id="form_reset">
                 <div class="row mb-3">
                     <div class="col-6">
@@ -92,7 +93,7 @@
             <div class="modal-footer footer_hide">
                 <button type="reset"  id="btnClear" class="btn btn-primary float-end bp"><i class="fas fa-eraser"></i> CLEAR</button>
                 <button type="button" id="btnSave"  class="btn btn-primary float-end bp btnRequired"><i class="fas fa-save"></i> SAVE</button>
-                <button type="button" id="btnUpdate"  class="btn btn-primary float-end bp btnRequired" style="display:none;"><i class="fas fa-save"></i> UPDATE</button>
+                <button type="button" id="btnEdit"  class="btn btn-primary float-end bp btnRequired" style="display:none;"><i class="fas fa-save"></i> UPDATE</button>
             </div>
         </form>
         </div>

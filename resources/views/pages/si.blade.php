@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <br>
+<input type="hidden" id="current_page" value="si">
 <div class="row">
     <div class="col">
         <div id="page-name"><h4><span class="page-reload">SALES INVOICE REPOSITORY</span></h4></div>
