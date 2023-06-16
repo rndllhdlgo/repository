@@ -32,7 +32,7 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
-            $imagick->modulateImage(120, 100, 100);
+            $imagick->unsharpMaskImage(0, 0.5, 2, 0.05);
             $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
@@ -82,7 +82,7 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
-            $imagick->modulateImage(120, 100, 100);
+            $imagick->unsharpMaskImage(0, 0.5, 2, 0.05);
             $imagePath = storage_path("app/public/$request->collection_receipt.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
@@ -130,7 +130,7 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
-            $imagick->modulateImage(120, 100, 100);
+            $imagick->unsharpMaskImage(0, 0.5, 2, 0.05);
             $imagePath = storage_path("app/public/$request->billing_statement.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
@@ -178,6 +178,7 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
+            // $imagick->unsharpMaskImage(0, 0.5, 2, 0.05);
             $imagePath = storage_path("app/public/$request->official_receipt.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
@@ -224,6 +225,7 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
+            // $imagick->unsharpMaskImage(0, 0.5, 2, 0.05);
             $imagePath = storage_path("app/public/$request->delivery_receipt.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
