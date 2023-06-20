@@ -37,7 +37,7 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
-            if(stripos($text, $request->sales_invoice) === false){
+            if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
                 return 'Input Sales Invoice No. does not match with the uploaded document.';
             }
             else{
@@ -87,7 +87,7 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
-            if(stripos($text, $request->collection_receipt) === false){
+            if(stripos(str_replace(' ', '', $text), $request->collection_receipt) === false){
                 return 'Input Collection Receipt No. does not match with the uploaded document.';
             }
             else{
@@ -135,7 +135,7 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
-            if(stripos($text, $request->billing_statement) === false){
+            if(stripos(str_replace(' ', '', $text), $request->billing_statement) === false){
                 return 'Input Billing Statement No. does not match with the uploaded document.';
             }
             else{
@@ -183,7 +183,7 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
-            if(stripos($text, $request->official_receipt) === false){
+            if(stripos(str_replace(' ', '', $text), $request->official_receipt) === false){
                 return 'Input Official Receipt No. does not match with the uploaded document.';
             }
             else{
@@ -230,7 +230,7 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
-            if(stripos($text, $request->delivery_receipt) === false){
+            if(stripos(str_replace(' ', '', $text), $request->delivery_receipt) === false){
                 return 'Input Delivery Receipt No. does not match with the uploaded document.';
             }
             else{
