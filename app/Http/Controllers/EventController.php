@@ -36,6 +36,7 @@ class EventController extends Controller
             $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
+            return $text;
 
             if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
                 return 'Input Sales Invoice No. does not match with the uploaded document.';

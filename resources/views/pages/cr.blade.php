@@ -4,7 +4,7 @@
 <input type="hidden" id="current_page" value="cr">
 <div class="row">
     <div class="col">
-        <div id="page-name"><h4><span class="page-reload">COLLECTION RECEIPT</span></h4></div>
+        <div id="page-name"><h4><span class="page-reload">COLLECTION RECEIPT REPOSITORY</span></h4></div>
     </div>
     @role('ADMIN|ENCODER')
         <div class="col-md form-group">
