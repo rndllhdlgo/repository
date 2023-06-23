@@ -36,7 +36,6 @@ class EventController extends Controller
             $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
-            return $text;
 
             if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
                 return 'Input Sales Invoice No. does not match with the uploaded document.';
@@ -179,7 +178,8 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
-            // $imagick->unsharpMaskImage(0, 0.5, 1, 0.05);
+            $imagick->modulateImage(150,100,100);
+            $imagick->contrastImage(1);
             $imagePath = storage_path("app/public/$request->official_receipt.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
@@ -226,7 +226,6 @@ class EventController extends Controller
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
             $imagick->setImageFormat('jpeg');
-            // $imagick->unsharpMaskImage(0, 0.5, 1, 0.05);
             $imagePath = storage_path("app/public/$request->delivery_receipt.jpeg");
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
