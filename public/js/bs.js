@@ -53,7 +53,13 @@ $(document).ready(function(){
             },
             { data: 'sales_order', name:'sales_order'},
             { data: 'purchase_order', name:'purchase_order'},
-            { data: 'status', name:'status'}
+            {
+                data: 'status',
+                name: 'status',
+                "render":function(data,type,row){
+                    return `<span class="${data == 'valid' ? 'text-success' : 'text-danger'}"><b>${data.toUpperCase()}</b></span>`;
+                },
+            },
         ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
@@ -109,7 +115,7 @@ $('#bsAdd').on('click',function(){
     $('.enabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
-    $('#pdf_file').show();
+    $('#btnUploadPdf').show();
     $('#btnApprove').hide();
     $('#btnSave').show();
     $('#btnEdit').hide();
@@ -117,8 +123,14 @@ $('#bsAdd').on('click',function(){
     $('.req').hide();
 
     $('#file_div').empty().append(`
-        <div class="col mt-2">
-            <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".pdf"/>
+        <div class="col-7">
+            <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                <span id="txtUploadPdf">UPLOAD FILE</span>
+            </button>
+            <span class="d-none">
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+            </span>
         </div>`
     );
     $('#bsModal').modal('show');
@@ -126,6 +138,7 @@ $('#bsAdd').on('click',function(){
 
 function save_pdf(){
     var formData = new FormData();
+
     var billing_statement = $('#billing_statement').val();
     var company = $('#company').val();
     var client_name = $('#client_name').val();
@@ -158,62 +171,6 @@ function save_pdf(){
         success: function(response){
             $('#loading').hide();
             if(response == 'invalid'){
-                Swal.fire({
-                    title: 'SAVE SUCCESS',
-                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
-                    icon: 'warning'
-                });
-                $('#bsModal').modal('hide');
-            }
-            else{
-                Swal.fire({
-                    title: 'SAVE SUCCESS',
-                    html: 'FILE SUCCESSFULLY CREATED',
-                    icon: 'success'
-                });
-                $('#bsModal').modal('hide');
-            }
-        }
-    });
-}
-
-function edit_pdf(){
-    var formData = new FormData();
-    if($('#current_page').val() == 'bs'){
-        var billing_statement = $('#billing_statement').val();
-        formData.append('billing_statement', billing_statement);
-        var url_name = '/edit_bs';
-    }
-    else{
-        return false;
-    }
-    var entry_id = $('#entry_id').val();
-    var client_name = $('#client_name').val();
-    var branch_name = $('#branch_name').val();
-    var pdf_file = $('#pdf_file').prop('files')[0];
-
-    formData.append('entry_id', entry_id);
-    formData.append('client_name', client_name);
-    formData.append('branch_name', branch_name);
-    formData.append('pdf_file', pdf_file);
-
-    $.ajax({
-        url: url_name,
-        method: 'post',
-        data: formData,
-        contentType : false,
-        processData : false,
-        async: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response){
-            $('#loading').hide();
-            if(response == 'no changes'){
-                $('#loading').hide();
-                Swal.fire("NO CHANGES FOUND", "", "error");
-            }
-            else if(response == 'invalid'){
                 Swal.fire({
                     title: 'SAVE SUCCESS',
                     html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
@@ -280,7 +237,7 @@ $(document).on('click','table.bsTable tbody tr',function(){
     $('#date_created').val(data.date_created);
     $('#purchase_order').val(data.purchase_order);
     $('#sales_order').val(data.sales_order);
-    $('#pdf_file').show();
+    $('#btnUploadPdf').show();
     if(data.status == 'valid'){
         $('#file_div').empty().append(`
             <div class="col mt-2">
@@ -289,12 +246,17 @@ $(document).on('click','table.bsTable tbody tr',function(){
         );
         $('#btnApprove').hide();
         $('#billing_statement').prop('disabled',true);
-        $('#pdf_file').hide();
     }
     else{
         $('#file_div').empty().append(`
-            <div class="col-7">
-                <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+            <div class="col-4">
+                <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                    <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                    <span id="txtUploadPdf">REPLACE FILE</span>
+                </button>
+                <span class="d-none">
+                    <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+                </span>
             </div>
             <div class="col mt-2">
                 <span class="pdf_file"></span>
@@ -303,7 +265,7 @@ $(document).on('click','table.bsTable tbody tr',function(){
         $('#btnApprove').show();
         $('#billing_statement').prop('disabled',false);
     }
-    $('.pdf_file').html(`<b>PDF FILE:</b> <a href="/storage/billing_statement/${data.created_at.substr(0, 10)}/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
+    $('.pdf_file').html(`<b>CURRENT PDF FILE:</b> <a href="/storage/billing_statement/${data.created_at.substr(0, 10)}/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
 
     $('#btnSave').hide();
     $('#btnClear').hide();

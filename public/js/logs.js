@@ -18,7 +18,7 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
-                    return`<span class="d-none">${data}</span>`+moment(data, 'YYYY-MM-DD HH:mm:ss').format("MMMM DD, YYYY, h:mm A");
+                    return moment(data).format('MMMM DD, YYYY, h:mm A');
                 }, width: '16vh'
             },
             { data: 'username', width: '22vh' },
@@ -65,7 +65,7 @@ $(document).ready(function(){
         if(!table.data().any()){ return false; }
         var value = table.row(this).data();
         Swal.fire({
-            title: moment(value.date).format('dddd, MMMM DD, YYYY, h:mm:ss A'),
+            title: moment(value.created_at).format('dddd, MMMM DD, YYYY, h:mm:ss A'),
             html: `<h4>` + value.username + `[`+ value.role +`]` + `</h4>` + `<br>` + `<ol style="text-align: left !important;font-weight:600 !important;">` +  decodeHtml(value.activity).replaceAll(" 【", "<li>【") + `</li></ol>`,
             icon: 'info',
             customClass: 'swal-wide'

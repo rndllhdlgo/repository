@@ -38,10 +38,11 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
+            $status = 'valid';
+
             if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
-                return 'Input Sales Invoice No. does not match with the uploaded document.';
+                $status = 'invalid';
             }
-            else{
                 $filename = $request->sales_invoice.'.'.$fileExtension;
                 $file->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
 
@@ -55,7 +56,8 @@ class EventController extends Controller
                     'purchase_order' => strtoupper($request->purchase_order),
                     'sales_order' => strtoupper($request->sales_order),
                     'delivery_receipt' => strtoupper($request->delivery_receipt),
-                    'pdf_file' => $filename
+                    'pdf_file' => $filename,
+                    'status' => $status
                 ]);
 
                 $userlogs = new UserLogs;
@@ -64,8 +66,7 @@ class EventController extends Controller
                 $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice).";
                 $userlogs->save();
 
-                return 'success';
-            }
+                return $status;
         }
         else{
             return 'Invalid file format';
@@ -270,8 +271,30 @@ class EventController extends Controller
         if($request->current_page == 'si'){
             $current_page = 'SALES INVOICE';
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
             $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
+            $date_created_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_created;
+            $date_received_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_received;
+            $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
+            $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
+            $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
+
+            if($request->sales_invoice != $reference_number){
+                $sales_invoice_new = $request->sales_invoice;
+                $sales_invoice_change = "【SALES INVOICE: FROM '$reference_number' TO '$sales_invoice_new'】";
+            }
+            else{
+                $sales_invoice_change = NULL;
+            }
+
+            if($request->company != $company_orig){
+                $company_new = $request->company;
+                $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+            }
+            else{
+                $company_change = NULL;
+            }
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
@@ -289,14 +312,70 @@ class EventController extends Controller
                 $branch_name_change = NULL;
             }
 
-            if($client_name_change == NULL && $branch_name_change == NULL){
+            if($request->date_created != $date_created_orig){
+                $date_created_new = $request->date_created;
+                $date_created_change = "【DATE CREATED: FROM '$date_created_orig' TO '$date_created_new'】";
+            }
+            else{
+                $date_created_change = NULL;
+            }
+
+            if($request->date_received != $date_received_orig){
+                $date_received_new = $request->date_received;
+                $date_received_change = "【DATE RECEIVED: FROM '$date_received_orig' TO '$date_received_new'】";
+            }
+            else{
+                $date_received_change = NULL;
+            }
+
+            if($request->purchase_order != $purchase_order_orig){
+                $purchase_order_new = $request->purchase_order;
+                $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+            }
+            else{
+                $purchase_order_change = NULL;
+            }
+
+            if($request->sales_order != $sales_order_orig){
+                $sales_order_new = $request->sales_order;
+                $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+            }
+            else{
+                $sales_order_change = NULL;
+            }
+
+            if($request->delivery_receipt != $delivery_receipt_orig){
+                $delivery_receipt_new = $request->delivery_receipt;
+                $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
+            }
+            else{
+                $delivery_receipt_change = NULL;
+            }
+
+            if($sales_invoice_change == NULL
+                && $company_change == NULL
+                && $client_name_change == NULL
+                && $branch_name_change == NULL
+                && $date_created_change == NULL
+                && $date_received_change == NULL
+                && $purchase_order_change == NULL
+                && $sales_order_change == NULL
+                && $delivery_receipt_change == NULL
+                ){
                 return 'no changes';
             }
 
             $sql = SalesInvoice::where('id', $request->entry_id)
                         ->update([
+                        'sales_invoice' => strtoupper($request->sales_invoice),
+                        'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
-                        'branch_name' => strtoupper($request->branch_name)
+                        'branch_name' => strtoupper($request->branch_name),
+                        'date_created' => $request->date_created,
+                        'date_received' => $request->date_received,
+                        'purchase_order' => strtoupper($request->purchase_order),
+                        'sales_order' => strtoupper($request->sales_order),
+                        'delivery_receipt' => strtoupper($request->delivery_receipt)
             ]);
         }
 
@@ -403,9 +482,9 @@ class EventController extends Controller
                 && $company_change == NULL
                 && $client_name_change == NULL
                 && $branch_name_change == NULL
-                && $date_created_change = NULL
-                && $sales_order_change = NULL
-                && $purchase_order_change = NULL
+                && $date_created_change == NULL
+                && $sales_order_change == NULL
+                && $purchase_order_change == NULL
                 ){
                 return 'no changes';
             }
@@ -519,8 +598,28 @@ class EventController extends Controller
 
                 $current_page = 'BILLING STATEMENT';
                 $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
+                $company_orig = BillingStatement::where('id', $request->entry_id)->first()->company;
                 $client_name_orig = BillingStatement::where('id', $request->entry_id)->first()->client_name;
                 $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
+                $date_created_orig = BillingStatement::where('id', $request->entry_id)->first()->date_created;
+                $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
+                $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
+
+                if($request->billing_statement != $reference_number){
+                    $billing_statement_new = $request->billing_statement;
+                    $billing_statement_change = "【BILLING STATEMENT: FROM '$reference_number' TO '$billing_statement_new'】";
+                }
+                else{
+                    $billing_statement_change = NULL;
+                }
+
+                if($request->company != $company_orig){
+                    $company_new = $request->company;
+                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+                }
+                else{
+                    $company_change = NULL;
+                }
 
                 if(strtoupper($request->client_name) != $client_name_orig){
                     $client_name_new = strtoupper($request->client_name);
@@ -538,14 +637,38 @@ class EventController extends Controller
                     $branch_name_change = NULL;
                 }
 
-                if($request->file('pdf_file')){
-                    $file_change = "【UPLOAD: FILE UPLOAD HAS BEEN CHANGED'】";
+                if($request->date_created != $date_created_orig){
+                    $date_created_new = $request->date_created;
+                    $date_created_change = "【DATE CREATED: FROM '$date_created_orig' TO '$date_created_new'】";
                 }
                 else{
-                    $file_change = NULL;
+                    $date_created_change = NULL;
                 }
 
-                if($client_name_change == NULL && $branch_name_change == NULL && $file_change == NULL){
+                if($request->sales_order != $sales_order_orig){
+                    $sales_order_new = $request->sales_order;
+                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+                }
+                else{
+                    $sales_order_change = NULL;
+                }
+
+                if($request->purchase_order != $purchase_order_orig){
+                    $purchase_order_new = $request->purchase_order;
+                    $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+                }
+                else{
+                    $purchase_order_change = NULL;
+                }
+
+                if($billing_statement_change == NULL
+                    && $company_change == NULL
+                    && $client_name_change == NULL
+                    && $branch_name_change == NULL
+                    && $date_created_change == NULL
+                    && $sales_order_change == NULL
+                    && $purchase_order_change == NULL
+                    ){
                     return 'no changes';
                 }
 
@@ -564,8 +687,12 @@ class EventController extends Controller
                 $sql = BillingStatement::where('id', $request->entry_id)
                             ->update([
                             'billing_statement' => $request->billing_statement,
+                            'company' => $request->company,
                             'client_name' => strtoupper($request->client_name),
                             'branch_name' => strtoupper($request->branch_name),
+                            'date_created' => $request->date_created,
+                            'sales_order' => $request->sales_order,
+                            'purchase_order' => $request->purchase_order,
                             'pdf_file' => $filename,
                             'status' => $status
                 ]);
@@ -584,11 +711,176 @@ class EventController extends Controller
         }
     }
 
+    public function edit_si(Request $request){
+        $file = $request->file('pdf_file');
+        if($file->getClientOriginalExtension() === 'pdf'){
+            $fileExtension = $file->getClientOriginalExtension();
+            $imagick = new \Imagick();
+            $imagick->readImage($file->getPathname() . '[0]');
+            $imagick->setImageFormat('jpeg');
+            $imagick->unsharpMaskImage(0, 0.5, 1, 0.05);
+            $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
+            $imagick->writeImage($imagePath);
+            $text = (new TesseractOCR($imagePath))->run();
+
+            $status = 'valid';
+
+            if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
+                $status = 'invalid';
+            }
+                $filename = $request->sales_invoice.'.'.$fileExtension;
+                $file->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
+
+                $current_page = 'SALES INVOICE';
+                $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+                $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
+                $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
+                $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
+                $date_created_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_created;
+                $date_received_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_received;
+                $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
+                $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
+                $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
+
+                if($request->sales_invoice != $reference_number){
+                    $sales_invoice_new = $request->sales_invoice;
+                    $sales_invoice_change = "【SALES INVOICE: FROM '$reference_number' TO '$sales_invoice_new'】";
+                }
+                else{
+                    $sales_invoice_change = NULL;
+                }
+
+                if($request->company != $company_orig){
+                    $company_new = $request->company;
+                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+                }
+                else{
+                    $company_change = NULL;
+                }
+
+                if(strtoupper($request->client_name) != $client_name_orig){
+                    $client_name_new = strtoupper($request->client_name);
+                    $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                }
+                else{
+                    $client_name_change = NULL;
+                }
+
+                if(strtoupper($request->branch_name) != $branch_name_orig){
+                    $branch_name_new = strtoupper($request->branch_name);
+                    $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+                }
+                else{
+                    $branch_name_change = NULL;
+                }
+
+                if($request->date_created != $date_created_orig){
+                    $date_created_new = $request->date_created;
+                    $date_created_change = "【DATE CREATED: FROM '$date_created_orig' TO '$date_created_new'】";
+                }
+                else{
+                    $date_created_change = NULL;
+                }
+
+                if($request->date_received != $date_received_orig){
+                    $date_received_new = $request->date_received;
+                    $date_received_change = "【DATE RECEIVED: FROM '$date_received_orig' TO '$date_received_new'】";
+                }
+                else{
+                    $date_received_change = NULL;
+                }
+
+                if($request->purchase_order != $purchase_order_orig){
+                    $purchase_order_new = $request->purchase_order;
+                    $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+                }
+                else{
+                    $purchase_order_change = NULL;
+                }
+
+                if($request->sales_order != $sales_order_orig){
+                    $sales_order_new = $request->sales_order;
+                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+                }
+                else{
+                    $sales_order_change = NULL;
+                }
+
+                if($request->delivery_receipt != $delivery_receipt_orig){
+                    $delivery_receipt_new = $request->delivery_receipt;
+                    $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
+                }
+                else{
+                    $delivery_receipt_change = NULL;
+                }
+
+                if($sales_invoice_change == NULL
+                    && $company_change == NULL
+                    && $client_name_change == NULL
+                    && $branch_name_change == NULL
+                    && $date_created_change = NULL
+                    && $date_received_change == NULL
+                    && $purchase_order_change == NULL
+                    && $sales_order_change == NULL
+                    && $delivery_receipt_change == NULL
+                    ){
+                    return 'no changes';
+                }
+
+                if(auth()->user()->userlevel == '1'){
+                    $status = 'valid';
+                }
+                else{
+                    if(SalesInvoice::where('id', $request->entry_id)->first()->status == 'valid'){
+                        $status = 'valid';
+                    }
+                    else{
+                        $status = 'invalid';
+                    }
+                }
+
+                $sql = SalesInvoice::where('id', $request->entry_id)
+                            ->update([
+                            'sales_invoice' => strtoupper($request->sales_invoice),
+                            'company' => $request->company,
+                            'client_name' => strtoupper($request->client_name),
+                            'branch_name' => strtoupper($request->branch_name),
+                            'date_created' => $request->date_created,
+                            'date_received' => $request->date_received,
+                            'purchase_order' => strtoupper($request->purchase_order),
+                            'sales_order' => strtoupper($request->sales_order),
+                            'delivery_receipt' => strtoupper($request->delivery_receipt),
+                            'pdf_file' => $filename,
+                            'status' => $status
+                ]);
+
+                $userlogs = new UserLogs;
+                $userlogs->username = auth()->user()->name;
+                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice).";
+                $userlogs->save();
+
+                return $status;
+        }
+        else{
+            return 'Invalid file format';
+        }
+    }
+
     public function approve(Request $request){
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
             $sql = BillingStatement::where('id', $request->entry_id)
+                    ->update([
+                        'status' => 'valid'
+            ]);
+        }
+
+        if($request->current_page == 'si'){
+            $current_page = 'SALES INVOICE';
+            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $sql = SalesInvoice::where('id', $request->entry_id)
                     ->update([
                         'status' => 'valid'
             ]);
