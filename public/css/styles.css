@@ -280,8 +280,8 @@ textarea{
     opacity: 100%;
 }
 .swal2-icon.swal2-warning {
-    background-color: #dc3545 !important;
-    border-color: #dc3545 !important;
+    background-color: orange !important;
+    border-color: orange !important;
     color: white !important;
     font-weight: bold !important;
 }

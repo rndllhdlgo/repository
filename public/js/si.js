@@ -177,8 +177,8 @@ function save_pdf(){
                     icon: 'success',
                     timer: 2000
                 });
-                $('#siModal').modal('hide');
-                setTimeout(function(){location.reload();}, 2000);
+                // $('#siModal').modal('hide');
+                // setTimeout(function(){location.reload();}, 2000);
             }
         }
     });

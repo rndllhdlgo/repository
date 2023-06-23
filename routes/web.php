@@ -22,6 +22,8 @@ Route::middleware(['session'])->group(function () {
         Route::post('/save_or', 'save_or');
         Route::post('/save_dr', 'save_dr');
         Route::post('/edit', 'edit');
+        Route::post('/approve', 'approve');
+        Route::post('/edit_bs', 'edit_bs');
         Route::any('/table_reload', 'table_reload');
     });
 

@@ -165,8 +165,8 @@ function save_pdf(){
                     icon: 'success',
                     timer: 2000
                 });
-                $('#crModal').modal('hide');
-                setTimeout(function(){location.reload();}, 2000);
+                // $('#crModal').modal('hide');
+                // setTimeout(function(){location.reload();}, 2000);
             }
         }
     });

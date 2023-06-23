@@ -53,7 +53,7 @@ $(document).ready(function(){
             },
             { data: 'sales_order', name:'sales_order'},
             { data: 'purchase_order', name:'purchase_order'},
-            { data: 'pdf_file', name:'pdf_file'}
+            { data: 'status', name:'status'}
         ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
@@ -110,15 +110,22 @@ $('#bsAdd').on('click',function(){
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#pdf_file').show();
+    $('#btnApprove').hide();
     $('#btnSave').show();
     $('#btnEdit').hide();
     $('#btnClear').show();
     $('.req').hide();
 
+    $('#file_div').empty().append(`
+        <div class="col mt-2">
+            <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".pdf"/>
+        </div>`
+    );
     $('#bsModal').modal('show');
 });
 
 function save_pdf(){
+    var formData = new FormData();
     var billing_statement = $('#billing_statement').val();
     var company = $('#company').val();
     var client_name = $('#client_name').val();
@@ -128,7 +135,6 @@ function save_pdf(){
     var purchase_order = $('#purchase_order').val();
     var pdf_file = $('#pdf_file').prop('files')[0];
 
-    var formData = new FormData();
 
     formData.append('billing_statement', billing_statement);
     formData.append('company', company);
@@ -151,22 +157,77 @@ function save_pdf(){
         },
         success: function(response){
             $('#loading').hide();
-            if(response != 'success'){
+            if(response == 'invalid'){
                 Swal.fire({
-                    title: 'SAVE FAILED',
-                    html: "<b>"+response+"</b>",
-                    icon: 'error',
+                    title: 'SAVE SUCCESS',
+                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
+                    icon: 'warning'
                 });
-                return false;
+                $('#bsModal').modal('hide');
             }
             else{
                 Swal.fire({
                     title: 'SAVE SUCCESS',
-                    icon: 'success',
-                    timer: 2000
+                    html: 'FILE SUCCESSFULLY CREATED',
+                    icon: 'success'
                 });
                 $('#bsModal').modal('hide');
-                setTimeout(function(){location.reload();}, 2000);
+            }
+        }
+    });
+}
+
+function edit_pdf(){
+    var formData = new FormData();
+    if($('#current_page').val() == 'bs'){
+        var billing_statement = $('#billing_statement').val();
+        formData.append('billing_statement', billing_statement);
+        var url_name = '/edit_bs';
+    }
+    else{
+        return false;
+    }
+    var entry_id = $('#entry_id').val();
+    var client_name = $('#client_name').val();
+    var branch_name = $('#branch_name').val();
+    var pdf_file = $('#pdf_file').prop('files')[0];
+
+    formData.append('entry_id', entry_id);
+    formData.append('client_name', client_name);
+    formData.append('branch_name', branch_name);
+    formData.append('pdf_file', pdf_file);
+
+    $.ajax({
+        url: url_name,
+        method: 'post',
+        data: formData,
+        contentType : false,
+        processData : false,
+        async: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response){
+            $('#loading').hide();
+            if(response == 'no changes'){
+                $('#loading').hide();
+                Swal.fire("NO CHANGES FOUND", "", "error");
+            }
+            else if(response == 'invalid'){
+                Swal.fire({
+                    title: 'SAVE SUCCESS',
+                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
+                    icon: 'warning'
+                });
+                $('#bsModal').modal('hide');
+            }
+            else{
+                Swal.fire({
+                    title: 'SAVE SUCCESS',
+                    html: 'FILE SUCCESSFULLY CREATED',
+                    icon: 'success'
+                });
+                $('#bsModal').modal('hide');
             }
         }
     });
@@ -198,18 +259,16 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.bsTable tbody tr',function(){
+    $('.req').hide();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#bsTitle').html('BILLING STATEMENT DETAILS');
-    $('.disabled').prop('disabled',true);
 
     if(current_role == 'ADMIN' || current_role == 'ENCODER'){
-        $('.enabled').prop('disabled',false);
         $('#btnEdit').show();
     }
     else{
-        $('.enabled').prop('disabled',true);
         $('.footer_hide').hide();
     }
 
@@ -221,8 +280,30 @@ $(document).on('click','table.bsTable tbody tr',function(){
     $('#date_created').val(data.date_created);
     $('#purchase_order').val(data.purchase_order);
     $('#sales_order').val(data.sales_order);
-    $('#pdf_file').hide();
-    $('.pdf_file').html(`<b>PDF FILE:</b> <a href="/storage/billing_statement/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
+    $('#pdf_file').show();
+    if(data.status == 'valid'){
+        $('#file_div').empty().append(`
+            <div class="col mt-2">
+                <span class="pdf_file"></span>
+            </div>`
+        );
+        $('#btnApprove').hide();
+        $('#billing_statement').prop('disabled',true);
+        $('#pdf_file').hide();
+    }
+    else{
+        $('#file_div').empty().append(`
+            <div class="col-7">
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+            </div>
+            <div class="col mt-2">
+                <span class="pdf_file"></span>
+            </div>`
+        );
+        $('#btnApprove').show();
+        $('#billing_statement').prop('disabled',false);
+    }
+    $('.pdf_file').html(`<b>PDF FILE:</b> <a href="/storage/billing_statement/${data.created_at.substr(0, 10)}/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
 
     $('#btnSave').hide();
     $('#btnClear').hide();
