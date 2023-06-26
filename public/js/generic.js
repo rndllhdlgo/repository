@@ -278,44 +278,46 @@ function edit_pdf(){
 }
 
 $(document).on('click','#btnApprove', function(){
-    Swal.fire({
-        title: 'Do you want to approve?',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showDenyButton: true,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-        customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
-        }
-    }).then((save) => {
-        if(save.isConfirmed){
-            $.ajax({
-                url: "/approve",
-                method: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data:{
-                    entry_id: $('#entry_id').val(),
-                    current_page: $('#current_page').val()
-                },
-                success: function(data){
-                    if(data == 'true'){
-                        $('#loading').hide();
-                        Swal.fire("APPROVE SUCCESS", "", "success");
-                        $('.modal').modal('hide');
+    if(current_role == 'ADMIN'){
+        Swal.fire({
+            title: 'Do you want to approve?',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showDenyButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+            customClass: {
+            actions: 'my-actions',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+            }
+        }).then((save) => {
+            if(save.isConfirmed){
+                $.ajax({
+                    url: "/approve",
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data:{
+                        entry_id: $('#entry_id').val(),
+                        current_page: $('#current_page').val()
+                    },
+                    success: function(data){
+                        if(data == 'true'){
+                            $('#loading').hide();
+                            Swal.fire("APPROVE SUCCESS", "", "success");
+                            $('.modal').modal('hide');
+                        }
+                        else{
+                            $('#loading').hide();
+                            Swal.fire("APPROVE FAILED", "", "error");
+                        }
                     }
-                    else{
-                        $('#loading').hide();
-                        Swal.fire("APPROVE FAILED", "", "error");
-                    }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
+    }
 });
 setInterval(function(){
     if($('#loading').is(':hidden') && standby == false){
