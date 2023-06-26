@@ -828,17 +828,6 @@ class EventController extends Controller
                     $purchase_order_change = NULL;
                 }
 
-                // if($billing_statement_change == NULL
-                //     && $company_change == NULL
-                //     && $client_name_change == NULL
-                //     && $branch_name_change == NULL
-                //     && $date_created_change == NULL
-                //     && $sales_order_change == NULL
-                //     && $purchase_order_change == NULL
-                //     ){
-                //     return 'no changes';
-                // }
-
                 if(auth()->user()->userlevel == '1'){
                     $status = 'valid';
                 }
@@ -981,19 +970,6 @@ class EventController extends Controller
                     $delivery_receipt_change = NULL;
                 }
 
-                // if($sales_invoice_change == NULL
-                //     && $company_change == NULL
-                //     && $client_name_change == NULL
-                //     && $branch_name_change == NULL
-                //     && $date_created_change == NULL
-                //     && $date_received_change == NULL
-                //     && $purchase_order_change == NULL
-                //     && $sales_order_change == NULL
-                //     && $delivery_receipt_change == NULL
-                //     ){
-                //     return 'no changes';
-                // }
-
                 if(auth()->user()->userlevel == '1'){
                     $status = 'valid';
                 }
@@ -1118,17 +1094,6 @@ class EventController extends Controller
                     $sales_invoice_change = NULL;
                 }
 
-                // if($collection_receipt_change == NULL
-                //     && $company_change == NULL
-                //     && $client_name_change == NULL
-                //     && $branch_name_change == NULL
-                //     && $date_created_change == NULL
-                //     && $sales_order_change == NULL
-                //     && $sales_invoice_change == NULL
-                //     ){
-                //     return 'no changes';
-                // }
-
                 if(auth()->user()->userlevel == '1'){
                     $status = 'valid';
                 }
@@ -1242,16 +1207,6 @@ class EventController extends Controller
                 else{
                     $sales_order_change = NULL;
                 }
-
-                // if($official_receipt_change == NULL
-                //     && $company_change == NULL
-                //     && $client_name_change == NULL
-                //     && $branch_name_change == NULL
-                //     && $date_created_change == NULL
-                //     && $sales_order_change == NULL
-                //     ){
-                //     return 'no changes';
-                // }
 
                 if(auth()->user()->userlevel == '1'){
                     $status = 'valid';
@@ -1382,18 +1337,6 @@ class EventController extends Controller
                 else{
                     $sales_order_change = NULL;
                 }
-
-                // if($delivery_receipt_change == NULL
-                //     && $company_change == NULL
-                //     && $client_name_change == NULL
-                //     && $branch_name_change == NULL
-                //     && $date_created_change == NULL
-                //     && $date_received_change == NULL
-                //     && $purchase_order_change == NULL
-                //     && $sales_order_change == NULL
-                //     ){
-                //         return 'no changes';
-                // }
 
                 if(auth()->user()->userlevel == '1'){
                     $status = 'valid';
