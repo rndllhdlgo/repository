@@ -75,7 +75,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-8" data-column="8" disabled/> PDF FILE
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-8" data-column="8" disabled/> STATUS
                 </label>
             </div>
         </div>

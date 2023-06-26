@@ -45,7 +45,13 @@ $(document).ready(function(){
                 }
             },
             { data: 'sales_order', name:'sales_order'},
-            { data: 'pdf_file', name:'pdf_file'}
+            {
+                data: 'status',
+                name: 'status',
+                "render":function(data,type,row){
+                    return `<span class="${data == 'valid' ? 'text-success' : 'text-danger'}"><b>${data.toUpperCase()}</b></span>`;
+                },
+            },
         ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
@@ -101,16 +107,31 @@ $('#orAdd').on('click',function(){
     $('.enabled').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
-    $('#pdf_file').show();
+    $('#btnUploadPdf').show();
+    $('#btnApprove').hide();
     $('#btnSave').show();
     $('#btnEdit').hide();
     $('#btnClear').show();
     $('.req').hide();
 
+    $('#file_div').empty().append(`
+        <div class="col-7">
+            <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                <span id="txtUploadPdf">UPLOAD FILE</span>
+            </button>
+            <span class="d-none">
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+            </span>
+        </div>`
+    );
+
     $('#orModal').modal('show');
 });
 
 function save_pdf(){
+    var formData = new FormData();
+
     var official_receipt = $('#official_receipt').val();
     var company = $('#company').val();
     var client_name = $('#client_name').val();
@@ -118,8 +139,6 @@ function save_pdf(){
     var date_created = $('#date_created').val();
     var sales_order = $('#sales_order').val();
     var pdf_file = $('#pdf_file').prop('files')[0];
-
-    var formData = new FormData();
 
     formData.append('official_receipt', official_receipt);
     formData.append('company', company);
@@ -141,22 +160,21 @@ function save_pdf(){
         },
         success: function(response){
             $('#loading').hide();
-            if(response != 'success'){
+            if(response == 'invalid'){
                 Swal.fire({
-                    title: 'SAVE FAILED',
-                    html: "<b>"+response+"</b>",
-                    icon: 'error',
+                    title: 'SAVE SUCCESS',
+                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
+                    icon: 'warning'
                 });
-                return false;
+                $('#orModal').modal('hide');
             }
             else{
                 Swal.fire({
                     title: 'SAVE SUCCESS',
-                    icon: 'success',
-                    timer: 2000
+                    html: 'FILE SUCCESSFULLY CREATED',
+                    icon: 'success'
                 });
-                // $('#orModal').modal('hide');
-                // setTimeout(function(){location.reload();}, 2000);
+                $('#orModal').modal('hide');
             }
         }
     });
@@ -188,18 +206,16 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.orTable tbody tr',function(){
+    $('.req').hide();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#orTitle').html('OFFICIAL RECEIPT DETAILS');
-    $('.disabled').prop('disabled',true);
 
     if(current_role == 'ADMIN' || current_role == 'ENCODER'){
-        $('.enabled').prop('disabled',false);
         $('#btnEdit').show();
     }
     else{
-        $('.enabled').prop('disabled',true);
         $('.footer_hide').hide();
     }
 
@@ -210,8 +226,35 @@ $(document).on('click','table.orTable tbody tr',function(){
     $('#branch_name').val(data.branch_name);
     $('#date_created').val(data.date_created);
     $('#sales_order').val(data.sales_order);
-    $('#pdf_file').hide();
-    $('.pdf_file').html(`<b>PDF FILE:</b> <a href="/storage/official_receipt/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
+    $('#btnUploadPdf').show();
+    if(data.status == 'valid'){
+        $('#file_div').empty().append(`
+            <div class="col mt-2">
+                <span class="pdf_file"></span>
+            </div>`
+        );
+        $('#btnApprove').hide();
+        $('#official_receipt').prop('disabled',true);
+    }
+    else{
+        $('#file_div').empty().append(`
+            <div class="col-4">
+                <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                    <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                    <span id="txtUploadPdf">REPLACE FILE</span>
+                </button>
+                <span class="d-none">
+                    <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+                </span>
+            </div>
+            <div class="col mt-2">
+                <span class="pdf_file"></span>
+            </div>`
+        );
+        $('#btnApprove').show();
+        $('#official_receipt').prop('disabled',false);
+    }
+    $('.pdf_file').html(`<b>CURRENT PDF FILE:</b> <a href="/storage/official_receipt/${data.created_at.substr(0, 10)}/${data.pdf_file}" target="_blank" title="OPEN FILE">${data.pdf_file}</a>`);
 
     $('#btnSave').hide();
     $('#btnClear').hide();

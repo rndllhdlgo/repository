@@ -43,7 +43,7 @@
                 </th>
                 <th>
                     <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
-                    PDF FILE
+                    STATUS
                 </th>
             </tr>
         </thead>

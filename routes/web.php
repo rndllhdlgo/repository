@@ -23,8 +23,11 @@ Route::middleware(['session'])->group(function () {
         Route::post('/save_dr', 'save_dr');
         Route::post('/edit', 'edit');
         Route::post('/approve', 'approve');
-        Route::post('/edit_bs', 'edit_bs');
         Route::post('/edit_si', 'edit_si');
+        Route::post('/edit_cr', 'edit_cr');
+        Route::post('/edit_bs', 'edit_bs');
+        Route::post('/edit_or', 'edit_or');
+        Route::post('/edit_dr', 'edit_dr');
         Route::any('/table_reload', 'table_reload');
     });
 
