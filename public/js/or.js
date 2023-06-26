@@ -103,8 +103,7 @@ $(document).ready(function(){
 
 $('#orAdd').on('click',function(){
     $('#orTitle').html('ADD OFFICIAL RECEIPT');
-    $('.disabled').prop('disabled',false);
-    $('.enabled').prop('disabled',false);
+    $('#official_receipt').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#btnUploadPdf').show();

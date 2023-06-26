@@ -11,7 +11,7 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="collection_receipt" name="collection_receipt" placeholder=" ">
+                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="collection_receipt" name="collection_receipt" placeholder=" ">
                             <label for="collection_receipt" class="formlabel form-label">COLLECTION RECEIPT NO.</label>
                         </div>
                     </div>

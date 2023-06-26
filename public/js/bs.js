@@ -111,8 +111,7 @@ $(document).ready(function(){
 
 $('#bsAdd').on('click',function(){
     $('#bsTitle').html('ADD BILLING STATEMENT');
-    $('.disabled').prop('disabled',false);
-    $('.enabled').prop('disabled',false);
+    $('#billing_statement').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#btnUploadPdf').show();

@@ -111,8 +111,7 @@ $(document).ready(function(){
 
 $('#crAdd').on('click',function(){
     $('#crTitle').html('ADD COLLECTION RECEIPT');
-    $('.disabled').prop('disabled',false);
-    $('.enabled').prop('disabled',false);
+    $('#collection_receipt').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#btnUploadPdf').show();

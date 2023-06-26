@@ -118,8 +118,7 @@ $(document).ready(function(){
 
 $('#drAdd').on('click',function(){
     $('#drTitle').html('ADD DELIVERY RECEIPT');
-    $('.disabled').prop('disabled',false);
-    $('.enabled').prop('disabled',false);
+    $('#delivery_receipt').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#btnUploadPdf').show();

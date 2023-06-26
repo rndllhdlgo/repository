@@ -11,7 +11,7 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase disabled" type="search" id="billing_statement" name="billing_statement" placeholder=" ">
+                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="billing_statement" name="billing_statement" placeholder=" ">
                             <label for="billing_statement" class="formlabel form-label">BILLING STATEMENT NO.</label>
                         </div>
                     </div>

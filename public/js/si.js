@@ -119,8 +119,7 @@ $(document).ready(function(){
 
 $('#siAdd').on('click',function(){
     $('#siTitle').html('ADD SALES INVOICE');
-    $('.disabled').prop('disabled',false);
-    $('.enabled').prop('disabled',false);
+    $('#sales_invoice').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#btnUploadPdf').show();

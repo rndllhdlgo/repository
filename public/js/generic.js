@@ -17,14 +17,12 @@ $(document).on('click','#btnEdit', function(){
             if($('#pdf_file').length > 0){
                 if($('#pdf_file').get(0).files.length > 0){
                     $('#loading').show();
-                    console.log('a');
                         setTimeout(() => {
                             edit_pdf();
                         }, 200);
                 }
                 else{
                     $('#loading').show();
-                    console.log('b');
                     $.ajax({
                         url: "/edit",
                         method: 'post',
@@ -67,7 +65,6 @@ $(document).on('click','#btnEdit', function(){
             }
             else{
                 $('#loading').show();
-                console.log('c');
                 $.ajax({
                     url: "/edit",
                     method: 'post',
@@ -114,7 +111,6 @@ $(document).on('click','#btnEdit', function(){
 function edit_pdf(){
     var formData = new FormData();
     if($('#current_page').val() == 'bs'){
-        console.log('bs');
         var entry_id = $('#entry_id').val();
         var billing_statement = $('#billing_statement').val();
         var company = $('#company').val();
@@ -138,7 +134,6 @@ function edit_pdf(){
         var url_name = '/edit_bs';
     }
     else if($('#current_page').val() == 'si'){
-        console.log('si');
         var entry_id = $('#entry_id').val();
         var sales_invoice = $('#sales_invoice').val();
         var company = $('#company').val();
@@ -166,7 +161,6 @@ function edit_pdf(){
         var url_name = '/edit_si';
     }
     else if($('#current_page').val() == 'cr'){
-        console.log('cr');
         var entry_id = $('#entry_id').val();
         var collection_receipt = $('#collection_receipt').val();
         var company = $('#company').val();
@@ -190,7 +184,6 @@ function edit_pdf(){
         var url_name = '/edit_cr';
     }
     else if($('#current_page').val() == 'or'){
-        console.log('or');
         var entry_id = $('#entry_id').val();
         var official_receipt = $('#official_receipt').val();
         var company = $('#company').val();
@@ -212,7 +205,6 @@ function edit_pdf(){
         var url_name = '/edit_or';
     }
     else if($('#current_page').val() == 'dr'){
-        console.log('dr');
         var entry_id = $('#entry_id').val();
         var delivery_receipt = $('#delivery_receipt').val();
         var company = $('#company').val();
