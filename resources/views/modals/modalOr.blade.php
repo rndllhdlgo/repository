@@ -57,7 +57,7 @@
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control bg-white spChar text-uppercase" type="search" id="sales_order" name="sales_order" placeholder=" ">
-                            <label for="sales_order" class="formlabel form-label">SALES ORDER NO.</label>
+                            <label for="sales_order" class="formlabel form-label">SALES ORDER NO. <span style="font-size: 13px !important;">(OPTIONAL)</label>
                         </div>
                     </div>
                 </div>

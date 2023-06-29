@@ -327,3 +327,9 @@ setInterval(function(){
         });
     }
 }, 1000);
+
+setInterval(() => {
+    if(current_role == 'BOSS'){
+        $('.forminput').prop('disabled',true);
+    }
+}, 0);

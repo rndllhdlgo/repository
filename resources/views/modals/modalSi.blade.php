@@ -63,7 +63,7 @@
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control spChar bg-white text-uppercase" type="search" id="purchase_order" name="purchase_order" placeholder=" ">
-                            <label for="purchase_order" class="formlabel form-label">PURCHASE ORDER NO.</label>
+                            <label for="purchase_order" class="formlabel form-label">PURCHASE ORDER NO. <span style="font-size: 13px !important;">(OPTIONAL)</label>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control spChar bg-white text-uppercase" type="search" id="sales_order" name="sales_order" placeholder=" ">
-                            <label for="sales_order" class="formlabel form-label">SALES ORDER NO.</label>
+                            <label for="sales_order" class="formlabel form-label">SALES ORDER NO. <span style="font-size: 13px !important;">(OPTIONAL)</label>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control spChar bg-white text-uppercase" type="search" id="delivery_receipt" name="delivery_receipt" placeholder=" ">
-                            <label for="delivery_receipt" class="formlabel form-label">DELIVERY RECEIPT NO.</label>
+                            <label for="delivery_receipt" class="formlabel form-label">DELIVERY RECEIPT NO. <span style="font-size: 13px !important;">(OPTIONAL)</label>
                         </div>
                     </div>
                 </div>
