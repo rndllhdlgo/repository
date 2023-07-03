@@ -127,8 +127,8 @@ $('#crAdd').on('click',function(){
                 <i class="fa-solid fa-file-arrow-up mr-1"></i>
                 <span id="txtUploadPdf">UPLOAD FILE</span>
             </button>
-            <span class="d-none">
-                <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+            <span style="visibility:hidden;">
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".pdf"/>
             </span>
         </div>`
     );
@@ -175,6 +175,13 @@ function save_pdf(){
                     icon: 'warning'
                 });
                 $('#crModal').modal('hide');
+            }
+            else if(response == 'Invalid file format'){
+                Swal.fire({
+                    title: 'SAVE FAILED',
+                    html: "INVALID FILE FORMAT",
+                    icon: 'error',
+                });
             }
             else{
                 Swal.fire({

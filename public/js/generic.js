@@ -257,6 +257,13 @@ function edit_pdf(){
                 });
                 $('.modal').modal('hide');
             }
+            else if(response == 'Invalid file format'){
+                Swal.fire({
+                    title: 'EDIT FAILED',
+                    html: "INVALID FILE FORMAT",
+                    icon: 'error',
+                });
+            }
             else{
                 Swal.fire({
                     title: 'SAVE SUCCESS',
