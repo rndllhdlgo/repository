@@ -1,4 +1,4 @@
-@if(!Auth::guest())
+@if(!Auth::guest() || env('MAIL_ENABLED') == 'N')
     <script>window.location.href = '/logout'</script>
 @endif
 @extends('layouts.app')
@@ -36,4 +36,11 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        var url = new URL(window.location.href);
+        var email_address = url.searchParams.get("emailaddress");
+        $('#email').val(email_address);
+    });
+</script>
 @endsection

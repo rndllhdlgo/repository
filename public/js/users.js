@@ -104,11 +104,20 @@ $(document).ready(function(){
 });
 
 $('#btnAddUser').on('click',function(){
-    $('#modal_title').html('ADD USER');
-    btnAddUser();
-    $('#btnSave').show();
-    $('#btnUpdate').hide();
-    $('#modalUser').modal('show');
+    if(current_email == 'Y'){
+        $('#modal_title').html('ADD USER');
+        btnAddUser();
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+        $('#modalUser').modal('show');
+    }
+    else{
+        Swal.fire({
+            title: "EMAIL SERVER UNAVAILABLE",
+            html: "Email server is temporarily down. <br>Please contact administrator.",
+            icon: "error"
+        });
+    }
 });
 
 $('#btnClear').on('click', function(){

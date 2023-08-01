@@ -6,6 +6,7 @@ var current_date = $('#current_date').val();
 var current_session = $('#current_session').val();
 var current_token = $('#current_token').val();
 var current_timeout = $('#current_timeout').val();
+var current_email = $('#current_email').val();
 var data_update, standby = true;
 
 setInterval(() => {

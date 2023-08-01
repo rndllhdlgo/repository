@@ -38,9 +38,9 @@
                                     {{ __('LOGIN') }}<i class="fa fa-sign-in ml-2" aria-hidden="true"></i>
                                 </button>
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link ml-2" href="{{ route('password.request') }}" style="font-weight: bold;">
+                                    <span id="btnForgotPassword" class="btn btn-link ml-2" style="font-weight: bold; cursor: pointer;">
                                         {{ __('Forgot Your Password?') }}
-                                    </a>
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -50,7 +50,23 @@
         </div>
     </div>
 </div>
-
+@if(env('MAIL_ENABLED') == 'N')
+    <script>
+        $('#btnForgotPassword').on('click', function(){
+            Swal.fire({
+                title: "EMAIL SERVER UNAVAILABLE",
+                html: "Email server is temporarily down. <br>Please contact administrator.",
+                icon: "error"
+            });
+        });
+    </script>
+@else
+    <script>
+        $('#btnForgotPassword').on('click', function(){
+            window.location.href = "{{ route('password.request') }}";
+        });
+    </script>
+@endif
 <script>
     $(document).ready(function(){
         if($(location).attr('pathname')+window.location.search == '/login?user=inactive'){

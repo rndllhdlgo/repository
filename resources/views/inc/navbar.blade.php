@@ -73,3 +73,4 @@
 <input type="hidden" id="current_session" value="{{\Session::getId()}}" readonly>
 <input type="hidden" id="current_token" value="{{\Illuminate\Support\Str::random(50)}}" readonly>
 <input type="hidden" id="current_timeout" value="{{ env('APP_TIMEOUT') }}" readonly>
+<input type="hidden" id="current_email" value="{{ env('MAIL_ENABLED') }}" readonly>
