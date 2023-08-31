@@ -46,7 +46,7 @@ class ResetPassword extends Notification implements ShouldQueue
             ->subject('[USER ACCOUNT] Create / Reset Password')
             ->line('You are receiving this email because we received a Create / Reset Password request for your account.')
             ->action('Create / Reset Password', url('password/reset/'.$this->token.'?email='.$notifiable->email))
-            ->line("The password reset link will expire after 1 hour. If so, kindly click the 'Forgot Your Password?' button in the Login page to send a new password reset link.")
+            // ->line("The password reset link will expire after 1 hour. If so, kindly click the 'Forgot Your Password?' button in the Login page to send a new password reset link.")
             ->line('If you did not request a Create / Reset Password for your account, no further action is required.');
     }
 
