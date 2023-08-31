@@ -341,7 +341,7 @@ setInterval(() => {
     }
 }, 0);
 
-$(document).on('click', '.btnViewFile', function(){
+$(document).on('click', '#btnViewFile', function(){
     $('#displayFile').empty().append(`
         <embed src="${$('#fetchFileName').attr('href')}" width="100%" height="600px"/>
     `)
