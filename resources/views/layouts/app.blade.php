@@ -39,6 +39,7 @@
     <main class="container-fluid content">
         @yield('content')
     </main>
+    @include('modals.modalViewFile')
     @include('cdn.body')
 </body>
 </html>

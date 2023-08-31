@@ -260,7 +260,11 @@ $(document).on('click','table.orTable tbody tr',function(){
         $('#btnApprove').show();
         $('#official_receipt').prop('disabled',false);
     }
-    $('.pdf_file').html(`<b>CURRENT PDF FILE:</b> <a href="/storage/official_receipt/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download>${data.pdf_file}</a>`);
+    $('.pdf_file').html(`
+        <b>CURRENT PDF FILE: ${data.pdf_file}</b><br>
+        <span id="btnViewFile" class="btn btn-link mr-2" style="cursor: pointer; text-decoration: none;"><i class="fa-solid fa-eye mr-1" title="PREVIEW FILE"></i>PREVIEW</span>
+        <a id="fetchFileName" class="btn btn-link" style="cursor: pointer; text-decoration: none;" href="/storage/official_receipt/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
+    `);
 
     $('#btnSave').hide();
     $('#btnClear').hide();
