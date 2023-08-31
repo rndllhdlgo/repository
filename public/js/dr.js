@@ -285,8 +285,8 @@ $(document).on('click','table.drTable tbody tr',function(){
     }
     $('.pdf_file').html(`
         <b>CURRENT PDF FILE: ${data.pdf_file}</b><br>
-        <a id="btnViewFile" class="btn btn-link mr-2" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="PREVIEW FILE"></i>PREVIEW</a>
-        <a id="fetchFileName" class="btn btn-link" style="cursor: pointer; text-decoration: none;" href="/storage/delivery_receipt/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
+        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="PREVIEW FILE"></i>PREVIEW</a>
+        <a id="fetchFileName" class="btn btn-link preventRightClick" style="cursor: pointer; text-decoration: none;" href="/storage/delivery_receipt/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
     `);
 
     $('#btnSave').hide();

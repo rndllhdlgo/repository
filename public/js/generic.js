@@ -1,4 +1,3 @@
-
 $(document).on('click','#btnEdit', function(){
     Swal.fire({
         title: 'Do you want to update?',
@@ -346,4 +345,8 @@ $(document).on('click', '#btnViewFile', function(){
         <embed src="${$('#fetchFileName').attr('href')}" width="100%" height="600px"/>
     `)
     $('#modalViewFile').modal('show');
+});
+
+$(document).on('contextmenu', '.preventRightClick', function(e) {
+    e.preventDefault();
 });
