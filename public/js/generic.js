@@ -39,10 +39,9 @@ $(document).on('click','#btnEdit', function(){
                             company: $('#company').val(),
                             client_name: $('#client_name').val(),
                             branch_name: $('#branch_name').val(),
-                            date_created: $('#date_created').val(),
-                            date_received: $('#date_received').val(),
                             sales_order: $('#sales_order').val(),
                             purchase_order: $('#purchase_order').val(),
+                            uploaded_by: $('#uploaded_by').val()
                         },
                         success: function(data){
                             if(data == 'no changes'){
@@ -52,7 +51,9 @@ $(document).on('click','#btnEdit', function(){
                             else if(data == 'true'){
                                 $('#loading').hide();
                                 Swal.fire("UPDATE SUCCESS", "", "success");
-                                $('.modal').modal('hide');
+                                if(current_role != 'ADMIN'){
+                                    $('.modal').modal('hide');
+                                }
                             }
                             else{
                                 $('#loading').hide();
@@ -85,6 +86,7 @@ $(document).on('click','#btnEdit', function(){
                         date_received: $('#date_received').val(),
                         sales_order: $('#sales_order').val(),
                         purchase_order: $('#purchase_order').val(),
+                        uploaded_by: $('#uploaded_by').val()
                     },
                     success: function(data){
                         if(data == 'no changes'){
@@ -94,7 +96,9 @@ $(document).on('click','#btnEdit', function(){
                         else if(data == 'true'){
                             $('#loading').hide();
                             Swal.fire("UPDATE SUCCESS", "", "success");
-                            $('.modal').modal('hide');
+                            if(current_role != 'ADMIN'){
+                                $('.modal').modal('hide');
+                            }
                         }
                         else{
                             $('#loading').hide();
@@ -138,24 +142,24 @@ function edit_pdf(){
         var company = $('#company').val();
         var client_name = $('#client_name').val();
         var branch_name = $('#branch_name').val();
-        var date_created = $('#date_created').val();
-        var date_received = $('#date_received').val();
         var purchase_order = $('#purchase_order').val();
         var sales_order = $('#sales_order').val();
         var delivery_receipt = $('#delivery_receipt').val();
-        var pdf_file = $('#pdf_file').prop('files')[0];
+        var uploaded_by = $('#uploaded_by').val();
+        var pdf_files = $('#pdf_file').prop('files');
 
         formData.append('entry_id', entry_id);
         formData.append('sales_invoice', sales_invoice);
         formData.append('company', company);
         formData.append('client_name', client_name);
         formData.append('branch_name', branch_name);
-        formData.append('date_created', date_created);
-        formData.append('date_received', date_received);
         formData.append('purchase_order', purchase_order);
         formData.append('sales_order', sales_order);
         formData.append('delivery_receipt', delivery_receipt);
-        formData.append('pdf_file', pdf_file);
+        formData.append('uploaded_by', uploaded_by);
+        for(let i = 0; i < pdf_files.length; i++){
+            formData.append('pdf_file[]', pdf_files[i]);
+        }
 
         var url_name = '/edit_si';
     }
@@ -248,14 +252,6 @@ function edit_pdf(){
                 $('#loading').hide();
                 Swal.fire("NO CHANGES FOUND", "", "error");
             }
-            else if(response == 'invalid'){
-                Swal.fire({
-                    title: 'SAVE SUCCESS',
-                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
-                    icon: 'warning'
-                });
-                $('.modal').modal('hide');
-            }
             else if(response == 'Invalid file format'){
                 Swal.fire({
                     title: 'EDIT FAILED',
@@ -266,7 +262,7 @@ function edit_pdf(){
             else{
                 Swal.fire({
                     title: 'SAVE SUCCESS',
-                    html: 'FILE SUCCESSFULLY CREATED',
+                    html: 'FILE UPLOADED SUCCESSFULLY FOR VALIDATION',
                     icon: 'success'
                 });
                 $('.modal').modal('hide');
@@ -276,47 +272,132 @@ function edit_pdf(){
 }
 
 $(document).on('click','#btnApprove', function(){
-    if(current_role == 'ADMIN'){
-        Swal.fire({
-            title: 'Do you want to approve?',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            showDenyButton: true,
-            confirmButtonText: 'Yes',
-            denyButtonText: 'No',
-            customClass: {
-            actions: 'my-actions',
-            confirmButton: 'order-2',
-            denyButton: 'order-3',
-            }
-        }).then((save) => {
-            if(save.isConfirmed){
-                $.ajax({
-                    url: "/approve",
-                    method: 'post',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data:{
-                        entry_id: $('#entry_id').val(),
-                        current_page: $('#current_page').val()
-                    },
-                    success: function(data){
-                        if(data == 'true'){
-                            $('#loading').hide();
-                            Swal.fire("APPROVE SUCCESS", "", "success");
-                            $('.modal').modal('hide');
-                        }
-                        else{
-                            $('#loading').hide();
-                            Swal.fire("APPROVE FAILED", "", "error");
-                        }
+    Swal.fire({
+        title: 'MARK AS VALID?',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showDenyButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+        }
+    }).then((save) => {
+        if(save.isConfirmed){
+            $.ajax({
+                url: "/approve",
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    entry_id: $('#entry_id').val(),
+                    current_page: $('#current_page').val()
+                },
+                success: function(data){
+                    if(data == 'true'){
+                        $('#loading').hide();
+                        Swal.fire("VALIDATE SUCCESS", "", "success");
+                        $('.modal').modal('hide');
                     }
-                });
-            }
-        });
-    }
+                    else{
+                        $('#loading').hide();
+                        Swal.fire("VALIDATE FAILED", "", "error");
+                    }
+                }
+            });
+        }
+    });
 });
+
+$(document).on('click','#btnDisapprove', function(){
+    Swal.fire({
+        title: 'MARK AS INVALID?',
+        html: `<textarea class="w-100 requiredField" rows="5" placeholder="Please leave a comment here" id="remarks"></textarea>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showDenyButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+        }
+    }).then((save) => {
+        if(save.isConfirmed){
+            $.ajax({
+                url: "/disapprove",
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    entry_id: $('#entry_id').val(),
+                    current_page: $('#current_page').val(),
+                    remarks: $('#remarks').val()
+                },
+                success: function(data){
+                    if(data == 'true'){
+                        $('#loading').hide();
+                        Swal.fire("INVALIDATE SUCCESS", "", "success");
+                        $('.modal').modal('hide');
+                    }
+                    else{
+                        $('#loading').hide();
+                        Swal.fire("INVALIDATE FAILED", "", "error");
+                    }
+                }
+            });
+        }
+    });
+});
+
+$(document).on('click','#btnReturn', function(){
+    Swal.fire({
+        title: 'RETURN TO ENCODER?',
+        html: `<textarea class="w-100 requiredField" rows="5" placeholder="Please leave a comment here" id="remarks"></textarea>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showDenyButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+        }
+    }).then((save) => {
+        if(save.isConfirmed){
+            $.ajax({
+                url: "/return_to_encoder",
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    entry_id: $('#entry_id').val(),
+                    current_page: $('#current_page').val(),
+                    remarks: $('#remarks').val()
+                },
+                success: function(data){
+                    if(data == 'true'){
+                        $('#loading').hide();
+                        Swal.fire("RETURN SUCCESS", "", "success");
+                        $('.modal').modal('hide');
+                    }
+                    else{
+                        $('#loading').hide();
+                        Swal.fire("RETURN FAILED", "", "error");
+                    }
+                }
+            });
+        }
+    });
+});
+
 setInterval(function(){
     if($('#loading').is(':hidden') && standby == false){
         $.ajax({

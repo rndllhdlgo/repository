@@ -177,27 +177,31 @@ function checkRequiredFields(){
         }
         if(checkRequired == true && checkChanges == true){
             $('.btnRequired').prop('disabled', false);
+            $('.swal2-confirm').prop('disabled', false);
         }
         else{
             $('.btnRequired').prop('disabled', true);
+            $('.swal2-confirm').prop('disabled', true);
         }
     }
 }
 
 $(document).on('focusout', '.requiredField', function(){
-    if(!$(this).val()){
-        var alertName = 'className'+$(this).attr('id');
-        var alertClass = $('.'+alertName+':visible');
-        if(alertClass.length == 0){
-            $(this).after('<span class="'+alertName+' req"><div style="height: 18px !important;">&nbsp;</div><p class="requiredValidation"><i class="fas fa-exclamation-triangle"></i> Required Field</p></span>');
+    if(!$(this).is('textarea')){
+        if(!$(this).val()){
+            var alertName = 'className'+$(this).attr('id');
+            var alertClass = $('.'+alertName+':visible');
+            if(alertClass.length == 0){
+                $(this).after('<span class="'+alertName+' req"><div style="height: 18px !important;">&nbsp;</div><p class="requiredValidation"><i class="fas fa-exclamation-triangle"></i> Required Field</p></span>');
+            }
+            else if(alertClass.length > 1){
+                alertClass.remove();
+            }
         }
-        else if(alertClass.length > 1){
-            alertClass.remove();
+        else{
+            alertName = 'className'+$(this).attr('id');
+            $('.'+alertName).remove();
         }
-    }
-    else{
-        alertName = 'className'+$(this).attr('id');
-        $('.'+alertName).remove();
     }
 });
 

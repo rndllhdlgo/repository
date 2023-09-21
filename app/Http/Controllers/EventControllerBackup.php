@@ -12,7 +12,6 @@ use App\Models\OfficialReceipt;
 use App\Models\DeliveryReceipt;
 use App\Models\UserLogs;
 use App\Models\Role;
-use App\Models\RemarkLogs;
 use Spatie\PdfToImage\Pdf as Jpg;
 use Carbon\Carbon;
 
@@ -25,59 +24,92 @@ class EventController extends Controller
 
     public function save_si(Request $request){
         if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->count() > 0) {
-            return 'Already exist';
+            return 'SALES INVOICE Already Exist';
         }
 
         $file = $request->file('pdf_file');
-        if(count($file) >= 1){
-            $count = 0;
-            foreach($file as $files){
-                if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->sales_invoice.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
-                }
-                else if($files->getClientOriginalExtension() === 'jpg'){
-                    if($count == 0){
-                        $imagick = new \Imagick();
-                        $count++;
-                    }
-                    if($files->getClientOriginalExtension() === 'jpg'){
-                        $imagick->readImage($files->getPathname());
-                    }
-                }
-                else{
-                    return 'Invalid file format';
-                }
+        if($file->getClientOriginalExtension() === 'pdf'){
+            $fileExtension = $file->getClientOriginalExtension();
+            $imagick = new \Imagick();
+            $imagick->readImage($file->getPathname() . '[0]');
+            $imagick->setImageFormat('jpeg');
+            $imagick->unsharpMaskImage(0, 0.5, 1, 0.05);
+            $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
+            $imagick->writeImage($imagePath);
+            $text = (new TesseractOCR($imagePath))->run();
+
+            $status = 'valid';
+
+            if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
+                $status = 'invalid';
             }
-            if($count > 0){
-                $filename = $request->sales_invoice.'.pdf';
-                $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
-                $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/sales_invoice/".Carbon::now()->format('Y-m-d').'/'.$request->sales_invoice.".pdf");
-                $imagick->writeImages($imagePath, true);
-            }
+                $filename = $request->sales_invoice.'.'.$fileExtension;
+                $file->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
+
+                SalesInvoice::create([
+                    'sales_invoice' => strtoupper($request->sales_invoice),
+                    'company' => $request->company,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
+                    'date_created' => $request->date_created,
+                    'date_received' => $request->date_received,
+                    'purchase_order' => strtoupper($request->purchase_order),
+                    'sales_order' => strtoupper($request->sales_order),
+                    'delivery_receipt' => strtoupper($request->delivery_receipt),
+                    'pdf_file' => $filename,
+                    'status' => $status
+                ]);
+
+                $userlogs = new UserLogs;
+                $userlogs->username = auth()->user()->name;
+                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice).";
+                $userlogs->save();
+
+                return $status;
         }
+        else if($file->getClientOriginalExtension() === 'jpg'){
+            $fileExtension = $file->getClientOriginalExtension();
+            $imagick = new \Imagick();
+            $imagick->readImage($file->getPathname() . '[0]');
+            $imagick->setImageFormat('jpeg');
+            $imagick->unsharpMaskImage(0, 0.5, 1, 0.05);
+            $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
+            $imagick->writeImage($imagePath);
+            $text = (new TesseractOCR($imagePath))->run();
+            $status = 'valid';
 
-            SalesInvoice::create([
-                'sales_invoice' => strtoupper($request->sales_invoice),
-                'company' => $request->company,
-                'client_name' => strtoupper($request->client_name),
-                'branch_name' => strtoupper($request->branch_name),
-                'uploaded_by' => auth()->user()->name,
-                'purchase_order' => strtoupper($request->purchase_order),
-                'sales_order' => strtoupper($request->sales_order),
-                'delivery_receipt' => strtoupper($request->delivery_receipt),
-                'pdf_file' => $filename,
-                'status' => 'FOR VALIDATION'
-            ]);
+            if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
+                $status = 'invalid';
+            }
+                $filename = $request->sales_invoice.'.'.$fileExtension;
+                $file->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
 
-            $userlogs = new UserLogs;
-            $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice).";
-            $userlogs->save();
+                SalesInvoice::create([
+                    'sales_invoice' => strtoupper($request->sales_invoice),
+                    'company' => $request->company,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
+                    'date_created' => $request->date_created,
+                    'date_received' => $request->date_received,
+                    'purchase_order' => strtoupper($request->purchase_order),
+                    'sales_order' => strtoupper($request->sales_order),
+                    'delivery_receipt' => strtoupper($request->delivery_receipt),
+                    'pdf_file' => $filename,
+                    'status' => $status
+                ]);
 
-            return 'FOR VALIDATION';
+                $userlogs = new UserLogs;
+                $userlogs->username = auth()->user()->name;
+                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice).";
+                $userlogs->save();
+
+                return $status;
+        }
+        else{
+            return 'Invalid file format';
+        }
     }
 
     public function save_cr(Request $request){
@@ -134,7 +166,7 @@ class EventController extends Controller
         }
 
         $file = $request->file('pdf_file');
-        if($file->getClientOriginalExtension() === 'pdf' || $file->getClientOriginalExtension() === 'jpg'){
+        if($file->getClientOriginalExtension() === 'pdf'){
             $fileExtension = $file->getClientOriginalExtension();
             $imagick = new \Imagick();
             $imagick->readImage($file->getPathname() . '[0]');
@@ -144,28 +176,33 @@ class EventController extends Controller
             $imagick->writeImage($imagePath);
             $text = (new TesseractOCR($imagePath))->run();
 
-            $filename = $request->billing_statement.'.'.$fileExtension;
-            $file->storeAs('public/billing_statement/'.Carbon::now()->format('Y-m-d'), $filename);
+            $status = 'valid';
 
-            BillingStatement::create([
-                'billing_statement' => $request->billing_statement,
-                'company' => $request->company,
-                'client_name' => strtoupper($request->client_name),
-                'branch_name' => strtoupper($request->branch_name),
-                'date_created' => $request->date_created,
-                'sales_order' => strtoupper($request->sales_order),
-                'purchase_order' => strtoupper($request->purchase_order),
-                'pdf_file' => $filename,
-                'status' => 'FOR VALIDATION'
-            ]);
+            if(stripos(str_replace(' ', '', $text), $request->billing_statement) === false){
+                $status = 'invalid';
+            }
+                $filename = $request->billing_statement.'.'.$fileExtension;
+                $file->storeAs('public/billing_statement/'.Carbon::now()->format('Y-m-d'), $filename);
 
-            $userlogs = new UserLogs;
-            $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY ADDED BILLING STATEMENT ($request->billing_statement).";
-            $userlogs->save();
+                BillingStatement::create([
+                    'billing_statement' => $request->billing_statement,
+                    'company' => $request->company,
+                    'client_name' => strtoupper($request->client_name),
+                    'branch_name' => strtoupper($request->branch_name),
+                    'date_created' => $request->date_created,
+                    'sales_order' => strtoupper($request->sales_order),
+                    'purchase_order' => strtoupper($request->purchase_order),
+                    'pdf_file' => $filename,
+                    'status' => $status
+                ]);
 
-            return 'FOR VALIDATION';
+                $userlogs = new UserLogs;
+                $userlogs->username = auth()->user()->name;
+                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->activity = "USER SUCCESSFULLY ADDED BILLING STATEMENT ($request->billing_statement).";
+                $userlogs->save();
+
+                return $status;
 
         }
         else{
@@ -272,123 +309,147 @@ class EventController extends Controller
 
     public function edit_si(Request $request){
         $file = $request->file('pdf_file');
-        if(count($file) >= 1){
-            $count = 0;
-            foreach($file as $files){
-                if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->sales_invoice.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
-                }
-                else if($files->getClientOriginalExtension() === 'jpg'){
-                    if($count == 0){
-                        $imagick = new \Imagick();
-                        $count++;
-                    }
-                    if($files->getClientOriginalExtension() === 'jpg'){
-                        $imagick->readImage($files->getPathname());
-                    }
+        if($file->getClientOriginalExtension() === 'pdf'){
+            $fileExtension = $file->getClientOriginalExtension();
+            $imagick = new \Imagick();
+            $imagick->readImage($file->getPathname() . '[0]');
+            $imagick->setImageFormat('jpeg');
+            $imagick->unsharpMaskImage(0, 0.5, 1, 0.05);
+            $imagePath = storage_path("app/public/$request->sales_invoice.jpeg");
+            $imagick->writeImage($imagePath);
+            $text = (new TesseractOCR($imagePath))->run();
+
+            $status = 'valid';
+
+            if(stripos(str_replace(' ', '', $text), $request->sales_invoice) === false){
+                $status = 'invalid';
+            }
+                $filename = $request->sales_invoice.'.'.$fileExtension;
+                $file->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
+
+                $current_page = 'SALES INVOICE';
+                $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+                $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
+                $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
+                $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
+                $date_created_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_created;
+                $date_received_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_received;
+                $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
+                $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
+                $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
+
+                if($request->sales_invoice != $reference_number){
+                    $sales_invoice_new = $request->sales_invoice;
+                    $sales_invoice_change = "【SALES INVOICE: FROM '$reference_number' TO '$sales_invoice_new'】";
                 }
                 else{
-                    return 'Invalid file format';
+                    $sales_invoice_change = NULL;
                 }
-            }
-            if($count > 0){
-                $filename = $request->sales_invoice.'.pdf';
-                $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $filename);
-                $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/sales_invoice/".Carbon::now()->format('Y-m-d').'/'.$request->sales_invoice.".pdf");
-                $imagick->writeImages($imagePath, true);
-            }
+
+                if($request->company != $company_orig){
+                    $company_new = $request->company;
+                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+                }
+                else{
+                    $company_change = NULL;
+                }
+
+                if(strtoupper($request->client_name) != $client_name_orig){
+                    $client_name_new = strtoupper($request->client_name);
+                    $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                }
+                else{
+                    $client_name_change = NULL;
+                }
+
+                if(strtoupper($request->branch_name) != $branch_name_orig){
+                    $branch_name_new = strtoupper($request->branch_name);
+                    $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+                }
+                else{
+                    $branch_name_change = NULL;
+                }
+
+                if($request->date_created != $date_created_orig){
+                    $date_created1 = Carbon::parse($date_created_orig)->format('F d, Y');
+                    $date_created2 = Carbon::parse($request->date_created)->format('F d, Y');
+                    $date_created_change = "【DATE CREATED: FROM '$date_created1' TO '$date_created2'】";
+                }
+                else{
+                    $date_created_change = NULL;
+                }
+
+                if($request->date_received != $date_received_orig){
+                    $date_received1 = Carbon::parse($date_received_orig)->format('F d, Y');
+                    $date_received2 = Carbon::parse($request->date_received)->format('F d, Y');
+                    $date_received_change = "【DATE RECEIVED: FROM '$date_received1' TO '$date_received2'】";
+                }
+                else{
+                    $date_received_change = NULL;
+                }
+
+                if($request->purchase_order != $purchase_order_orig){
+                    $purchase_order_new = $request->purchase_order;
+                    $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+                }
+                else{
+                    $purchase_order_change = NULL;
+                }
+
+                if($request->sales_order != $sales_order_orig){
+                    $sales_order_new = $request->sales_order;
+                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+                }
+                else{
+                    $sales_order_change = NULL;
+                }
+
+                if($request->delivery_receipt != $delivery_receipt_orig){
+                    $delivery_receipt_new = $request->delivery_receipt;
+                    $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
+                }
+                else{
+                    $delivery_receipt_change = NULL;
+                }
+
+                if(auth()->user()->userlevel == '1'){
+                    $status = 'valid';
+                }
+                else{
+                    if(SalesInvoice::where('id', $request->entry_id)->first()->status == 'valid'){
+                        $status = 'valid';
+                    }
+                    else{
+                        $status = 'invalid';
+                    }
+                }
+
+                $sql = SalesInvoice::where('id', $request->entry_id)
+                            ->update([
+                            'sales_invoice' => strtoupper($request->sales_invoice),
+                            'company' => $request->company,
+                            'client_name' => strtoupper($request->client_name),
+                            'branch_name' => strtoupper($request->branch_name),
+                            'date_created' => $request->date_created,
+                            'date_received' => $request->date_received,
+                            'purchase_order' => strtoupper($request->purchase_order),
+                            'sales_order' => strtoupper($request->sales_order),
+                            'delivery_receipt' => strtoupper($request->delivery_receipt),
+                            'pdf_file' => $filename,
+                            'status' => $status
+                ]);
+
+                $userlogs = new UserLogs;
+                $userlogs->username = auth()->user()->name;
+                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $date_created_change $date_received_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+                $userlogs->save();
+
+                return $status;
         }
-
-            $current_page = 'SALES INVOICE';
-            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
-            $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
-            $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
-            $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
-            $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
-            $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
-
-            if($request->sales_invoice != $reference_number){
-                $sales_invoice_new = $request->sales_invoice;
-                $sales_invoice_change = "【SALES INVOICE: FROM '$reference_number' TO '$sales_invoice_new'】";
-            }
-            else{
-                $sales_invoice_change = NULL;
-            }
-
-            if($request->company != $company_orig){
-                $company_new = $request->company;
-                $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
-            }
-            else{
-                $company_change = NULL;
-            }
-
-            if(strtoupper($request->client_name) != $client_name_orig){
-                $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
-            }
-            else{
-                $client_name_change = NULL;
-            }
-
-            if(strtoupper($request->branch_name) != $branch_name_orig){
-                $branch_name_new = strtoupper($request->branch_name);
-                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
-            }
-            else{
-                $branch_name_change = NULL;
-            }
-
-            if($request->purchase_order != $purchase_order_orig){
-                $purchase_order_new = $request->purchase_order;
-                $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
-            }
-            else{
-                $purchase_order_change = NULL;
-            }
-
-            if($request->sales_order != $sales_order_orig){
-                $sales_order_new = $request->sales_order;
-                $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
-            }
-            else{
-                $sales_order_change = NULL;
-            }
-
-            if($request->delivery_receipt != $delivery_receipt_orig){
-                $delivery_receipt_new = $request->delivery_receipt;
-                $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
-            }
-            else{
-                $delivery_receipt_change = NULL;
-            }
-
-            $sql = SalesInvoice::where('id', $request->entry_id)
-                        ->update([
-                        'sales_invoice' => strtoupper($request->sales_invoice),
-                        'company' => $request->company,
-                        'client_name' => strtoupper($request->client_name),
-                        'branch_name' => strtoupper($request->branch_name),
-                        'uploaded_by' => strtoupper($request->uploaded_by),
-                        'purchase_order' => strtoupper($request->purchase_order),
-                        'sales_order' => strtoupper($request->sales_order),
-                        'delivery_receipt' => strtoupper($request->delivery_receipt),
-                        'pdf_file' => $filename,
-                        'remarks' => '',
-                        'status' => 'FOR VALIDATION',
-                        'stage' => '0'
-            ]);
-
-            $userlogs = new UserLogs;
-            $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
-            $userlogs->save();
-
-            return 'FOR VALIDATION';
+        else{
+            return 'Invalid file format';
+        }
     }
 
     public function edit_cr(Request $request){
@@ -892,6 +953,8 @@ class EventController extends Controller
             $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
             $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
+            $date_created_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_created;
+            $date_received_orig = SalesInvoice::where('id', $request->entry_id)->first()->date_received;
             $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
             $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
@@ -928,6 +991,24 @@ class EventController extends Controller
                 $branch_name_change = NULL;
             }
 
+            if($request->date_created != $date_created_orig){
+                $date_created1 = Carbon::parse($date_created_orig)->format('F d, Y');
+                $date_created2 = Carbon::parse($request->date_created)->format('F d, Y');
+                $date_created_change = "【DATE CREATED: FROM '$date_created1' TO '$date_created2'】";
+            }
+            else{
+                $date_created_change = NULL;
+            }
+
+            if($request->date_received != $date_received_orig){
+                $date_received1 = Carbon::parse($date_received_orig)->format('F d, Y');
+                $date_received2 = Carbon::parse($request->date_received)->format('F d, Y');
+                $date_received_change = "【DATE RECEIVED: FROM '$date_received1' TO '$date_received2'】";
+            }
+            else{
+                $date_received_change = NULL;
+            }
+
             if($request->purchase_order != $purchase_order_orig){
                 $purchase_order_new = $request->purchase_order;
                 $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
@@ -946,7 +1027,7 @@ class EventController extends Controller
 
             if($request->delivery_receipt != $delivery_receipt_orig){
                 $delivery_receipt_new = $request->delivery_receipt;
-                $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$delivery_receipt_new'】";
+                $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
             }
             else{
                 $delivery_receipt_change = NULL;
@@ -956,6 +1037,8 @@ class EventController extends Controller
                 && $company_change == NULL
                 && $client_name_change == NULL
                 && $branch_name_change == NULL
+                && $date_created_change == NULL
+                && $date_received_change == NULL
                 && $purchase_order_change == NULL
                 && $sales_order_change == NULL
                 && $delivery_receipt_change == NULL
@@ -969,13 +1052,11 @@ class EventController extends Controller
                         'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
                         'branch_name' => strtoupper($request->branch_name),
-                        'uploaded_by' => strtoupper($request->uploaded_by),
+                        'date_created' => $request->date_created,
+                        'date_received' => $request->date_received,
                         'purchase_order' => strtoupper($request->purchase_order),
                         'sales_order' => strtoupper($request->sales_order),
-                        'delivery_receipt' => strtoupper($request->delivery_receipt),
-                        'remarks' => '',
-                        'status' => 'FOR VALIDATION',
-                        'stage' => '0'
+                        'delivery_receipt' => strtoupper($request->delivery_receipt)
             ]);
         }
 
@@ -1342,7 +1423,7 @@ class EventController extends Controller
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
         if($request->current_page == 'si'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $date_created_change $date_received_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
         }
         if($request->current_page == 'cr'){
             $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $date_created_change $sales_order_change.";
@@ -1362,90 +1443,40 @@ class EventController extends Controller
     }
 
     public function approve(Request $request){
-        if($request->current_page == 'si'){
-            $current_page = 'SALES INVOICE';
-            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $sql = SalesInvoice::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
-        }
-
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
-            $sql = BillingStatement::where('id', $request->entry_id)->update(['status' => 'VALID']);
+            $sql = BillingStatement::where('id', $request->entry_id)->update(['status' => 'valid']);
+        }
+
+        if($request->current_page == 'si'){
+            $current_page = 'SALES INVOICE';
+            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $sql = SalesInvoice::where('id', $request->entry_id)->update(['status' => 'valid']);
         }
 
         if($request->current_page == 'cr'){
             $current_page = 'COLLECTION RECEIPT';
             $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
-            $sql = CollectionReceipt::where('id', $request->entry_id)->update(['status' => 'VALID']);
+            $sql = CollectionReceipt::where('id', $request->entry_id)->update(['status' => 'valid']);
         }
 
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
-            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['status' => 'VALID']);
+            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['status' => 'valid']);
         }
 
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
-            $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['status' => 'VALID']);
+            $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['status' => 'valid']);
         }
-
-        $remarklogs = new RemarkLogs;
-        $remarklogs->username = auth()->user()->name;
-        $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number).";
-        $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number).";
-        $userlogs->save();
-
-        return $sql ? 'true' : 'false';
-    }
-
-    public function disapprove(Request $request){
-        if($request->current_page == 'si'){
-            $current_page = 'SALES INVOICE';
-            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $sql = SalesInvoice::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
-        }
-
-        $remarklogs = new RemarkLogs;
-        $remarklogs->username = auth()->user()->name;
-        $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks.";
-        $remarklogs->save();
-
-        $userlogs = new UserLogs;
-        $userlogs->username = auth()->user()->name;
-        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks.";
-        $userlogs->save();
-
-        return $sql ? 'true' : 'false';
-    }
-
-    public function return_to_encoder(Request $request){
-        if($request->current_page == 'si'){
-            $current_page = 'SALES INVOICE';
-            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $sql = SalesInvoice::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
-        }
-
-        $remarklogs = new RemarkLogs;
-        $remarklogs->username = auth()->user()->name;
-        $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) with remarks $request->remarks.";
-        $remarklogs->save();
-
-        $userlogs = new UserLogs;
-        $userlogs->username = auth()->user()->name;
-        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) with remarks $request->remarks.";
+        $userlogs->activity = "USER SUCCESSFULLY APPROVED $current_page ($reference_number).";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';

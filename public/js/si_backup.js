@@ -19,7 +19,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [5,6,7],
+                "targets": [6,7,8],
                 "visible": false,
                 "searchable": true
             },
@@ -28,57 +28,35 @@ $(document).ready(function(){
             url: 'si_data'
         },
         columns: [
-            {
-                data: 'sales_invoice',
-                name: 'sales_invoice',
-                "render":function(data,type,row){
-                    if(row.status == 'FOR VALIDATION'){
-                        if(current_role == 'BOSS' || current_role == 'VIEWER'){
-                            return `<span class="text-success" title="FOR VALIDATION"><b>${data.toUpperCase()}</b></span>`;
-                        }
-                        else if(row.stage == '1' && current_role == 'ENCODER'){
-                            return `<span class="text-success" title="FOR VALIDATION"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
-                        }
-                        else if((row.stage == '0' && current_role == 'ENCODER') || (row.stage == '1' && current_role == 'ADMIN')){
-                            return `<span class="text-success" title="FOR VALIDATION"><b>${data.toUpperCase()}</b></span>`;
-                        }
-                        else if(row.stage == '0' && current_role == 'ADMIN'){
-                            return `<span class="text-success" title="FOR VALIDATION"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
-                        }
-                        else{
-                            return `<span class="text-success" title="FOR VALIDATION"><b>${data.toUpperCase()}</b></span>`;
-                        }
-                    }
-                    else if(row.status == 'INVALID'){
-                        if(current_role == 'ENCODER'){
-                            return `<span class="text-danger" title="INVALID"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
-                        }
-                        return `<span class="text-danger" title="INVALID"><b>${data.toUpperCase()}</b></span>`;
-                    }
-                    return `<span title="VALID">${data.toUpperCase()}</span>`;
-                }
-            },
+            { data: 'sales_invoice', name:'sales_invoice'},
             { data: 'company', name:'company'},
             {
                 data: 'client_name',
                 name: 'client_name',
                 "render":function(data,type,row){
-                    return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
+                    return data.toUpperCase();
                 },
             },
             {
                 data: 'branch_name',
                 name: 'branch_name',
                 "render":function(data,type,row){
-                    return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
+                    return data.toUpperCase();
                 },
             },
             {
-                data: 'uploaded_by',
-                name: 'uploaded_by',
+                data: 'date_created',
+                name: 'date_created',
                 "render":function(data,type,row){
-                    return `<div style="white-space: normal; width: 200px;">${data.toUpperCase()}</div>`;
-                },
+                    return formatDate(data);
+                }
+            },
+            {
+                data: 'date_received',
+                name: 'date_received',
+                "render":function(data,type,row){
+                    return formatDate(data);
+                }
             },
             { data: 'purchase_order', name:'purchase_order'},
             { data: 'sales_order', name:'sales_order'},
@@ -87,14 +65,8 @@ $(document).ready(function(){
                 data: 'status',
                 name: 'status',
                 "render":function(data,type,row){
-                    if(data == 'FOR VALIDATION'){
-                        return `<span class="text-success"><b>${data.toUpperCase()}</b></span>`;
-                    }
-                    else if(data == 'INVALID'){
-                        return `<span class="text-danger"><b>${data.toUpperCase()}</b></span>`;
-                    }
-                    return `<span>${data.toUpperCase()}</span>`;
-                }
+                    return `<span class="${data == 'valid' ? 'text-success' : 'text-danger'}"><b>${data.toUpperCase()}</b></span>`;
+                },
             },
         ],
         initComplete: function(){
@@ -145,26 +117,16 @@ $(document).ready(function(){
     });
 });
 
-// $('#siAddTemp').on('click',function(){
-//     Swal.fire({
-//         title: 'TEMPORARY UNAVAILABLE',
-//         icon: 'error'
-//     });
-//     return false;
-// });
-
 $('#siAdd').on('click',function(){
     $('#siTitle').html('ADD SALES INVOICE');
+    $('#sales_invoice').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
+    $('#btnUploadPdf').show();
     $('#btnApprove').hide();
-    $('#btnDisapprove').hide();
     $('#btnSave').show();
     $('#btnEdit').hide();
     $('#btnClear').show();
-    $('#uploaded_by_div').hide();
-    $('#status_div').hide();
-    $('.form_disable').prop('disabled', false);
     $('.req').hide();
 
     $('#file_div').empty().append(`
@@ -173,8 +135,8 @@ $('#siAdd').on('click',function(){
                 <i class="fa-solid fa-file-arrow-up mr-1"></i>
                 <span id="txtUploadPdf">UPLOAD FILE</span>
             </button>
-            <span style="visibility:hidden;">
-                <input type="file" id="pdf_file" name="pdf_file[]" class="form-control requiredField" accept=".jpg, .pdf" multiple/>
+            <span style="visibility:hidden">
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".jpg,.pdf"/>
             </span>
         </div>`
     );
@@ -188,21 +150,23 @@ function save_pdf(){
     var company = $('#company').val();
     var client_name = $('#client_name').val();
     var branch_name = $('#branch_name').val();
+    var date_created = $('#date_created').val();
+    var date_received = $('#date_received').val();
     var purchase_order = $('#purchase_order').val();
     var sales_order = $('#sales_order').val();
     var delivery_receipt = $('#delivery_receipt').val();
-    var pdf_files = $('#pdf_file').prop('files');
+    var pdf_file = $('#pdf_file').prop('files')[0];
 
     formData.append('sales_invoice', sales_invoice);
     formData.append('company', company);
     formData.append('client_name', client_name);
     formData.append('branch_name', branch_name);
+    formData.append('date_created', date_created);
+    formData.append('date_received', date_received);
     formData.append('purchase_order', purchase_order);
     formData.append('sales_order', sales_order);
     formData.append('delivery_receipt', delivery_receipt);
-    for(let i = 0; i < pdf_files.length; i++){
-        formData.append('pdf_file[]', pdf_files[i]);
-    }
+    formData.append('pdf_file', pdf_file);
 
     $.ajax({
         url: '/save_si',
@@ -216,33 +180,28 @@ function save_pdf(){
         },
         success: function(response){
             $('#loading').hide();
-            if(response == 'FOR VALIDATION'){
+            if(response == 'invalid'){
                 Swal.fire({
-                    title: 'SUBMIT SUCCESS',
-                    html: 'SUBMITTED FOR VALIDATION',
-                    icon: 'success'
+                    title: 'SAVE FAILED',
+                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
+                    icon: 'warning',
                 });
                 $('#siModal').modal('hide');
             }
             else if(response == 'Invalid file format'){
                 Swal.fire({
-                    title: 'SUBMIT FAILED',
+                    title: 'SAVE FAILED',
                     html: "INVALID FILE FORMAT",
                     icon: 'warning',
                 });
             }
-            else if(response == 'Already exist'){
-                Swal.fire({
-                    title: 'SALES INVOICE ALREADY EXISTS',
-                    icon: 'error'
-                });
-            }
             else{
                 Swal.fire({
-                    title: 'SUBMIT ERROR',
-                    html: 'FILE SUBMIT ERROR',
-                    icon: 'error'
+                    title: 'SAVE SUCCESS',
+                    html: 'FILE SUCCESSFULLY CREATED',
+                    icon: 'success'
                 });
+                $('#siModal').modal('hide');
             }
         }
     });
@@ -250,7 +209,7 @@ function save_pdf(){
 
 $('#btnSave').on('click', function(){
     Swal.fire({
-        title: 'SUBMIT FOR VALIDATION?',
+        title: 'Do you want to save?',
         allowOutsideClick: false,
         allowEscapeKey: false,
         showDenyButton: true,
@@ -280,108 +239,54 @@ $(document).on('click','table.siTable tbody tr',function(){
 
     $('#siTitle').html('SALES INVOICE DETAILS');
 
+    if(current_role == 'ADMIN' || current_role == 'ENCODER'){
+        $('#btnEdit').show();
+    }
+    else{
+        $('.footer_hide').hide();
+    }
+
     $('#entry_id').val(data.id);
     $('#sales_invoice').val(data.sales_invoice);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);
     $('#branch_name').val(data.branch_name);
-    $('#uploaded_by').val(data.uploaded_by);
-    $('#uploaded_by_div').show();
-    $('#uploaded_by').prop('disabled', true);
+    $('#date_created').val(data.date_created);
+    $('#date_received').val(data.date_received);
     $('#purchase_order').val(data.purchase_order);
     $('#sales_order').val(data.sales_order);
     $('#delivery_receipt').val(data.delivery_receipt);
-    $('#status').val(data.status);
-    $('#status_div').show();
-    $('#remarks_text').val(data.remarks);
-
-    if(current_role == 'ADMIN'){
-        $('#remarks_div').show();
-    }
-    else{
-        $('#remarks_div').hide();
-    }
-
-    if(data.remarks){
-        $('#remarks_text').val(data.remarks);
-        $('#remarks_div').show();
-    }
-    else{
-        $('#remarks_text').val('');
-        $('#remarks_div').hide();
-    }
-
-    if(data.status == 'VALID'){
-        $('#btnApprove').hide();
-        $('#btnDisapprove').hide();
-        $('#btnReturn').show();
-        if(current_role == 'ENCODER'){
-            setTimeout(() => {
-                $('#pdf_div').hide();
-                $('.form_disable').prop('disabled', true);
-                $('#btnEdit').hide();
-            }, 100);
-        }
-    }
-    else{
-        $('#btnApprove').show();
-        $('#btnDisapprove').show();
-        $('#btnReturn').hide();
-        if(current_role == 'ENCODER'){
-            if(($('#current_user_name').val() != $('#uploaded_by').val())){
-                setTimeout(() => {
-                    $('#pdf_div').hide();
-                    $('.form_disable').prop('disabled', true);
-                    $('#btnEdit').hide();
-                }, 100);
-            }
-            else{
-                setTimeout(() => {
-                    $('#pdf_div').show();
-                    $('.form_disable').prop('disabled', false);
-                    $('#btnEdit').show();
-                }, 100);
-            }
-        }
-    }
-
-    if(data.status == 'VALID' && current_role == 'ADMIN'){
-        $('.form_disable').prop('disabled', false);
+    $('#btnUploadPdf').show();
+    if(data.status == 'valid'){
         $('#file_div').empty().append(`
             <div class="col mt-2">
                 <span class="pdf_file"></span>
             </div>`
         );
+        $('#btnApprove').hide();
+        $('#sales_invoice').prop('disabled',true);
     }
     else{
-        if(current_role == 'ENCODER' && data.status != 'VALID'){
-            $('#file_div').empty().append(`
-                <div class="col-4" id="pdf_div">
-                    <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
-                        <i class="fa-solid fa-file-arrow-up mr-1"></i>
-                        <span id="txtUploadPdf">REPLACE FILE</span>
-                    </button>
-                    <span class="d-none">
-                        <input type="file" id="pdf_file" name="pdf_file[]" class="form-control " accept=".jpg,.pdf" multiple/>
-                    </span>
-                </div>
-                <div class="col mt-2">
-                    <span class="pdf_file"></span>
-                </div>`
-            );
-        }
-        else{
-            $('#file_div').empty().append(`
-                <div class="col mt-2">
-                    <span class="pdf_file"></span>
-                </div>`
-            );
-        }
+        $('#file_div').empty().append(`
+            <div class="col-4">
+                <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                    <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                    <span id="txtUploadPdf">REPLACE FILE</span>
+                </button>
+                <span class="d-none">
+                    <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
+                </span>
+            </div>
+            <div class="col mt-2">
+                <span class="pdf_file"></span>
+            </div>`
+        );
+        $('#btnApprove').show();
+        $('#sales_invoice').prop('disabled',false);
     }
-
     $('.pdf_file').html(`
         <b>CURRENT PDF FILE: ${data.pdf_file}</b><br>
-        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="VIEW FILE"></i>VIEW</a>
+        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="PREVIEW FILE"></i>PREVIEW</a>
         <a id="fetchFileName" class="btn btn-link preventRightClick" style="cursor: pointer; text-decoration: none;" href="/storage/sales_invoice/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
     `);
 
@@ -389,3 +294,4 @@ $(document).on('click','table.siTable tbody tr',function(){
     $('#btnClear').hide();
     $('#siModal').modal('show');
 });
+

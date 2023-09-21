@@ -6,9 +6,10 @@
     <div class="col">
         <div id="page-name"><h4><span class="page-reload">SALES INVOICE REPOSITORY</span></h4></div>
     </div>
-    @role('ADMIN|ENCODER')
+    @role('ENCODER')
         <div class="col-md form-group">
             <button class="form-control btn btn-custom float-end" id="siAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
+            {{-- <span id="siAdd" style="color:white;">ADD NEW</span> --}}
         </div>
     @endrole
 </div>
@@ -43,26 +44,22 @@
                 </th>
                 <th>
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
-                    DATE CREATED
+                    UPLOADED BY
                 </th>
                 <th>
                     <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
-                    DATE RECEIVED
-                </th>
-                <th>
-                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     PURCHASE ORDER NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     SALES ORDER NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
                     DELIVERY RECEIPT NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="9" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
                     STATUS
                 </th>
             </tr>

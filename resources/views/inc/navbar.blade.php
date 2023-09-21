@@ -67,6 +67,7 @@
 </nav>
 
 <input type="hidden" id="current_user" value="{{auth()->user()->id}}" readonly>
+<input type="hidden" id="current_user_name" value="{{auth()->user()->name}}" readonly>
 <input type="hidden" id="current_department" value="{{auth()->user()->department}}" readonly>
 <input type="hidden" id="current_role" value="{{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}" readonly>
 <input type="hidden" id="current_date" value="{{date('Y-m-d')}}" readonly>
