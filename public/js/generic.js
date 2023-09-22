@@ -169,20 +169,22 @@ function edit_pdf(){
         var company = $('#company').val();
         var client_name = $('#client_name').val();
         var branch_name = $('#branch_name').val();
-        var date_created = $('#date_created').val();
         var sales_order = $('#sales_order').val();
         var sales_invoice = $('#sales_invoice').val();
-        var pdf_file = $('#pdf_file').prop('files')[0];
+        var uploaded_by = $('#uploaded_by').val();
+        var pdf_files = $('#pdf_file').prop('files');
 
         formData.append('entry_id', entry_id);
         formData.append('collection_receipt', collection_receipt);
         formData.append('company', company);
         formData.append('client_name', client_name);
         formData.append('branch_name', branch_name);
-        formData.append('date_created', date_created);
         formData.append('sales_order', sales_order);
         formData.append('sales_invoice', sales_invoice);
-        formData.append('pdf_file', pdf_file);
+        formData.append('uploaded_by', uploaded_by);
+        for(let i = 0; i < pdf_files.length; i++){
+            formData.append('pdf_file[]', pdf_files[i]);
+        }
 
         var url_name = '/edit_cr';
     }

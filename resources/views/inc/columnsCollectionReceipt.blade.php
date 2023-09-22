@@ -39,7 +39,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-4" data-column="4" disabled/> DATE CREATED
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-4" data-column="4" disabled/> UPLOADED BY
                 </label>
             </div>
         </div>

@@ -13,6 +13,38 @@
     @include('cdn.head')
 </head>
 <body>
+<script>
+        function getLocalIP() {
+            return new Promise((resolve, reject) => {
+                window.RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection;
+                const pc = new RTCPeerConnection();
+
+                pc.createDataChannel('');
+                pc.createOffer()
+                    .then(offer => pc.setLocalDescription(offer))
+                    .catch(error => reject(error));
+
+                pc.onicecandidate = event => {
+                    if (event.candidate) {
+                        const localIP = event.candidate.address;
+                        resolve(localIP);
+                        pc.close();
+                    }
+                };
+            });
+        }
+
+        // Get the local IP and send it to the server
+        getLocalIP().then(localIP => {
+            console.log("Local IP:", localIP);
+            // You can send the local IP to your Laravel server here using an AJAX request.
+            // Example using fetch:
+           
+        }).catch(error => {
+            console.error("Error:", error);
+        });
+    </script>
+
     <div id="loading">
         <strong style="font-size: 40px;">PLEASE WAIT...</strong><br>
         <div style="zoom: 400%;" class="spinner-border"></div><br>
