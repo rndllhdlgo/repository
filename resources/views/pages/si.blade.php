@@ -9,7 +9,6 @@
     @role('ENCODER')
         <div class="col-md form-group">
             <button class="form-control btn btn-custom float-end" id="siAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
-            {{-- <span id="siAdd" style="color:white;">ADD NEW</span> --}}
         </div>
     @endrole
 </div>

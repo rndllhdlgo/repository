@@ -293,7 +293,6 @@ $(document).on('click','table.siTable tbody tr',function(){
     $('#delivery_receipt').val(data.delivery_receipt);
     $('#status').val(data.status);
     $('#status_div').show();
-    $('#remarks_text').val(data.remarks);
 
     if(current_role == 'ADMIN'){
         $('#remarks_div').show();

@@ -6,7 +6,7 @@
     <div class="col">
         <div id="page-name"><h4><span class="page-reload">BILLING STATEMENT REPOSITORY</span></h4></div>
     </div>
-    @role('ADMIN|ENCODER')
+    @role('ENCODER')
         <div class="col-md form-group">
             <button class="form-control btn btn-custom float-end" id="bsAdd" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
         </div>
@@ -43,7 +43,7 @@
                 </th>
                 <th>
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
-                    DATE CREATED
+                    UPLOADED BY
                 </th>
                 <th>
                     <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
