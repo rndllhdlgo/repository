@@ -222,7 +222,7 @@ function save_pdf(){
             }
             else if(response == 'Already exist'){
                 Swal.fire({
-                    title: 'SALES INVOICE ALREADY EXISTS',
+                    title: 'COLLECTION RECEIPT ALREADY EXISTS',
                     icon: 'error'
                 });
             }

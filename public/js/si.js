@@ -19,7 +19,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [5,6,7],
+                "targets": [6,7,8],
                 "visible": false,
                 "searchable": true
             },
@@ -62,6 +62,13 @@ $(document).ready(function(){
             {
                 data: 'client_name',
                 name: 'client_name',
+                "render":function(data,type,row){
+                    return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
+                },
+            },
+            {
+                data: 'business_name',
+                name: 'business_name',
                 "render":function(data,type,row){
                     return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
                 },
@@ -113,7 +120,7 @@ $(document).ready(function(){
 
     setInterval(() => {
         if($('.popover-header').is(':visible')){
-            for(var i=0; i<=9; i++){
+            for(var i=0; i<=10; i++){
                 if(table.column(i).visible()){
                     $('#filter-'+i).prop('checked', true);
                 }
@@ -144,14 +151,6 @@ $(document).ready(function(){
         table.column($(this).data('column')).search($(this).val()).draw();
     });
 });
-
-// $('#siAddTemp').on('click',function(){
-//     Swal.fire({
-//         title: 'TEMPORARY UNAVAILABLE',
-//         icon: 'error'
-//     });
-//     return false;
-// });
 
 $('#siAdd').on('click',function(){
     $('#siTitle').html('ADD SALES INVOICE');
@@ -187,6 +186,7 @@ function save_pdf(){
     var sales_invoice = $('#sales_invoice').val();
     var company = $('#company').val();
     var client_name = $('#client_name').val();
+    var business_name = $('#business_name').val();
     var branch_name = $('#branch_name').val();
     var purchase_order = $('#purchase_order').val();
     var sales_order = $('#sales_order').val();
@@ -196,6 +196,7 @@ function save_pdf(){
     formData.append('sales_invoice', sales_invoice);
     formData.append('company', company);
     formData.append('client_name', client_name);
+    formData.append('business_name', business_name);
     formData.append('branch_name', branch_name);
     formData.append('purchase_order', purchase_order);
     formData.append('sales_order', sales_order);
@@ -284,6 +285,7 @@ $(document).on('click','table.siTable tbody tr',function(){
     $('#sales_invoice').val(data.sales_invoice);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);
+    $('#business_name').val(data.business_name);
     $('#branch_name').val(data.branch_name);
     $('#uploaded_by').val(data.uploaded_by);
     $('#uploaded_by_div').show();

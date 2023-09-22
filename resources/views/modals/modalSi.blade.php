@@ -39,7 +39,15 @@
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control requiredField bg-white text-uppercase form_disable" type="search" id="client_name" name="client_name" placeholder=" ">
-                            <label for="client_name" class="formlabel form-label">CLIENT NAME</label>
+                            <label for="client_name" class="formlabel form-label">SOLD TO</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="f-outline">
+                            <input class="forminput form-control bg-white text-uppercase form_disable" type="search" id="business_name" name="business_name" placeholder=" ">
+                            <label for="business_name" class="formlabel form-label">BUSINESS NAME (Optional)</label>
                         </div>
                     </div>
                 </div>

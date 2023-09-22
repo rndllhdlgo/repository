@@ -19,7 +19,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [5,6],
+                "targets": [6,7],
                 "visible": false,
                 "searchable": true
             },
@@ -63,14 +63,21 @@ $(document).ready(function(){
                 data: 'client_name',
                 name: 'client_name',
                 "render":function(data,type,row){
-                    return data.toUpperCase();
+                    return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
+                },
+            },
+            {
+                data: 'business_name',
+                name: 'business_name',
+                "render":function(data,type,row){
+                    return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
                 },
             },
             {
                 data: 'branch_name',
                 name: 'branch_name',
                 "render":function(data,type,row){
-                    return data.toUpperCase();
+                    return `<div style="white-space: normal; width: 300px;">${data.toUpperCase()}</div>`;
                 },
             },
             {
@@ -112,7 +119,7 @@ $(document).ready(function(){
 
     setInterval(() => {
         if($('.popover-header').is(':visible')){
-            for(var i=0; i<=7; i++){
+            for(var i=0; i<=8; i++){
                 if(table.column(i).visible()){
                     $('#filter-'+i).prop('checked', true);
                 }
@@ -178,6 +185,7 @@ function save_pdf(){
     var billing_statement = $('#billing_statement').val();
     var company = $('#company').val();
     var client_name = $('#client_name').val();
+    var business_name = $('#business_name').val();
     var branch_name = $('#branch_name').val();
     var date_created = $('#date_created').val();
     var sales_order = $('#sales_order').val();
@@ -187,6 +195,7 @@ function save_pdf(){
     formData.append('billing_statement', billing_statement);
     formData.append('company', company);
     formData.append('client_name', client_name);
+    formData.append('business_name', business_name);
     formData.append('branch_name', branch_name);
     formData.append('date_created', date_created);
     formData.append('sales_order', sales_order);
@@ -224,7 +233,7 @@ function save_pdf(){
             }
             else if(response == 'Already exist'){
                 Swal.fire({
-                    title: 'SALES INVOICE ALREADY EXISTS',
+                    title: 'BILLING STATEMENT ALREADY EXISTS',
                     icon: 'error'
                 });
             }
@@ -275,6 +284,7 @@ $(document).on('click','table.bsTable tbody tr',function(){
     $('#billing_statement').val(data.billing_statement);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);
+    $('#business_name').val(data.business_name);
     $('#branch_name').val(data.branch_name);
     $('#uploaded_by').val(data.uploaded_by);
     $('#uploaded_by_div').show();

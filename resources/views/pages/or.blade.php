@@ -19,7 +19,7 @@
             <tr>
                 <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
-                    OFFICIAL RECEIPT NO.
+                    OR NUMBER
                 </th>
                 <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>

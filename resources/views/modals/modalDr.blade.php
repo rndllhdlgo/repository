@@ -47,7 +47,7 @@
                     <div class="col">
                         <div class="f-outline">
                             <input class="forminput form-control bg-white text-uppercase form_disable" type="search" id="business_name" name="business_name" placeholder=" ">
-                            <label for="business_name" class="formlabel form-label">BUSINESS NAME</label>
+                            <label for="business_name" class="formlabel form-label">BUSINESS NAME (Optional)</label>
                         </div>
                     </div>
                 </div>

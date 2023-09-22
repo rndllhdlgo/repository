@@ -62,6 +62,7 @@ class EventController extends Controller
                 'sales_invoice' => strtoupper($request->sales_invoice),
                 'company' => $request->company,
                 'client_name' => strtoupper($request->client_name),
+                'business_name' => strtoupper($request->business_name),
                 'branch_name' => strtoupper($request->branch_name),
                 'uploaded_by' => auth()->user()->name,
                 'purchase_order' => strtoupper($request->purchase_order),
@@ -175,6 +176,7 @@ class EventController extends Controller
                 'billing_statement' => $request->billing_statement,
                 'company' => $request->company,
                 'client_name' => strtoupper($request->client_name),
+                'business_name' => strtoupper($request->business_name),
                 'branch_name' => strtoupper($request->branch_name),
                 'uploaded_by' => auth()->user()->name,
                 'sales_order' => strtoupper($request->sales_order),
@@ -339,6 +341,7 @@ class EventController extends Controller
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
             $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
+            $business_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->business_name;
             $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
             $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
@@ -366,6 +369,14 @@ class EventController extends Controller
             }
             else{
                 $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->business_name) != $business_name_orig){
+                $business_name_new = strtoupper($request->business_name);
+                $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+            }
+            else{
+                $business_name_change = NULL;
             }
 
             if(strtoupper($request->branch_name) != $branch_name_orig){
@@ -405,6 +416,7 @@ class EventController extends Controller
                         'sales_invoice' => strtoupper($request->sales_invoice),
                         'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
+                        'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
                         'uploaded_by' => strtoupper($request->uploaded_by),
                         'purchase_order' => strtoupper($request->purchase_order),
@@ -569,6 +581,7 @@ class EventController extends Controller
                 $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
                 $company_orig = BillingStatement::where('id', $request->entry_id)->first()->company;
                 $client_name_orig = BillingStatement::where('id', $request->entry_id)->first()->client_name;
+                $business_name_orig = BillingStatement::where('id', $request->entry_id)->first()->business_name;
                 $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
                 $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
                 $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
@@ -595,6 +608,14 @@ class EventController extends Controller
                 }
                 else{
                     $client_name_change = NULL;
+                }
+
+                if(strtoupper($request->business_name) != $business_name_orig){
+                    $business_name_new = strtoupper($request->business_name);
+                    $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+                }
+                else{
+                    $business_name_change = NULL;
                 }
 
                 if(strtoupper($request->branch_name) != $branch_name_orig){
@@ -626,6 +647,7 @@ class EventController extends Controller
                             'billing_statement' => $request->billing_statement,
                             'company' => $request->company,
                             'client_name' => strtoupper($request->client_name),
+                            'business_name' => strtoupper($request->business_name),
                             'branch_name' => strtoupper($request->branch_name),
                             'uploaded_by' => strtoupper($request->uploaded_by),
                             'sales_order' => $request->sales_order,
@@ -871,6 +893,7 @@ class EventController extends Controller
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
             $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
+            $business_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->business_name;
             $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
             $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
@@ -898,6 +921,14 @@ class EventController extends Controller
             }
             else{
                 $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->business_name) != $business_name_orig){
+                $business_name_new = strtoupper($request->business_name);
+                $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+            }
+            else{
+                $business_name_change = NULL;
             }
 
             if(strtoupper($request->branch_name) != $branch_name_orig){
@@ -935,6 +966,7 @@ class EventController extends Controller
             if($sales_invoice_change == NULL
                 && $company_change == NULL
                 && $client_name_change == NULL
+                && $business_name_change == NULL
                 && $branch_name_change == NULL
                 && $purchase_order_change == NULL
                 && $sales_order_change == NULL
@@ -948,6 +980,7 @@ class EventController extends Controller
                         'sales_invoice' => strtoupper($request->sales_invoice),
                         'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
+                        'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
                         'uploaded_by' => strtoupper($request->uploaded_by),
                         'purchase_order' => strtoupper($request->purchase_order),
@@ -1046,6 +1079,7 @@ class EventController extends Controller
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
             $company_orig = BillingStatement::where('id', $request->entry_id)->first()->company;
             $client_name_orig = BillingStatement::where('id', $request->entry_id)->first()->client_name;
+            $business_name_orig = BillingStatement::where('id', $request->entry_id)->first()->business_name;
             $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
             $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
             $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
@@ -1072,6 +1106,14 @@ class EventController extends Controller
             }
             else{
                 $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->business_name) != $business_name_orig){
+                $business_name_new = strtoupper($request->business_name);
+                $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+            }
+            else{
+                $business_name_change = NULL;
             }
 
             if(strtoupper($request->branch_name) != $branch_name_orig){
@@ -1101,6 +1143,7 @@ class EventController extends Controller
             if($billing_statement_change == NULL
                 && $company_change == NULL
                 && $client_name_change == NULL
+                && $business_name_change == NULL
                 && $branch_name_change == NULL
                 && $sales_order_change == NULL
                 && $purchase_order_change == NULL
@@ -1113,6 +1156,7 @@ class EventController extends Controller
                         'billing_statement' => $request->billing_statement,
                         'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
+                        'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
                         'sales_order' => $request->sales_order,
                         'purchase_order' => $request->purchase_order,
@@ -1289,13 +1333,13 @@ class EventController extends Controller
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
         if($request->current_page == 'si'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
         }
         if($request->current_page == 'cr'){
             $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
         }
         if($request->current_page == 'bs'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         if($request->current_page == 'or'){
             $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
