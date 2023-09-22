@@ -39,7 +39,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-4" data-column="4" disabled/> DATE CREATED
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-4" data-column="4" disabled/> UPLOADED BY
                 </label>
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-5" data-column="5" disabled/> DATE RECEIVED
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-5" data-column="5"/> PURCHASE ORDER NO.
                 </label>
             </div>
         </div>
@@ -57,7 +57,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-6" data-column="6"/> PURCHASE ORDER NO.
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-6" data-column="6"/> SALES ORDER NO.
                 </label>
             </div>
         </div>
@@ -66,16 +66,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-7" data-column="7"/> SALES ORDER NO.
-                </label>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="checkbox">
-                <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-8" data-column="8" disabled/> STATUS
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-7" data-column="7" disabled/> STATUS
                 </label>
             </div>
         </div>
