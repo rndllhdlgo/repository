@@ -38,6 +38,7 @@ $(document).on('click','#btnEdit', function(){
                             delivery_receipt: $('#delivery_receipt').val(),
                             company: $('#company').val(),
                             client_name: $('#client_name').val(),
+                            business_name: $('#business_name').val(),
                             branch_name: $('#branch_name').val(),
                             sales_order: $('#sales_order').val(),
                             purchase_order: $('#purchase_order').val(),
@@ -81,6 +82,7 @@ $(document).on('click','#btnEdit', function(){
                         delivery_receipt: $('#delivery_receipt').val(),
                         company: $('#company').val(),
                         client_name: $('#client_name').val(),
+                        business_name: $('#business_name').val(),
                         branch_name: $('#branch_name').val(),
                         sales_order: $('#sales_order').val(),
                         purchase_order: $('#purchase_order').val(),
@@ -194,18 +196,20 @@ function edit_pdf(){
         var company = $('#company').val();
         var client_name = $('#client_name').val();
         var branch_name = $('#branch_name').val();
-        var date_created = $('#date_created').val();
         var sales_order = $('#sales_order').val();
-        var pdf_file = $('#pdf_file').prop('files')[0];
+        var uploaded_by = $('#uploaded_by').val();
+        var pdf_files = $('#pdf_file').prop('files');
 
         formData.append('entry_id', entry_id);
         formData.append('official_receipt', official_receipt);
         formData.append('company', company);
         formData.append('client_name', client_name);
         formData.append('branch_name', branch_name);
-        formData.append('date_created', date_created);
         formData.append('sales_order', sales_order);
-        formData.append('pdf_file', pdf_file);
+        formData.append('uploaded_by', uploaded_by);
+        for(let i = 0; i < pdf_files.length; i++){
+            formData.append('pdf_file[]', pdf_files[i]);
+        }
 
         var url_name = '/edit_or';
     }
@@ -214,23 +218,24 @@ function edit_pdf(){
         var delivery_receipt = $('#delivery_receipt').val();
         var company = $('#company').val();
         var client_name = $('#client_name').val();
+        var business_name = $('#business_name').val();
         var branch_name = $('#branch_name').val();
-        var date_created = $('#date_created').val();
-        var date_received = $('#date_received').val();
         var purchase_order = $('#purchase_order').val();
-        var sales_order = $('#sales_order').val();
-        var pdf_file = $('#pdf_file').prop('files')[0];
+        var uploaded_by = $('#uploaded_by').val();
+        var pdf_files = $('#pdf_file').prop('files');
 
         formData.append('entry_id', entry_id);
         formData.append('delivery_receipt', delivery_receipt);
         formData.append('company', company);
         formData.append('client_name', client_name);
+        formData.append('business_name', business_name);
         formData.append('branch_name', branch_name);
-        formData.append('date_created', date_created);
-        formData.append('date_received', date_received);
         formData.append('purchase_order', purchase_order);
         formData.append('sales_order', sales_order);
-        formData.append('pdf_file', pdf_file);
+        formData.append('uploaded_by', uploaded_by);
+        for(let i = 0; i < pdf_files.length; i++){
+            formData.append('pdf_file[]', pdf_files[i]);
+        }
 
         var url_name = '/edit_dr';
     }

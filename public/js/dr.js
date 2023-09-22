@@ -19,7 +19,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [5,6],
+                "targets": [6,7],
                 "visible": false,
                 "searchable": true
             },
@@ -62,6 +62,13 @@ $(document).ready(function(){
             {
                 data: 'client_name',
                 name: 'client_name',
+                "render":function(data,type,row){
+                    return data.toUpperCase();
+                },
+            },
+            {
+                data: 'business_name',
+                name: 'business_name',
                 "render":function(data,type,row){
                     return data.toUpperCase();
                 },
@@ -179,6 +186,7 @@ function save_pdf(){
     var delivery_receipt = $('#delivery_receipt').val();
     var company = $('#company').val();
     var client_name = $('#client_name').val();
+    var business_name = $('#business_name').val();
     var branch_name = $('#branch_name').val();
     var purchase_order = $('#purchase_order').val();
     var sales_order = $('#sales_order').val();
@@ -187,6 +195,7 @@ function save_pdf(){
     formData.append('delivery_receipt', delivery_receipt);
     formData.append('company', company);
     formData.append('client_name', client_name);
+    formData.append('business_name', business_name);
     formData.append('branch_name', branch_name);
     formData.append('purchase_order', purchase_order);
     formData.append('sales_order', sales_order);
@@ -273,6 +282,7 @@ $(document).on('click','table.drTable tbody tr',function(){
     $('#delivery_receipt').val(data.delivery_receipt);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);
+    $('#business_name').val(data.business_name);
     $('#branch_name').val(data.branch_name);
     $('#uploaded_by').val(data.uploaded_by);
     $('#uploaded_by_div').show();

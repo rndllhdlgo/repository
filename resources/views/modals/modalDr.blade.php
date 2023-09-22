@@ -11,7 +11,7 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="delivery_receipt" name="delivery_receipt" placeholder=" ">
+                            <input class="forminput form-control requiredField bg-white text-uppercase form_disable" type="search" id="delivery_receipt" name="delivery_receipt" placeholder=" ">
                             <label for="delivery_receipt" class="formlabel form-label">DELIVERY RECEIPT NO.</label>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <select class="form-select forminput form-control requiredField" id="company">
+                            <select class="form-select forminput form-control requiredField form_disable" id="company">
                                 <option value="" disabled selected>SELECT COMPANY</option>
                                 <option value="APSOFT">APSOFT</option>
                                 <option value="IDSI">IDSI</option>
@@ -38,15 +38,23 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="client_name" name="client_name" placeholder=" ">
-                            <label for="client_name" class="formlabel form-label">CLIENT NAME</label>
+                            <input class="forminput form-control requiredField bg-white text-uppercase form_disable" type="search" id="client_name" name="client_name" placeholder=" ">
+                            <label for="client_name" class="formlabel form-label">DELIVER TO</label>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <input class="forminput form-control requiredField bg-white text-uppercase" type="search" id="branch_name" name="branch_name" placeholder=" ">
+                            <input class="forminput form-control bg-white text-uppercase form_disable" type="search" id="business_name" name="business_name" placeholder=" ">
+                            <label for="business_name" class="formlabel form-label">BUSINESS NAME</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="f-outline">
+                            <input class="forminput form-control requiredField bg-white text-uppercase form_disable" type="search" id="branch_name" name="branch_name" placeholder=" ">
                             <label for="branch_name" class="formlabel form-label">BRANCH NAME</label>
                         </div>
                     </div>
@@ -62,7 +70,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <input class="forminput form-control bg-white spChar text-uppercase" type="search" id="purchase_order" name="purchase_order" placeholder=" ">
+                            <input class="forminput form-control bg-white spChar text-uppercase form_disable" type="search" id="purchase_order" name="purchase_order" placeholder=" ">
                             <label for="purchase_order" class="formlabel form-label">PURCHASE ORDER NO. <span style="font-size: 13px !important;">(OPTIONAL)</label>
                         </div>
                     </div>
@@ -70,7 +78,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="f-outline">
-                            <input class="forminput form-control bg-white spChar text-uppercase" type="search" id="sales_order" name="sales_order" placeholder=" ">
+                            <input class="forminput form-control bg-white spChar text-uppercase form_disable" type="search" id="sales_order" name="sales_order" placeholder=" ">
                             <label for="sales_order" class="formlabel form-label">SALES ORDER NO. <span style="font-size: 13px !important;">(OPTIONAL)</label>
                         </div>
                     </div>

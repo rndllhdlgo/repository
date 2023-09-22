@@ -21,7 +21,36 @@ $(document).ready(function(){
             url: 'or_data'
         },
         columns: [
-            { data: 'official_receipt', name:'official_receipt'},
+            {
+                data: 'official_receipt',
+                name: 'official_receipt',
+                "render":function(data,type,row){
+                    if(row.status == 'FOR VALIDATION'){
+                        if(current_role == 'BOSS' || current_role == 'VIEWER'){
+                            return `<span class="text-success" title="FOR VALIDATION"><b>${data.toUpperCase()}</b></span>`;
+                        }
+                        else if(row.stage == '1' && current_role == 'ENCODER'){
+                            return `<span class="text-success" title="FOR VALIDATION"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
+                        }
+                        else if((row.stage == '0' && current_role == 'ENCODER') || (row.stage == '1' && current_role == 'ADMIN')){
+                            return `<span class="text-success" title="FOR VALIDATION"><b>${data.toUpperCase()}</b></span>`;
+                        }
+                        else if(row.stage == '0' && current_role == 'ADMIN'){
+                            return `<span class="text-success" title="FOR VALIDATION"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
+                        }
+                        else{
+                            return `<span class="text-success" title="FOR VALIDATION"><b>${data.toUpperCase()}</b></span>`;
+                        }
+                    }
+                    else if(row.status == 'INVALID'){
+                        if(current_role == 'ENCODER'){
+                            return `<span class="text-danger" title="INVALID"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
+                        }
+                        return `<span class="text-danger" title="INVALID"><b>${data.toUpperCase()}</b></span>`;
+                    }
+                    return `<span title="VALID">${data.toUpperCase()}</span>`;
+                }
+            },
             { data: 'company', name:'company'},
             {
                 data: 'client_name',
@@ -38,20 +67,26 @@ $(document).ready(function(){
                 },
             },
             {
-                data: 'date_created',
-                name: 'date_created',
+                data: 'uploaded_by',
+                name: 'uploaded_by',
                 "render":function(data,type,row){
-                    return formatDate(data);
-                }
+                    return `<div style="white-space: normal; width: 200px;">${data.toUpperCase()}</div>`;
+                },
             },
             { data: 'sales_order', name:'sales_order'},
             {
                 data: 'status',
                 name: 'status',
                 "render":function(data,type,row){
-                    return `<span class="${data == 'valid' ? 'text-success' : 'text-danger'}"><b>${data.toUpperCase()}</b></span>`;
-                },
-            },
+                    if(data == 'FOR VALIDATION'){
+                        return `<span class="text-success"><b>${data.toUpperCase()}</b></span>`;
+                    }
+                    else if(data == 'INVALID'){
+                        return `<span class="text-danger"><b>${data.toUpperCase()}</b></span>`;
+                    }
+                    return `<span>${data.toUpperCase()}</span>`;
+                }
+            }
         ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
@@ -103,14 +138,16 @@ $(document).ready(function(){
 
 $('#orAdd').on('click',function(){
     $('#orTitle').html('ADD OFFICIAL RECEIPT');
-    $('#official_receipt').prop('disabled',false);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
-    $('#btnUploadPdf').show();
     $('#btnApprove').hide();
+    $('#btnDisapprove').hide();
     $('#btnSave').show();
     $('#btnEdit').hide();
     $('#btnClear').show();
+    $('#uploaded_by_div').hide();
+    $('#status_div').hide();
+    $('.form_disable').prop('disabled', false);
     $('.req').hide();
 
     $('#file_div').empty().append(`
@@ -120,7 +157,7 @@ $('#orAdd').on('click',function(){
                 <span id="txtUploadPdf">UPLOAD FILE</span>
             </button>
             <span style="visibility:hidden;">
-                <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".pdf"/>
+                <input type="file" id="pdf_file" name="pdf_file[]" class="form-control requiredField" accept=".jpg,.pdf" multiple/>
             </span>
         </div>`
     );
@@ -135,17 +172,17 @@ function save_pdf(){
     var company = $('#company').val();
     var client_name = $('#client_name').val();
     var branch_name = $('#branch_name').val();
-    var date_created = $('#date_created').val();
     var sales_order = $('#sales_order').val();
-    var pdf_file = $('#pdf_file').prop('files')[0];
+    var pdf_files = $('#pdf_file').prop('files');
 
     formData.append('official_receipt', official_receipt);
     formData.append('company', company);
     formData.append('client_name', client_name);
     formData.append('branch_name', branch_name);
-    formData.append('date_created', date_created);
     formData.append('sales_order', sales_order);
-    formData.append('pdf_file', pdf_file);
+    for(let i = 0; i < pdf_files.length; i++){
+        formData.append('pdf_file[]', pdf_files[i]);
+    }
 
     $.ajax({
         url: '/save_or',
@@ -159,28 +196,33 @@ function save_pdf(){
         },
         success: function(response){
             $('#loading').hide();
-            if(response == 'invalid'){
+            if(response == 'FOR VALIDATION'){
                 Swal.fire({
-                    title: 'SAVE SUCCESS',
-                    html: "FILE UPLOADED SUCCESSFULLY BUT NOT VALIDATED",
-                    icon: 'warning'
+                    title: 'SUBMIT SUCCESS',
+                    html: 'SUBMITTED FOR VALIDATION',
+                    icon: 'success'
                 });
                 $('#orModal').modal('hide');
             }
             else if(response == 'Invalid file format'){
                 Swal.fire({
-                    title: 'SAVE FAILED',
+                    title: 'SUBMIT FAILED',
                     html: "INVALID FILE FORMAT",
-                    icon: 'error',
+                    icon: 'warning',
+                });
+            }
+            else if(response == 'Already exist'){
+                Swal.fire({
+                    title: 'OFFICIAL RECEIPT ALREADY EXISTS',
+                    icon: 'error'
                 });
             }
             else{
                 Swal.fire({
-                    title: 'SAVE SUCCESS',
-                    html: 'FILE SUCCESSFULLY CREATED',
-                    icon: 'success'
+                    title: 'SUBMIT ERROR',
+                    html: 'FILE SUBMIT ERROR',
+                    icon: 'error'
                 });
-                $('#orModal').modal('hide');
             }
         }
     });
@@ -218,51 +260,107 @@ $(document).on('click','table.orTable tbody tr',function(){
 
     $('#orTitle').html('OFFICIAL RECEIPT DETAILS');
 
-    if(current_role == 'ADMIN' || current_role == 'ENCODER'){
-        $('#btnEdit').show();
-    }
-    else{
-        $('.footer_hide').hide();
-    }
-
     $('#entry_id').val(data.id);
     $('#official_receipt').val(data.official_receipt);
     $('#company').val(data.company);
     $('#client_name').val(data.client_name);
     $('#branch_name').val(data.branch_name);
-    $('#date_created').val(data.date_created);
+    $('#uploaded_by').val(data.uploaded_by);
+    $('#uploaded_by_div').show();
+    $('#uploaded_by').prop('disabled', true);
     $('#sales_order').val(data.sales_order);
-    $('#btnUploadPdf').show();
-    if(data.status == 'valid'){
-        $('#file_div').empty().append(`
-            <div class="col mt-2">
-                <span class="pdf_file"></span>
-            </div>`
-        );
-        $('#btnApprove').hide();
-        $('#official_receipt').prop('disabled',true);
+    $('#status').val(data.status);
+    $('#status_div').show();
+
+    if(current_role == 'ADMIN'){
+        $('#remarks_div').show();
     }
     else{
+        $('#remarks_div').hide();
+    }
+
+    if(data.remarks){
+        $('#remarks_text').val(data.remarks);
+        $('#remarks_div').show();
+    }
+    else{
+        $('#remarks_text').val('');
+        $('#remarks_div').hide();
+    }
+
+    if(data.status == 'VALID'){
+        $('#btnApprove').hide();
+        $('#btnDisapprove').hide();
+        $('#btnReturn').show();
+        if(current_role == 'ENCODER'){
+            setTimeout(() => {
+                $('#pdf_div').hide();
+                $('.form_disable').prop('disabled', true);
+                $('#btnEdit').hide();
+            }, 100);
+        }
+    }
+    else{
+        $('#btnApprove').show();
+        $('#btnDisapprove').show();
+        $('#btnReturn').hide();
+        console.log($('#current_user_name').val());
+        console.log($('#uploaded_by').val());
+        if(current_role == 'ENCODER'){
+            if(($('#current_user_name').val() != $('#uploaded_by').val())){
+                setTimeout(() => {
+                    $('#pdf_div').hide();
+                    $('.form_disable').prop('disabled', true);
+                    $('#btnEdit').hide();
+                }, 100);
+            }
+            else{
+                setTimeout(() => {
+                    $('#pdf_div').show();
+                    $('.form_disable').prop('disabled', false);
+                    $('#btnEdit').show();
+                }, 100);
+            }
+        }
+    }
+
+    if(data.status == 'VALID' && current_role == 'ADMIN'){
+        $('.form_disable').prop('disabled', false);
         $('#file_div').empty().append(`
-            <div class="col-4">
-                <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
-                    <i class="fa-solid fa-file-arrow-up mr-1"></i>
-                    <span id="txtUploadPdf">REPLACE FILE</span>
-                </button>
-                <span class="d-none">
-                    <input type="file" id="pdf_file" name="pdf_file" class="form-control " accept=".pdf"/>
-                </span>
-            </div>
             <div class="col mt-2">
                 <span class="pdf_file"></span>
             </div>`
         );
-        $('#btnApprove').show();
-        $('#official_receipt').prop('disabled',false);
     }
+    else{
+        if(current_role == 'ENCODER' && data.status != 'VALID'){
+            $('#file_div').empty().append(`
+                <div class="col-4" id="pdf_div">
+                    <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                        <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                        <span id="txtUploadPdf">REPLACE FILE</span>
+                    </button>
+                    <span class="d-none">
+                        <input type="file" id="pdf_file" name="pdf_file[]" class="form-control " accept=".jpg,.pdf" multiple/>
+                    </span>
+                </div>
+                <div class="col mt-2">
+                    <span class="pdf_file"></span>
+                </div>`
+            );
+        }
+        else{
+            $('#file_div').empty().append(`
+                <div class="col mt-2">
+                    <span class="pdf_file"></span>
+                </div>`
+            );
+        }
+    }
+
     $('.pdf_file').html(`
         <b>CURRENT PDF FILE: ${data.pdf_file}</b><br>
-        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="PREVIEW FILE"></i>PREVIEW</a>
+        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="VIEW FILE"></i>VIEW</a>
         <a id="fetchFileName" class="btn btn-link preventRightClick" style="cursor: pointer; text-decoration: none;" href="/storage/official_receipt/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
     `);
 

@@ -198,33 +198,44 @@ class EventController extends Controller
         }
 
         $file = $request->file('pdf_file');
-        if($file->getClientOriginalExtension() === 'pdf'){
-            $fileExtension = $file->getClientOriginalExtension();
-            $imagick = new \Imagick();
-            $imagick->readImage($file->getPathname() . '[0]');
-            $imagick->setImageFormat('jpeg');
-            $imagick->modulateImage(150,100,100);
-            $imagick->contrastImage(1);
-            $imagePath = storage_path("app/public/$request->official_receipt.jpeg");
-            $imagick->writeImage($imagePath);
-            $text = (new TesseractOCR($imagePath))->run();
-
-            $status = 'valid';
-            if(stripos(str_replace(' ', '', $text), $request->official_receipt) === false){
-                $status = 'invalid';
+        if(count($file) >= 1){
+            $count = 0;
+            foreach($file as $files){
+                if($files->getClientOriginalExtension() === 'pdf'){
+                    $filename = $request->official_receipt.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $filename);
+                }
+                else if($files->getClientOriginalExtension() === 'jpg'){
+                    if($count == 0){
+                        $imagick = new \Imagick();
+                        $count++;
+                    }
+                    if($files->getClientOriginalExtension() === 'jpg'){
+                        $imagick->readImage($files->getPathname());
+                    }
+                }
+                else{
+                    return 'Invalid file format';
+                }
             }
-                $filename = $request->official_receipt.'.'.$fileExtension;
-                $file->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'),$filename);
+            if($count > 0){
+                $filename = $request->official_receipt.'.pdf';
+                $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $filename);
+                $imagick->setImageFormat('pdf');
+                $imagePath = public_path("storage/official_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->official_receipt.".pdf");
+                $imagick->writeImages($imagePath, true);
+            }
+        }
 
                 OfficialReceipt::create([
                     'official_receipt' => $request->official_receipt,
                     'company' => $request->company,
                     'client_name' => strtoupper($request->client_name),
                     'branch_name' => strtoupper($request->branch_name),
-                    'date_created' => $request->date_created,
+                    'uploaded_by' => auth()->user()->name,
                     'sales_order' => $request->sales_order,
                     'pdf_file' => $filename,
-                    'status' => $status
+                    'status' => 'FOR VALIDATION'
                 ]);
 
                 $userlogs = new UserLogs;
@@ -233,11 +244,7 @@ class EventController extends Controller
                 $userlogs->activity = "USER SUCCESSFULLY ADDED OFFICIAL RECEIPT ($request->official_receipt).";
                 $userlogs->save();
 
-                return $status;
-        }
-        else{
-            return 'Invalid file format';
-        }
+                return 'FOR VALIDATION';
     }
 
     public function save_dr(Request $request){
@@ -279,6 +286,7 @@ class EventController extends Controller
                     'delivery_receipt' => $request->delivery_receipt,
                     'company' => $request->company,
                     'client_name' => strtoupper($request->client_name),
+                    'business_name' => strtoupper($request->business_name),
                     'branch_name' => strtoupper($request->branch_name),
                     'uploaded_by' => auth()->user()->name,
                     'purchase_order' => strtoupper($request->purchase_order),
@@ -640,30 +648,39 @@ class EventController extends Controller
 
     public function edit_or(Request $request){
         $file = $request->file('pdf_file');
-        if($file->getClientOriginalExtension() === 'pdf'){
-            $fileExtension = $file->getClientOriginalExtension();
-            $imagick = new \Imagick();
-            $imagick->readImage($file->getPathname() . '[0]');
-            $imagick->setImageFormat('jpeg');
-            $imagick->modulateImage(150,100,100);
-            $imagick->contrastImage(1);
-            $imagePath = storage_path("app/public/$request->official_receipt.jpeg");
-            $imagick->writeImage($imagePath);
-            $text = (new TesseractOCR($imagePath))->run();
-
-            $status = 'valid';
-            if(stripos(str_replace(' ', '', $text), $request->official_receipt) === false){
-                $status = 'invalid';
+        if(count($file) >= 1){
+            $count = 0;
+            foreach($file as $files){
+                if($files->getClientOriginalExtension() === 'pdf'){
+                    $filename = $request->official_receipt.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $filename);
+                }
+                else if($files->getClientOriginalExtension() === 'jpg'){
+                    if($count == 0){
+                        $imagick = new \Imagick();
+                        $count++;
+                    }
+                    if($files->getClientOriginalExtension() === 'jpg'){
+                        $imagick->readImage($files->getPathname());
+                    }
+                }
+                else{
+                    return 'Invalid file format';
+                }
             }
-                $filename = $request->official_receipt.'.'.$fileExtension;
-                $file->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'),$filename);
-
+            if($count > 0){
+                $filename = $request->official_receipt.'.pdf';
+                $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $filename);
+                $imagick->setImageFormat('pdf');
+                $imagePath = public_path("storage/official_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->official_receipt.".pdf");
+                $imagick->writeImages($imagePath, true);
+            }
+        }
                 $current_page = 'OFFICIAL RECEIPT';
                 $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
                 $company_orig = OfficialReceipt::where('id', $request->entry_id)->first()->company;
                 $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
                 $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
-                $date_created_orig = OfficialReceipt::where('id', $request->entry_id)->first()->date_created;
                 $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
 
                 if($request->official_receipt != $reference_number){
@@ -698,15 +715,6 @@ class EventController extends Controller
                     $branch_name_change = NULL;
                 }
 
-                if($request->date_created != $date_created_orig){
-                    $date_created1 = Carbon::parse($date_created_orig)->format('F d, Y');
-                    $date_created2 = Carbon::parse($request->date_created)->format('F d, Y');
-                    $date_created_change = "【DATE CREATED: FROM '$date_created1' TO '$date_created2'】";
-                }
-                else{
-                    $date_created_change = NULL;
-                }
-
                 if($request->sales_order != $sales_order_orig){
                     $sales_order_new = $request->sales_order;
                     $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
@@ -715,41 +723,27 @@ class EventController extends Controller
                     $sales_order_change = NULL;
                 }
 
-                if(auth()->user()->userlevel == '1'){
-                    $status = 'valid';
-                }
-                else{
-                    if(OfficialReceipt::where('id', $request->entry_id)->first()->status == 'valid'){
-                        $status = 'valid';
-                    }
-                    else{
-                        $status = 'invalid';
-                    }
-                }
-
                 $sql = OfficialReceipt::where('id', $request->entry_id)
                         ->update([
                         'official_receipt' => $request->official_receipt,
                         'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
                         'branch_name' => strtoupper($request->branch_name),
-                        'date_created' => $request->date_created,
+                        'uploaded_by' => strtoupper($request->uploaded_by),
                         'sales_order' => $request->sales_order,
                         'pdf_file' => $filename,
-                        'status' => $status
+                        'remarks' => '',
+                        'status' => 'FOR VALIDATION',
+                        'stage' => '0'
                 ]);
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $date_created_change $sales_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
-                return $status;
-        }
-        else{
-            return 'Invalid file format';
-        }
+                return 'FOR VALIDATION';
     }
 
     public function edit_dr(Request $request){
@@ -786,6 +780,7 @@ class EventController extends Controller
                 $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
                 $company_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
                 $client_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->client_name;
+                $business_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->business_name;
                 $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
                 $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
                 $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
@@ -812,6 +807,14 @@ class EventController extends Controller
                 }
                 else{
                     $client_name_change = NULL;
+                }
+
+                if(strtoupper($request->business_name) != $business_name_orig){
+                    $business_name_new = strtoupper($request->business_name);
+                    $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+                }
+                else{
+                    $business_name_change = NULL;
                 }
 
                 if(strtoupper($request->branch_name) != $branch_name_orig){
@@ -842,6 +845,7 @@ class EventController extends Controller
                         ->update([
                         'delivery_receipt' => $request->delivery_receipt,
                         'client_name' => strtoupper($request->client_name),
+                        'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
                         'uploaded_by' => strtoupper($request->uploaded_by),
                         'purchase_order' => $request->purchase_order,
@@ -855,7 +859,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -1124,7 +1128,6 @@ class EventController extends Controller
             $company_orig = OfficialReceipt::where('id', $request->entry_id)->first()->company;
             $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
             $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
-            $date_created_orig = OfficialReceipt::where('id', $request->entry_id)->first()->date_created;
             $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
 
             if($request->official_receipt != $reference_number){
@@ -1159,15 +1162,6 @@ class EventController extends Controller
                 $branch_name_change = NULL;
             }
 
-            if($request->date_created != $date_created_orig){
-                $date_created1 = Carbon::parse($date_created_orig)->format('F d, Y');
-                $date_created2 = Carbon::parse($request->date_created)->format('F d, Y');
-                $date_created_change = "【DATE CREATED: FROM '$date_created1' TO '$date_created2'】";
-            }
-            else{
-                $date_created_change = NULL;
-            }
-
             if($request->sales_order != $sales_order_orig){
                 $sales_order_new = $request->sales_order;
                 $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
@@ -1180,7 +1174,6 @@ class EventController extends Controller
                 && $company_change == NULL
                 && $client_name_change == NULL
                 && $branch_name_change == NULL
-                && $date_created_change == NULL
                 && $sales_order_change == NULL
                 ){
                 return 'no changes';
@@ -1192,8 +1185,11 @@ class EventController extends Controller
                         'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
                         'branch_name' => strtoupper($request->branch_name),
-                        'date_created' => $request->date_created,
-                        'sales_order' => $request->sales_order
+                        'uploaded_by' => strtoupper($request->uploaded_by),
+                        'sales_order' => $request->sales_order,
+                        'remarks' => '',
+                        'status' => 'FOR VALIDATION',
+                        'stage' => '0'
             ]);
         }
 
@@ -1202,6 +1198,7 @@ class EventController extends Controller
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
             $company_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
             $client_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->client_name;
+            $business_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->business_name;
             $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
             $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
@@ -1228,6 +1225,14 @@ class EventController extends Controller
             }
             else{
                 $client_name_change = NULL;
+            }
+
+            if(strtoupper($request->business_name) != $business_name_orig){
+                $business_name_new = strtoupper($request->business_name);
+                $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+            }
+            else{
+                $business_name_change = NULL;
             }
 
             if(strtoupper($request->branch_name) != $branch_name_orig){
@@ -1257,6 +1262,7 @@ class EventController extends Controller
             if($delivery_receipt_change == NULL
                 && $company_change == NULL
                 && $client_name_change == NULL
+                && $business_name_change == NULL
                 && $branch_name_change == NULL
                 && $purchase_order_change == NULL
                 && $sales_order_change == NULL
@@ -1268,6 +1274,7 @@ class EventController extends Controller
                         ->update([
                         'delivery_receipt' => $request->delivery_receipt,
                         'client_name' => strtoupper($request->client_name),
+                        'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
                         'uploaded_by' => strtoupper($request->uploaded_by),
                         'purchase_order' => $request->purchase_order,
@@ -1291,10 +1298,10 @@ class EventController extends Controller
             $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         if($request->current_page == 'or'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $date_created_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
         }
         if($request->current_page == 'dr'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         $userlogs->save();
 
@@ -1323,7 +1330,7 @@ class EventController extends Controller
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
-            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['status' => 'VALID']);
+            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'dr'){
@@ -1372,6 +1379,12 @@ class EventController extends Controller
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
+        if($request->current_page == 'or'){
+            $current_page = 'OFFICIAL RECEIPT';
+            $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
+        }
+
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -1404,6 +1417,12 @@ class EventController extends Controller
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
+        }
+
+        if($request->current_page == 'dr'){
+            $current_page = 'DELIVERY RECEIPT';
+            $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         $remarklogs = new RemarkLogs;
