@@ -175,13 +175,15 @@ function checkRequiredFields(){
         else{
             checkChanges = true;
         }
-        if(checkRequired == true && checkChanges == true){
+        if(checkRequired == true && checkChanges == true && $('#logoUpload').length == 0){
             $('.btnRequired').prop('disabled', false);
             $('.swal2-confirm').prop('disabled', false);
         }
         else{
             $('.btnRequired').prop('disabled', true);
-            $('.swal2-confirm').prop('disabled', true);
+            if($('#checkUpload').is(':hidden')){
+                $('.swal2-confirm').prop('disabled', true);
+            }
         }
     }
 }

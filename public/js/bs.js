@@ -166,7 +166,7 @@ $('#bsAdd').on('click',function(){
     $('.req').hide();
 
     $('#file_div').empty().append(`
-        <div class="col-7">
+        <div class="col-7 d-none">
             <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
                 <i class="fa-solid fa-file-arrow-up mr-1"></i>
                 <span id="txtUploadPdf">UPLOAD FILE</span>
@@ -176,6 +176,7 @@ $('#bsAdd').on('click',function(){
             </span>
         </div>`
     );
+    resetUpload();
     $('#bsModal').modal('show');
 });
 
@@ -294,96 +295,15 @@ $(document).on('click','table.bsTable tbody tr',function(){
     $('#status').val(data.status);
     $('#status_div').show();
 
-    if(current_role == 'ADMIN'){
-        $('#remarks_div').show();
-    }
-    else{
-        $('#remarks_div').hide();
-    }
-
-    if(data.remarks){
-        $('#remarks_text').val(data.remarks);
-        $('#remarks_div').show();
-    }
-    else{
-        $('#remarks_text').val('');
-        $('#remarks_div').hide();
-    }
-
-    if(data.status == 'VALID'){
-        $('#btnApprove').hide();
-        $('#btnDisapprove').hide();
-        $('#btnReturn').show();
-        if(current_role == 'ENCODER'){
-            setTimeout(() => {
-                $('#pdf_div').hide();
-                $('.form_disable').prop('disabled', true);
-                $('#btnEdit').hide();
-            }, 100);
-        }
-    }
-    else{
-        $('#btnApprove').show();
-        $('#btnDisapprove').show();
-        $('#btnReturn').hide();
-        if(current_role == 'ENCODER'){
-            if(($('#current_user_name').val() != $('#uploaded_by').val())){
-                setTimeout(() => {
-                    $('#pdf_div').hide();
-                    $('.form_disable').prop('disabled', true);
-                    $('#btnEdit').hide();
-                }, 100);
-            }
-            else{
-                setTimeout(() => {
-                    $('#pdf_div').show();
-                    $('.form_disable').prop('disabled', false);
-                    $('#btnEdit').show();
-                }, 100);
-            }
-        }
-    }
-
-    if(data.status == 'VALID' && current_role == 'ADMIN'){
-        $('.form_disable').prop('disabled', false);
-        $('#file_div').empty().append(`
-            <div class="col mt-2">
-                <span class="pdf_file"></span>
-            </div>`
-        );
-    }
-    else{
-        if(current_role == 'ENCODER' && data.status != 'VALID'){
-            $('#file_div').empty().append(`
-                <div class="col-4" id="pdf_div">
-                    <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
-                        <i class="fa-solid fa-file-arrow-up mr-1"></i>
-                        <span id="txtUploadPdf">REPLACE FILE</span>
-                    </button>
-                    <span class="d-none">
-                        <input type="file" id="pdf_file" name="pdf_file[]" class="form-control " accept=".jpg,.pdf" multiple/>
-                    </span>
-                </div>
-                <div class="col mt-2">
-                    <span class="pdf_file"></span>
-                </div>`
-            );
-        }
-        else{
-            $('#file_div').empty().append(`
-                <div class="col mt-2">
-                    <span class="pdf_file"></span>
-                </div>`
-            );
-        }
-    }
+    formRestrictions(data);
 
     $('.pdf_file').html(`
         <b>CURRENT PDF FILE: ${data.pdf_file}</b><br>
-        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="VIEW FILE"></i>VIEW</a>
-        <a id="fetchFileName" class="btn btn-link preventRightClick" style="cursor: pointer; text-decoration: none;" href="/storage/billing_statement/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
+        <a id="btnViewFile" class="btn btn-link mr-2 preventRightClick d-none" style="cursor: pointer; text-decoration: none;" href="#"><i class="fa-solid fa-eye mr-1" title="VIEW FILE"></i>VIEW</a>
+        <a id="fetchFileName" class="btn btn-link preventRightClick d-none" style="cursor: pointer; text-decoration: none;" href="/storage/billing_statement/${data.created_at.substr(0, 10)}/${data.pdf_file}" title="DOWNLOAD FILE" download><i class="fa-solid fa-circle-down mr-1"></i>DOWNLOAD</a>
     `);
 
+    $('#btnViewFile').click();
     $('#btnSave').hide();
     $('#btnClear').hide();
     $('#bsModal').modal('show');

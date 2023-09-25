@@ -431,10 +431,223 @@ setInterval(() => {
 $(document).on('click', '#btnViewFile', function(){
     $('#displayFile').empty().append(`
         <embed src="${$('#fetchFileName').attr('href')}" width="100%" height="600px"/>
-    `)
-    $('#modalViewFile').modal('show');
+    `);
 });
 
 $(document).on('contextmenu', '.preventRightClick', function(e) {
     e.preventDefault();
 });
+
+
+$(document).on('change','#pdf_file', function(e){
+    var files = e.target.files;
+
+    var pdf_count = 0;
+    var img_count = 0;
+    if (!files.length) {
+        return false;
+    }
+    $('.pItem').remove();
+    $("#displayFile").empty();
+    for(var i = 0; i < files.length; i++){
+        var file = files[i];
+        var fileType = getExtension(file.name);
+
+        if(fileType === 'jpg' || fileType === 'jpeg'){
+            img_count++;
+        }
+        else if(fileType === 'pdf'){
+            pdf_count++;
+        }
+    }
+
+    if(pdf_count > 1){
+        Swal.fire({
+            icon: 'warning',
+            title: 'MAX LIMIT REACHED',
+            html: '<span id="checkUpload">Only 1 PDF file can be uploaded.</span>'
+        });
+
+        resetUpload();
+        return false;
+    }
+    else if(pdf_count > 0 && img_count > 0){
+        Swal.fire({
+            icon: 'warning',
+            title: 'INVALID UPLOAD',
+            html: '<span id="checkUpload">Cannot upload different file types.</span>'
+        });
+
+        resetUpload();
+        return false;
+    }
+
+    for(var i = 0; i < files.length; i++){
+      var file = files[i];
+
+      var reader = new FileReader();
+
+      reader.onload = function(e){
+        var fileType = getFileType(e.target.result);
+
+        if(fileType === 'jpg' || fileType === 'jpeg' || fileType === 'pdf'){
+            if(fileType === 'pdf'){
+                var embed = $("<embed style='height:470px; width:100%;'>").attr("src", e.target.result).addClass("pdf-embed");
+                $("#displayFile").append(embed);
+            }
+            else{
+                var img = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result); // Create an <img> element
+                $("#displayFile").append(img);
+            }
+        }
+      };
+      $('.pagi:last').after(`<li class="page-item pagi pItem"><a class="page-link" onclick="paging(${i+1})">${i+1}</a></li>`)
+      reader.readAsDataURL(file);
+      if(i+1 == files.length){
+        setTimeout(() => {
+            paging('1');
+        }, 200);
+      }
+    }
+});
+
+function paging(id){
+    $('.imgPreview').hide();
+    $('#imgPreview'+id).show();
+}
+
+function getFileType(dataURL){
+    var mimeType = dataURL.split(',')[0].split(':')[1].split(';')[0];
+    if(mimeType === 'application/pdf'){
+        return 'pdf';
+    }
+    else if(mimeType === 'image/jpeg' || mimeType === 'image/jpg'){
+        return 'jpg';
+    }
+    return '';
+}
+
+function getExtension(fileName){
+    var fileExtension = fileName.split('.').pop().toLowerCase();
+    return fileExtension;
+}
+
+function resetUpload(){
+    $('.pItem').remove();
+
+    $('#displayFile').empty().append(`
+        <center id="logoUpload" class="mt-5" onclick="$('#pdf_file').click();" title="UPLOAD FILE">
+            <i class="fa-solid fa-file-arrow-up" style="zoom: 1500%;"></i><br><br>
+            <h2>UPLOAD FILE</h2>
+        </center>
+    `);
+}
+
+setInterval(() => {
+    if($('.imgPreview').length){
+        $('#pagi').show();
+    }
+    else{
+        $('#pagi').hide();
+
+    }
+    if($('#pagi').is(':visible')){
+        $('.imgPreview:not([id])').each(function(index){
+            var newId = 'imgPreview' + (index + 1);
+            $(this).attr('id', newId);
+        });
+    }
+}, 0);
+
+function formRestrictions(data){
+    if(current_role == 'ENCODER'){
+        if(data.status == 'VALID'){
+            if(data.remarks){
+                $('#remarks_text').val(data.remarks);
+                $('#remarks_div').show();
+            }
+            else{
+                $('#remarks_text').val('');
+                $('#remarks_div').hide();
+            }
+
+            if(($('#current_user_name').val() != $('#uploaded_by').val())){
+                $('.form_disable').prop('disabled', true);
+                $('#file_div').empty().append(`
+                    <div class="col mt-2">
+                        <span class="pdf_file"></span>
+                    </div>`
+                );
+                $('.divReplaceFile').hide();
+                $('#btnEdit').hide();
+            }
+            else{
+                $('.form_disable').prop('disabled', true);
+                $('#file_div').empty().append(`
+                    <div class="col mt-2">
+                        <span class="pdf_file"></span>
+                    </div>`
+                );
+                $('.divReplaceFile').hide();
+                $('#btnEdit').hide();
+            }
+        }
+        else{
+            if(($('#current_user_name').val() != $('#uploaded_by').val())){
+                $('.form_disable').prop('disabled', true);
+                $('#file_div').empty().append(`
+                    <div class="col mt-2">
+                        <span class="pdf_file"></span>
+                    </div>`
+                );
+                setTimeout(() => {
+                    $('.divReplaceFile').hide();
+                }, 200);
+                $('#btnEdit').hide();
+            }
+            else{
+                $('.form_disable').prop('disabled', false);
+                $('#file_div').empty().append(`
+                    <div class="col mt-2">
+                        <span class="pdf_file"></span>
+                    </div>`
+                );
+                setTimeout(() => {
+                    $('.divReplaceFile').show();
+                }, 200);
+                $('#btnEdit').show();
+            }
+        }
+    }
+
+    if(current_role == 'ADMIN'){
+        $('#remarks_div').show();
+        $('#remarks_text').val(data.remarks);
+        if(data.status == 'VALID'){
+            $('#btnApprove').hide();
+            $('#btnDisapprove').hide();
+            $('#btnReturn').show();
+            setTimeout(() => {
+                $('.divReplaceFile').hide();
+            }, 100);
+            $('#file_div').empty().append(`
+                <div class="col mt-2">
+                    <span class="pdf_file"></span>
+                </div>`
+            );
+        }
+        else{
+            $('#btnApprove').show();
+            $('#btnDisapprove').show();
+            $('#btnReturn').hide();
+            setTimeout(() => {
+                $('.divReplaceFile').hide();
+            }, 100);
+            $('#file_div').empty().append(`
+                <div class="col mt-2">
+                    <span class="pdf_file"></span>
+                </div>`
+            );
+        }
+    }
+}

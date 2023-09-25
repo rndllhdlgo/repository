@@ -21,7 +21,7 @@
         <div class="col">
             <div class="checkbox">
                 <label>
-                    <input checked type="checkbox" class="checkboxFilter" id="filter-2" data-column="2" disabled/> CLIENT NAME
+                    <input checked type="checkbox" class="checkboxFilter" id="filter-2" data-column="2" disabled/> DELIVER TO
                 </label>
             </div>
         </div>
