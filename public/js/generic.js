@@ -509,6 +509,7 @@ $(document).on('change','#pdf_file', function(e){
         }, 200);
       }
     }
+    $('.divReplaceFile').show();
 });
 
 function paging(id){
@@ -538,7 +539,7 @@ function resetUpload(){
     $('#displayFile').empty().append(`
         <center id="logoUpload" class="mt-5" onclick="$('#pdf_file').click();" title="UPLOAD FILE">
             <i class="fa-solid fa-file-arrow-up" style="zoom: 1500%;"></i><br><br>
-            <h2>UPLOAD FILE</h2>
+            <h3>CLICK HERE TO UPLOAD FILE</h3>
         </center>
     `);
 }

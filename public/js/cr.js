@@ -156,6 +156,7 @@ $('#crAdd').on('click',function(){
     $('#uploaded_by_div').hide();
     $('#status_div').hide();
     $('.form_disable').prop('disabled', false);
+    $('.divReplaceFile').hide();
     $('.req').hide();
 
     $('#file_div').empty().append(`
