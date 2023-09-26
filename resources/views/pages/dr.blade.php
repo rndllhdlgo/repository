@@ -35,7 +35,7 @@
                 </th>
                 <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
-                    CLIENT NAME
+                    DELIVERED TO
                 </th>
                 <th>
                     <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>

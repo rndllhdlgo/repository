@@ -346,6 +346,14 @@ class EventController extends Controller
             $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
             $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
+            $stage_orig = SalesInvoice::where('id', $request->entry_id)->first()->stage;
+
+            if($stage_orig == '1'){
+                $edited = 'CORRECTED';
+            }
+            else{
+                $edited = 'UPDATED';
+            }
 
             if($request->sales_invoice != $reference_number){
                 $sales_invoice_new = $request->sales_invoice;
@@ -365,7 +373,7 @@ class EventController extends Controller
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                $client_name_change = "【SOLD TO: FROM '$client_name_orig' TO '$client_name_new'】";
             }
             else{
                 $client_name_change = NULL;
@@ -431,7 +439,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
@@ -474,6 +482,14 @@ class EventController extends Controller
                 $branch_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->branch_name;
                 $sales_order_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_order;
                 $sales_invoice_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_invoice;
+                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+
+                if($stage_orig == '1'){
+                    $edited = 'CORRECTED';
+                }
+                else{
+                    $edited = 'UPDATED';
+                }
 
                 if($request->collection_receipt != $reference_number){
                     $collection_receipt_new = $request->collection_receipt;
@@ -493,7 +509,7 @@ class EventController extends Controller
 
                 if(strtoupper($request->client_name) != $client_name_orig){
                     $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                    $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
                 }
                 else{
                     $client_name_change = NULL;
@@ -541,7 +557,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -585,6 +601,14 @@ class EventController extends Controller
                 $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
                 $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
                 $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
+                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+
+                if($stage_orig == '1'){
+                    $edited = 'CORRECTED';
+                }
+                else{
+                    $edited = 'UPDATED';
+                }
 
                 if($request->billing_statement != $reference_number){
                     $billing_statement_new = $request->billing_statement;
@@ -604,7 +628,7 @@ class EventController extends Controller
 
                 if(strtoupper($request->client_name) != $client_name_orig){
                     $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                    $client_name_change = "【BILLED TO: FROM '$client_name_orig' TO '$client_name_new'】";
                 }
                 else{
                     $client_name_change = NULL;
@@ -661,7 +685,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -704,6 +728,14 @@ class EventController extends Controller
                 $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
                 $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
                 $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
+                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+
+                if($stage_orig == '1'){
+                    $edited = 'CORRECTED';
+                }
+                else{
+                    $edited = 'UPDATED';
+                }
 
                 if($request->official_receipt != $reference_number){
                     $official_receipt_new = $request->official_receipt;
@@ -723,7 +755,7 @@ class EventController extends Controller
 
                 if(strtoupper($request->client_name) != $client_name_orig){
                     $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                    $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
                 }
                 else{
                     $client_name_change = NULL;
@@ -762,7 +794,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -806,6 +838,14 @@ class EventController extends Controller
                 $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
                 $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
                 $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
+                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+
+                if($stage_orig == '1'){
+                    $edited = 'CORRECTED';
+                }
+                else{
+                    $edited = 'UPDATED';
+                }
 
                 if($request->delivery_receipt != $reference_number){
                     $delivery_receipt_new = $request->delivery_receipt;
@@ -825,7 +865,7 @@ class EventController extends Controller
 
                 if(strtoupper($request->client_name) != $client_name_orig){
                     $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                    $client_name_change = "【DELIVERED TO: FROM '$client_name_orig' TO '$client_name_new'】";
                 }
                 else{
                     $client_name_change = NULL;
@@ -881,7 +921,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -898,6 +938,14 @@ class EventController extends Controller
             $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
             $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
+            $stage_orig = SalesInvoice::where('id', $request->entry_id)->first()->stage;
+
+            if($stage_orig == '1'){
+                $edited = 'CORRECTED';
+            }
+            else{
+                $edited = 'UPDATED';
+            }
 
             if($request->sales_invoice != $reference_number){
                 $sales_invoice_new = $request->sales_invoice;
@@ -917,7 +965,7 @@ class EventController extends Controller
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                $client_name_change = "【SOLD TO: FROM '$client_name_orig' TO '$client_name_new'】";
             }
             else{
                 $client_name_change = NULL;
@@ -1000,6 +1048,14 @@ class EventController extends Controller
             $branch_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->branch_name;
             $sales_order_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_order;
             $sales_invoice_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_invoice;
+            $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+
+            if($stage_orig == '1'){
+                $edited = 'CORRECTED';
+            }
+            else{
+                $edited = 'UPDATED';
+            }
 
             if($request->collection_receipt != $reference_number){
                 $collection_receipt_new = $request->collection_receipt;
@@ -1019,7 +1075,7 @@ class EventController extends Controller
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
             }
             else{
                 $client_name_change = NULL;
@@ -1083,6 +1139,14 @@ class EventController extends Controller
             $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
             $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
             $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
+            $stage_orig = BillingStatement::where('id', $request->entry_id)->first()->stage;
+
+            if($stage_orig == '1'){
+                $edited = 'CORRECTED';
+            }
+            else{
+                $edited = 'UPDATED';
+            }
 
             if($request->billing_statement != $reference_number){
                 $billing_statement_new = $request->billing_statement;
@@ -1102,7 +1166,7 @@ class EventController extends Controller
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                $client_name_change = "【BILLED TO: FROM '$client_name_orig' TO '$client_name_new'】";
             }
             else{
                 $client_name_change = NULL;
@@ -1173,6 +1237,14 @@ class EventController extends Controller
             $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
             $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
             $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
+            $stage_orig = OfficialReceipt::where('id', $request->entry_id)->first()->stage;
+
+            if($stage_orig == '1'){
+                $edited = 'CORRECTED';
+            }
+            else{
+                $edited = 'UPDATED';
+            }
 
             if($request->official_receipt != $reference_number){
                 $official_receipt_new = $request->official_receipt;
@@ -1192,7 +1264,7 @@ class EventController extends Controller
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
             }
             else{
                 $client_name_change = NULL;
@@ -1246,6 +1318,14 @@ class EventController extends Controller
             $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
             $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
             $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
+            $stage_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->stage;
+
+            if($stage_orig == '1'){
+                $edited = 'CORRECTED';
+            }
+            else{
+                $edited = 'UPDATED';
+            }
 
             if($request->delivery_receipt != $reference_number){
                 $delivery_receipt_new = $request->delivery_receipt;
@@ -1265,7 +1345,7 @@ class EventController extends Controller
 
             if(strtoupper($request->client_name) != $client_name_orig){
                 $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【CLIENT NAME: FROM '$client_name_orig' TO '$client_name_new'】";
+                $client_name_change = "【DELIVERED TO: FROM '$client_name_orig' TO '$client_name_new'】";
             }
             else{
                 $client_name_change = NULL;
@@ -1333,19 +1413,19 @@ class EventController extends Controller
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
         if($request->current_page == 'si'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
         }
         if($request->current_page == 'cr'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
         }
         if($request->current_page == 'bs'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         if($request->current_page == 'or'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
         }
         if($request->current_page == 'dr'){
-            $userlogs->activity = "USER SUCCESSFULLY UPDATED $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         $userlogs->save();
 
@@ -1417,28 +1497,28 @@ class EventController extends Controller
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
+        if($request->current_page == 'or'){
+            $current_page = 'OFFICIAL RECEIPT';
+            $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
+        }
+
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
-        if($request->current_page == 'or'){
-            $current_page = 'OFFICIAL RECEIPT';
-            $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
-            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
-        }
-
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks.";
+        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks $request->remarks.";
         $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks.";
+        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks $request->remarks.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';
@@ -1461,6 +1541,12 @@ class EventController extends Controller
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
+        }
+
+        if($request->current_page == 'or'){
+            $current_page = 'OFFICIAL RECEIPT';
+            $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'dr'){
@@ -1525,7 +1611,6 @@ class EventController extends Controller
 
     public function notif_update(Request $request){
         $current_role = Role::where('id', auth()->user()->userlevel)->first()->name;
-
         if(SalesInvoice::count() == 0){
             $si_update = 'NULL';
         }

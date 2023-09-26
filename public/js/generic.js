@@ -279,42 +279,33 @@ function edit_pdf(){
 }
 
 $(document).on('click','#btnApprove', function(){
-    Swal.fire({
-        title: 'MARK AS VALID?',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showDenyButton: true,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-        customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
-        }
-    }).then((save) => {
-        if(save.isConfirmed){
-            $.ajax({
-                url: "/approve",
-                method: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data:{
-                    entry_id: $('#entry_id').val(),
-                    current_page: $('#current_page').val()
-                },
-                success: function(data){
-                    if(data == 'true'){
-                        $('#loading').hide();
-                        Swal.fire("VALIDATE SUCCESS", "", "success");
-                        $('.modal').modal('hide');
-                    }
-                    else{
-                        $('#loading').hide();
-                        Swal.fire("VALIDATE FAILED", "", "error");
-                    }
-                }
-            });
+    $.ajax({
+        url: "/approve",
+        method: 'post',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:{
+            entry_id: $('#entry_id').val(),
+            current_page: $('#current_page').val()
+        },
+        success: function(data){
+            if(data == 'true'){
+                $('#loading').hide();
+                Swal.fire({
+                    title: 'VALIDATE SUCCESS',
+                    html: '<br>',
+                    icon: 'success',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+                $('.modal').modal('hide');
+            }
+            else{
+                $('#loading').hide();
+                Swal.fire("VALIDATE FAILED", "", "error");
+            }
         }
     });
 });
@@ -623,16 +614,15 @@ setInterval(() => {
 
 function formRestrictions(data){
     if(current_role == 'ENCODER'){
+        if(data.remarks){
+            $('#remarks_text').val(data.remarks);
+            $('#remarks_div').show();
+        }
+        else{
+            $('#remarks_text').val('');
+            $('#remarks_div').hide();
+        }
         if(data.status == 'VALID'){
-            if(data.remarks){
-                $('#remarks_text').val(data.remarks);
-                $('#remarks_div').show();
-            }
-            else{
-                $('#remarks_text').val('');
-                $('#remarks_div').hide();
-            }
-
             if(($('#current_user_name').val() != $('#uploaded_by').val())){
                 $('.form_disable').prop('disabled', true);
                 $('#file_div').empty().append(`
