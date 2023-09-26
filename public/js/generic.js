@@ -413,8 +413,8 @@ setInterval(function(){
                 current_page: $('#current_page').val(),
             },
             success: function(data){
-                if(data != data_update){
-                    data_update = data;
+                if(data.data_update != data_update){
+                    data_update = data.data_update;
                     table.ajax.reload(null, false);
                 }
             }
@@ -422,9 +422,70 @@ setInterval(function(){
     }
 }, 1000);
 
+setInterval(function(){
+    if($('#loading').is(':hidden') && standby == false){
+        $.ajax({
+            url: "/notif_update",
+            success: function(data){
+                if(data.si_update != si_update){
+                    si_update = data.si_update;
+                    $('#si_notif').html(data.si_count);
+                }
+                if(data.cr_update != cr_update){
+                    cr_update = data.cr_update;
+                    $('#cr_notif').html(data.cr_count);
+                }
+                if(data.bs_update != bs_update){
+                    bs_update = data.bs_update;
+                    $('#bs_notif').html(data.bs_count);
+                }
+                if(data.or_update != or_update){
+                    or_update = data.or_update;
+                    $('#or_notif').html(data.or_count);
+                }
+                if(data.dr_update != dr_update){
+                    dr_update = data.dr_update;
+                    $('#dr_notif').html(data.dr_count);
+                }
+            }
+        });
+    }
+}, 1000);
+
 setInterval(() => {
-    if(current_role == 'BOSS'){
-        $('.forminput').prop('disabled',true);
+    if(parseInt($('#si_notif').text()) == 0){
+        $('#si_notif').addClass('d-none')
+    }
+    else{
+        $('#si_notif').removeClass('d-none');
+    }
+
+    if(parseInt($('#cr_notif').text()) == 0){
+        $('#cr_notif').addClass('d-none')
+    }
+    else{
+        $('#cr_notif').removeClass('d-none');
+    }
+
+    if(parseInt($('#bs_notif').text()) == 0){
+        $('#bs_notif').addClass('d-none')
+    }
+    else{
+        $('#bs_notif').removeClass('d-none');
+    }
+
+    if(parseInt($('#or_notif').text()) == 0){
+        $('#or_notif').addClass('d-none')
+    }
+    else{
+        $('#or_notif').removeClass('d-none');
+    }
+
+    if(parseInt($('#dr_notif').text()) == 0){
+        $('#dr_notif').addClass('d-none')
+    }
+    else{
+        $('#dr_notif').removeClass('d-none');
     }
 }, 0);
 
@@ -651,4 +712,24 @@ function formRestrictions(data){
             );
         }
     }
+
+    if(current_role == 'BOSS'){
+        $('.form_disable').prop('disabled', true);
+        setTimeout(() => {
+            $('.divReplaceFile').hide();
+            $('#btnEdit').hide();
+        }, 100);
+        $('#file_div').empty().append(`
+            <div class="col mt-2">
+                <span class="pdf_file"></span>
+            </div>`
+        );
+    }
 }
+
+
+// setInterval(() => {
+//     var count = $('.fa-triangle-exclamation:visible').length;
+//     console.log(count);
+//     $('#dr_notif')
+// }, 0);

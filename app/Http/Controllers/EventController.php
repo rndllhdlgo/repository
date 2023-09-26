@@ -1519,6 +1519,199 @@ class EventController extends Controller
             }
             $data_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
         }
-        return $data_update;
+
+        return $data = array('data_update' => $data_update);
+    }
+
+    public function notif_update(Request $request){
+        $current_role = Role::where('id', auth()->user()->userlevel)->first()->name;
+
+        if(SalesInvoice::count() == 0){
+            $si_update = 'NULL';
+        }
+        else{
+            $si_update = SalesInvoice::latest('updated_at')->first()->updated_at;
+        }
+
+        $si_datas = SalesInvoice::all();
+        $si_count = 0;
+        $count = 0;
+
+        foreach($si_datas as $si_data){
+            $status = $si_data->status;
+            $stage = $si_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+        }
+        $si_count = $count;
+
+        if(CollectionReceipt::count() == 0){
+            $cr_update = 'NULL';
+        }
+        else{
+            $cr_update = CollectionReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        $cr_datas = CollectionReceipt::all();
+        $cr_count = 0;
+        $count = 0;
+
+        foreach($cr_datas as $cr_data){
+            $status = $cr_data->status;
+            $stage = $cr_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+        }
+        $cr_count = $count;
+
+        if(BillingStatement::count() == 0){
+            $bs_update = 'NULL';
+        }
+        else{
+            $bs_update = BillingStatement::latest('updated_at')->first()->updated_at;
+        }
+
+        $bs_datas = BillingStatement::all();
+        $bs_count = 0;
+        $count = 0;
+
+        foreach($bs_datas as $bs_data){
+            $status = $bs_data->status;
+            $stage = $bs_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+        }
+        $bs_count = $count;
+
+        if(OfficialReceipt::count() == 0){
+            $or_update = 'NULL';
+        }
+        else{
+            $or_update = OfficialReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        $or_datas = OfficialReceipt::all();
+        $or_count = 0;
+        $count = 0;
+
+        foreach($or_datas as $or_data){
+            $status = $or_data->status;
+            $stage = $or_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+        }
+        $or_count = $count;
+
+        if(DeliveryReceipt::count() == 0){
+            $dr_update = 'NULL';
+        }
+        else{
+            $dr_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        $dr_datas = DeliveryReceipt::all();
+        $dr_count = 0;
+        $count = 0;
+
+        foreach($dr_datas as $dr_data){
+            $status = $dr_data->status;
+            $stage = $dr_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+        }
+        $dr_count = $count;
+
+        return $data = array(
+            'si_update' => $si_update, 'si_count' => $si_count,
+            'cr_update' => $cr_update, 'cr_count' => $cr_count,
+            'bs_update' => $bs_update, 'bs_count' => $bs_count,
+            'or_update' => $or_update, 'or_count' => $or_count,
+            'dr_update' => $dr_update, 'dr_count' => $dr_count,
+        );
     }
 }

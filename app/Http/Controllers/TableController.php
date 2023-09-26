@@ -18,22 +18,27 @@ class TableController extends Controller
     }
 
     public function si_data(){
-        return DataTables::of(SalesInvoice::all())->make(true);
+        $data = SalesInvoice::orderBy('id', 'DESC')->get();
+        return DataTables::of($data)->make(true);
     }
 
     public function cr_data(){
-        return DataTables::of(CollectionReceipt::all())->make(true);
+        $data = CollectionReceipt::orderBy('id', 'DESC')->get();
+        return DataTables::of($data)->make(true);
     }
 
     public function bs_data(){
-        return DataTables::of(BillingStatement::all())->make(true);
+        $data = BillingStatement::orderBy('id', 'DESC')->get();
+        return DataTables::of($data)->make(true);
     }
 
     public function or_data(){
-        return DataTables::of(OfficialReceipt::all())->make(true);
+        $data = OfficialReceipt::orderBy('id', 'DESC')->get();
+        return DataTables::of($data)->make(true);
     }
 
     public function dr_data(){
-        return DataTables::of(DeliveryReceipt::all())->make(true);
+        $data = DeliveryReceipt::orderBy('id', 'DESC')->get();
+        return DataTables::of($data)->make(true);
     }
 }

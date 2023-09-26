@@ -31,6 +31,7 @@ Route::middleware(['session'])->group(function () {
         Route::post('/edit_or', 'edit_or');
         Route::post('/edit_dr', 'edit_dr');
         Route::any('/table_reload', 'table_reload');
+        Route::any('/notif_update', 'notif_update');
     });
 
     Route::controller(HomeController::class)->group(function(){

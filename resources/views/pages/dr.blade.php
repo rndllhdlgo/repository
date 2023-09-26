@@ -38,27 +38,27 @@
                     CLIENT NAME
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
                     BUSINESS NAME
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
                     BRANCH NAME
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
                     UPLOADED BY
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     PURCHASE ORDER NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
                     SALES ORDER NO.
                 </th>
                 <th>
-                    <input type="search" class="form-control filter-input" data-column="9" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
                     STATUS
                 </th>
             </tr>
