@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="table-responsive container-fluid pt-2">
-    <table id="userTable" class="table userTable table-bordered table-striped table-hover display" style="cursor: pointer; width: 100%;">
+    <table id="userTable" class="table userTable table-bordered table-striped table-hover display w-100" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
                 <td>

@@ -717,9 +717,6 @@ function formRestrictions(data){
     }
 }
 
-
-// setInterval(() => {
-//     var count = $('.fa-triangle-exclamation:visible').length;
-//     console.log(count);
-//     $('#dr_notif')
-// }, 0);
+setInterval(() => {
+    $('.w-100').css('width','100%');
+}, 0);
