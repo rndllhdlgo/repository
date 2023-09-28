@@ -1,5 +1,5 @@
-<div id="bsModal" class="modal fade" data-bs-focus="false" style="height: auto;">
-    <div class="modal-dialog modal-xl">
+<div id="bsModal" class="modal fade" data-bs-focus="false" style="height: 100vh;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-default">
                 <h5 class="modal-title w-100 text-center" id="siTitle"></h5>

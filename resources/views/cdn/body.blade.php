@@ -3,11 +3,12 @@
 <link rel="stylesheet" href="/css/inc/daterangepicker.css">
 <script src="/js/inc/bootstrap4.bundle.min.js"></script>
 <script src="/js/inc/bootstrap5.bundle.min.js"></script>
-<script src="/js/inc/jquery.dataTables.min.js"></script>
-<script src="/js/inc/dataTables.fixedColumns.min.js"></script>
-<script src="/js/inc/dataTables.buttons.min.js"></script>
+{{-- <script src="/js/inc/jquery.dataTables.min.js"></script> --}}
+{{-- <script src="/js/inc/dataTables.fixedColumns.min.js"></script> --}}
+{{-- <script src="/js/inc/dataTables.buttons.min.js"></script> --}}
 <script src="/js/inc/jszip.min.js"></script>
 <script src="/js/inc/pdfmake.min.js"></script>
+<script src="/DataTables/datatables.min.js"></script>
 <script src="/js/inc/vfs_fonts.js"></script>
 <script src="/js/inc/buttons.html5.min.js"></script>
 <script src="/js/inc/buttons.print.min.js"></script>

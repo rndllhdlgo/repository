@@ -18,27 +18,39 @@ class TableController extends Controller
     }
 
     public function si_data(){
-        $data = SalesInvoice::orderBy('id', 'DESC')->get();
+        $data = SalesInvoice::orderBy('status', 'ASC')
+        ->orderBy('stage', 'DESC')
+        ->orderBy('updated_at','DESC')
+        ->get();
         return DataTables::of($data)->make(true);
     }
 
     public function cr_data(){
-        $data = CollectionReceipt::orderBy('id', 'DESC')->get();
+        $data = CollectionReceipt::orderBy('status', 'ASC')
+        ->orderBy('stage', 'DESC')
+        ->orderBy('updated_at','DESC')->get();
         return DataTables::of($data)->make(true);
     }
 
     public function bs_data(){
-        $data = BillingStatement::orderBy('id', 'DESC')->get();
+        $data = BillingStatement::orderBy('status', 'ASC')
+        ->orderBy('stage', 'DESC')
+        ->orderBy('updated_at','DESC')->get();
         return DataTables::of($data)->make(true);
     }
 
     public function or_data(){
-        $data = OfficialReceipt::orderBy('id', 'DESC')->get();
+        $data = OfficialReceipt::orderBy('status', 'ASC')
+        ->orderBy('stage', 'DESC')
+        ->orderBy('updated_at','DESC')->get();
         return DataTables::of($data)->make(true);
     }
 
     public function dr_data(){
-        $data = DeliveryReceipt::orderBy('id', 'DESC')->get();
+        $data = DeliveryReceipt::orderBy('status', 'ASC')
+        ->orderBy('stage', 'DESC')
+        ->orderBy('updated_at','DESC')
+        ->get();
         return DataTables::of($data)->make(true);
     }
 }

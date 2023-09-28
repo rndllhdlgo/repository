@@ -13,7 +13,7 @@
     @endrole
 </div>
 
-<div class="ml-2">
+<div class="ml-2 d-none">
     <a href="#" id="filter" class="text-default" title="Toggle Visible Columns" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content='@include("inc.columnsDeliveryReceipt")'>
         <b class="mr-1">TOGGLE COLUMNS</b>
         <i class="fas fa-filter fa-lg" aria-hidden="true"></i>
@@ -37,27 +37,27 @@
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
                     DELIVERED TO
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
                     BUSINESS NAME
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
                     BRANCH NAME
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
                     UPLOADED BY
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     PURCHASE ORDER NO.
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
                     SALES ORDER NO.
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
                     STATUS
                 </th>

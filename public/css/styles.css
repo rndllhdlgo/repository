@@ -306,9 +306,9 @@ textarea{
 .swal-wide{
     width: 900px !important;
 }
-.dt-buttons{
+/* .dt-buttons{
     display: none;
-}
+} */
 .sidebar{
     height: 100%;
     width: 0px;
@@ -420,11 +420,6 @@ label{
     color: black !important;
     z-index: 999 !important;
 }
-.always-default{
-    background-color: #0d1a80 !important;
-    color: white !important;
-    z-index: 999 !important;
-}
 .dataTables_scrollBody {
     cursor: pointer;
 }
@@ -517,10 +512,8 @@ input:checked + .slider .off{
     white-space: nowrap !important;
 }
 
-.dtfc-fixed-left{
-    background-color: white !important;
-    color: black !important;
-    z-index: 999 !important;
+.dataTables_wrapper td {
+    white-space: nowrap !important;
 }
 
 .always-default{
@@ -528,7 +521,27 @@ input:checked + .slider .off{
     color: white !important;
     z-index: 999 !important;
 }
+.th-default{
+    background-color: #0d1a80 !important;
+    color: white !important;
+}
 
-.dataTables_wrapper td {
-    white-space: nowrap !important;
+.dt-button-collection{
+    width: 220px !important;
+}
+
+#siTable_length{
+    float: right !important;
+}
+#crTable_length{
+    float: right !important;
+}
+#bsTable_length{
+    float: right !important;
+}
+#orTable_length{
+    float: right !important;
+}
+#drTable_length{
+    float: right !important;
 }

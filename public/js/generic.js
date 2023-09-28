@@ -296,7 +296,7 @@ $(document).on('click','#btnApprove', function(){
                     title: 'VALIDATE SUCCESS',
                     html: '<br>',
                     icon: 'success',
-                    timer: 1500,
+                    timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
@@ -718,5 +718,5 @@ function formRestrictions(data){
 }
 
 setInterval(() => {
-    $('.w-100').css('width','100%');
+    $('.w-100').css('width','100vw !important');
 }, 0);
