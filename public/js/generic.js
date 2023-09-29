@@ -718,5 +718,5 @@ function formRestrictions(data){
 }
 
 setInterval(() => {
-    $('.w-100').css('width','100vw !important');
+    $('body').css('padding-right','0px');
 }, 0);
