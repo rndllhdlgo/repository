@@ -117,6 +117,7 @@ $(document).ready(function(){
                 $('button[data-cv-idx="1"]').remove();
                 $('button[data-cv-idx="2"]').remove();
                 $('button[data-cv-idx="3"]').remove();
+                $('button[data-cv-idx="4"]').remove();
                 $('button[data-cv-idx="8"]').remove();
             }, 0);
             $('.buttons-colvis').click();

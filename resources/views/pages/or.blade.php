@@ -29,19 +29,19 @@
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
                     RECEIVED FROM
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
                     BRANCH NAME
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
                     UPLOADED BY
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
                     SALES ORDER NO.
                 </th>
-                <th>
+                <th class="th-default">
                     <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     STATUS
                 </th>

@@ -7,7 +7,14 @@ $(document).ready(function(){
         fixedColumns:{
             left: 3,
         },
-        dom: 'ltrip',
+        dom: 'Bltrip',
+        buttons: [
+            {
+                extend: 'colvis',
+                text: 'TOGGLE COLUMNS',
+                className: 'font-weight-bold'
+            }
+        ],
         aLengthMenu:[[10,25,50,100,500,1000,-1], [10,25,50,100,500,1000,"All"]],
         language: {
             info: "Showing _START_ to _END_ of _TOTAL_ OFFICIAL RECEIPT",
@@ -17,6 +24,13 @@ $(document).ready(function(){
         processing: true,
         serverSide: false,
         order: [],
+        columnDefs: [
+            {
+                "targets": [4,5],
+                "visible": false,
+                "searchable": true
+            },
+        ],
         ajax: {
             url: 'or_data'
         },
@@ -90,6 +104,18 @@ $(document).ready(function(){
         ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
+            setInterval(() => {
+                $('button[data-cv-idx="0"]').remove();
+                $('button[data-cv-idx="1"]').remove();
+                $('button[data-cv-idx="2"]').remove();
+                $('button[data-cv-idx="3"]').remove();
+                $('button[data-cv-idx="6"]').remove();
+            }, 0);
+            $('.buttons-colvis').click();
+            $('.dt-button-collection').hide();
+            setTimeout(() => {
+                $('body').click();
+            }, 200);
             $('#loading').hide();
         }
     });
