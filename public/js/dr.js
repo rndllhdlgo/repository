@@ -26,7 +26,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [6,7],
+                "targets": [5,6,7],
                 "visible": false,
                 "searchable": true
             },
