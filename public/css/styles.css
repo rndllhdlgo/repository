@@ -545,3 +545,24 @@ input:checked + .slider .off{
 #drTable_length{
     float: right !important;
 }
+
+#siTable_filter{
+    float: left !important;
+    margin-left: 10px !important;
+}
+#crTable_filter{
+    float: left !important;
+    margin-left: 10px !important;
+}
+#bsTable_filter{
+    float: left !important;
+    margin-left: 10px !important;
+}
+#orTable_filter{
+    float: left !important;
+    margin-left: 10px !important;
+}
+#drTable_filter{
+    float: left !important;
+    margin-left: 10px !important;
+}

@@ -34,6 +34,11 @@
         <script src="/js/functions.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
         @if(Request::is('si') || Request::is('cr') || Request::is('bs') || Request::is('or') || Request::is('dr'))
             <script src="/js/generic.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
+            <style>
+                .filter-input{
+                    display:none;
+                }
+            </style>
         @endif
     @endif
     <main class="container-fluid content">
