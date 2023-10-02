@@ -27,7 +27,7 @@
 		</thead>
 	</table>
 </div>
-<nav class="navbar navbar-expand-sm bg-default w-100 navcontent" style="font-weight: bolder; zoom:90%;">
+<nav class="navbar navbar-expand-sm bg-default w-100 navcontent" style="font-weight: bolder;">
 	<div class="container-fluid">
 		<ul class="navbar-nav">
 			@if(auth()->user()->department != 'WAREHOUSE')

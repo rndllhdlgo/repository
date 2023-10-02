@@ -567,32 +567,6 @@ input:checked + .slider .off{
     margin-left: 10px !important;
 }
 
-input[type="search"][aria-controls="siTable"]{
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    text-indent: 10px;
-}
-input[type="search"][aria-controls="crTable"]{
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    text-indent: 10px;
-}
-input[type="search"][aria-controls="bsTable"]{
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    text-indent: 10px;
-}
-input[type="search"][aria-controls="orTable"]{
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    text-indent: 10px;
-}
-input[type="search"][aria-controls="drTable"]{
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    text-indent: 10px;
-}
-
 .search_bar_right{
     border:1.5px solid #0d1a80;
     border-radius: 0px 20px 20px 0px;
@@ -601,4 +575,5 @@ input[type="search"][aria-controls="drTable"]{
 .current_search{
     border:1.5px solid #0d1a80 !important;
     border-radius: 20px 0px 0px 20px !important;
+    text-indent: 10px;
 }
