@@ -530,50 +530,18 @@ input:checked + .slider .off{
     width: 220px !important;
 }
 
-#siTable_length{
-    float: right !important;
-}
-#crTable_length{
-    float: right !important;
-}
-#bsTable_length{
-    float: right !important;
-}
-#orTable_length{
-    float: right !important;
-}
-#drTable_length{
-    float: right !important;
-}
-
-#siTable_filter{
-    float: left !important;
-    margin-left: 10px !important;
-}
-#crTable_filter{
-    float: left !important;
-    margin-left: 10px !important;
-}
-#bsTable_filter{
-    float: left !important;
-    margin-left: 10px !important;
-}
-#orTable_filter{
-    float: left !important;
-    margin-left: 10px !important;
-}
-#drTable_filter{
-    float: left !important;
+.dt-buttons{
     margin-left: 10px !important;
 }
 
 .search_bar_right{
-    border:1.5px solid #0d1a80;
+    border:1.5px solid #aaaaaa;
     border-radius: 0px 20px 20px 0px;
+    background-color: #0d1a80 !important;
 }
 
 .current_search{
-    border:1.5px solid #0d1a80 !important;
+    border:1.5px solid #aaaaaa !important;
     border-radius: 20px 0px 0px 20px !important;
     text-indent: 10px;
 }

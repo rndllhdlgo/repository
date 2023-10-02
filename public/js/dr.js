@@ -7,7 +7,7 @@ $(document).ready(function(){
         fixedColumns:{
             left: 3,
         },
-        dom: 'Blftrip',
+        dom: 'lBftrip',
         buttons: [
             {
                 extend: 'colvis',
