@@ -25,7 +25,7 @@ class CheckIpAddress
         }
         // Get the list of allowed IP addresses from the configuration
         $allowedIps = Config::get('ip_whitelist.allowed_ips');
-        return $next($request);
+        // return $next($request);
 
         // Check if the user's IP address is in the allowed list
         if (in_array($userIp, $allowedIps)) {
