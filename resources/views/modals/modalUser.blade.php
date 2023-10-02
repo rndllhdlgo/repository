@@ -24,7 +24,7 @@
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="department" name="department">
                             <option value="" selected disabled style="color: Gray;">SELECT DEPARTMENT</option>
-                            <option value="ADMIN" style="color: Black;">ADMIN</option>
+                            {{-- <option value="ADMIN" style="color: Black;">ADMIN</option> --}}
                             <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
                             <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
                             <option value="BOSS" style="color: Black;">BOSS</option>

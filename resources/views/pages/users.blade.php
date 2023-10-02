@@ -22,7 +22,7 @@
                 <td>
                     <select class="form-control filter-select form-select" data-column="2" style="border:1px solid #808080">
                         <option value="" selected></option>
-                        <option value="ADMIN" style="color: Black;">ADMIN</option>
+                        {{-- <option value="ADMIN" style="color: Black;">ADMIN</option> --}}
                         <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
                         <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
                         <option value="BOSS" style="color: Black;">BOSS</option>
