@@ -575,7 +575,7 @@ function display_search(){
         <div class="input-group">
             <input class="form-control current_search" type="search" placeholder="SEARCH...">
             <button class="bg-white search_bar_right" type="button">
-                <i class="fa fa-search"></i>
+                <i class="fa fa-search"></i>&nbsp;
             </button>
         </div>
     `);
