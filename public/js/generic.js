@@ -564,6 +564,23 @@ $(document).on('change','#pdf_file', function(e){
     $('.divReplaceFile').show();
 });
 
+$(document).on('keyup','.current_search',function(){
+    $("label:contains('Search:')").find("input:first").val($(this).val());
+    $("label:contains('Search:')").find("input:first").keyup();
+});
+
+function display_search(){
+    $("label:contains('Search:')").addClass('d-none');
+    $("label:contains('Search:')").after(`
+        <div class="input-group">
+            <input class="form-control current_search" type="search" placeholder="SEARCH...">
+            <button class="bg-white search_bar_right" type="button">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    `);
+}
+
 function paging(id){
     $('.imgPreview').hide();
     $('#imgPreview'+id).show();

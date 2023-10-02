@@ -116,6 +116,7 @@ $(document).ready(function(){
             setTimeout(() => {
                 $('body').click();
             }, 200);
+            display_search();
             $('#loading').hide();
         }
     });
