@@ -3,8 +3,6 @@
 <link rel="stylesheet" href="/css/inc/bootstrap4.min.css">
 <link rel="stylesheet" href="/css/inc/bootstrap5.min.css">
 <link rel="stylesheet" href="/css/inc/bootstrap-icons.css">
-{{-- <link rel="stylesheet" href="/css/inc/jquery.dataTables.min.css"> --}}
-{{-- <link rel="stylesheet" href="/css/inc/buttons.dataTables.min.css"> --}}
 <link href="/DataTables/datatables.min.css" rel="stylesheet"/>
 <link href="/fontawesome-free-6.2.0-web/css/all.min.css" rel="stylesheet" type="text/css"/>
 <link href="/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>

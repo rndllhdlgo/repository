@@ -14,21 +14,19 @@ class CheckIpAddress
         $checkIp = Ipaddress::where('ipaddress', $userIp)->first();
         if (!$checkIp) {
             Ipaddress::Create([
-                'ipaddress' => $userIp
+                'ipaddress' => $userIp,
+                'repository' => now()
             ]);
         }
         else{
             $checkIp->update([
                 'ipaddress' => $userIp,
-                'updated_at' => now()
+                'repository' => now()
             ]);
         }
-        // Get the list of allowed IP addresses from the configuration
         $allowedIps = Config::get('ip_whitelist.allowed_ips');
-        // return $next($request);
 
-        // Check if the user's IP address is in the allowed list
-        if (in_array($userIp, $allowedIps)) {
+        if(in_array($userIp, $allowedIps)){
             return $next($request);
         }
         abort(403, 'Unauthorized IP address');

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ipaddress extends Model
 {
-    protected $connection = 'mysql';
+    protected $connection = 'checkip';
     protected $table = 'ipaddress';
     // public $incrementing = false;
     // public $timestamps = false;
