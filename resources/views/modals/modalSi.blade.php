@@ -1,4 +1,4 @@
-<div id="siModal" class="modal fade" data-bs-focus="false" style="height: 100vh;">
+<div id="siModal" class="modal fade" data-bs-focus="false" style="height: auto;">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-default">
@@ -112,11 +112,11 @@
                             <div class="row">
                                 <div class="col">
                                     @role('ADMIN')
-                                        <div class="mr-auto">
+                                        <span class="mr-auto">
                                             <button type="button" id="btnApprove" class="btn btn-success" style="display:none;"><i class="fas fa-check"></i> <b>VALID</b></button>
                                             <button type="button" id="btnDisapprove" class="btn btn-danger" style="display:none;"><i class="fa-solid fa-xmark"></i> <b>INVALID</b></button>
                                             <button type="button" id="btnReturn" class="btn btn-danger" style="display:none;"><i class="fa-solid fa-share fa-flip-horizontal"></i> <b>RETURN TO ENCODER</b></button>
-                                        </div>
+                                        </span>
                                     @endrole
                                     <button type="reset"  id="btnClear" class="btn btn-primary float-end bp"><i class="fas fa-eraser"></i> CLEAR</button>
                                     <button type="button" id="btnSave"  class="btn btn-primary float-end bp btnRequired"><i class="fas fa-save"></i> SAVE</button>
