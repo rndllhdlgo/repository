@@ -720,7 +720,7 @@ function formRestrictions(data){
         }
     }
 
-    if(current_role == 'BOSS'){
+    if(current_role == 'BOSS' || current_role == 'VIEWER'){
         $('.form_disable').prop('disabled', true);
         setTimeout(() => {
             $('.divReplaceFile').hide();
