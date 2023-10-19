@@ -164,12 +164,26 @@ function btnAddUser(){
 
 setInterval(() => {
     if($('#department').val() == 'SUPERUSER'){
-        $('.superuser').show();
-        $('.user').hide();
+        $('.admin').removeClass('d-none');
+        $('.encoder').addClass('d-none');
+        $('.viewer').addClass('d-none');
+        $('.boss').removeClass('d-none');
+    }
+    else if($('#department').val() == 'SALES'){
+        $('.admin').addClass('d-none');
+        $('.encoder').addClass('d-none');
+        $('.viewer').removeClass('d-none');
+        $('.boss').addClass('d-none');
     }
     else{
-        $('.superuser').hide();
-        $('.user').show();
+        $('.admin').removeClass('d-none');
+        $('.encoder').removeClass('d-none');
+        $('.viewer').removeClass('d-none');
+        $('.boss').addClass('d-none');
+    }
+
+    if($('#role option:selected').hasClass('d-none')){
+        $('#role').val('');
     }
 }, 0);
 

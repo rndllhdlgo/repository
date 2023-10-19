@@ -37,6 +37,7 @@
                             <option value="SUPERUSER" style="color: Black;">SUPERUSER</option>
                             <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
                             <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
+                            <option value="SALES" style="color: Black;">SALES</option>
                         </select>
                         <label for="department" class="formlabel form-label">DEPARTMENT</label>
                     </div>
@@ -45,10 +46,10 @@
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="role" name="role">
                             <option value="" selected disabled style="color: Gray;">SELECT USER LEVEL</option>
-                            <option value="1" style="color: Black;">ADMIN</option>
-                            <option value="2" style="color: Black;" class="user">ENCODER</option>
-                            <option value="3" style="color: Black;" class="user">VIEWER</option>
-                            <option value="4" style="color: Black;" class="superuser">BOSS</option>
+                            <option value="1" style="color: Black;" class="admin">ADMIN</option>
+                            <option value="2" style="color: Black;" class="encoder">ENCODER</option>
+                            <option value="3" style="color: Black;" class="viewer">VIEWER</option>
+                            <option value="4" style="color: Black;" class="boss">BOSS</option>
                         </select>
                         <label for="role" class="formlabel form-label">USER LEVEL</label>
                     </div>
