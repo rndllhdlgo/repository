@@ -20,25 +20,27 @@
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
                 </td>
                 <td>
-                    <select class="form-control filter-select form-select" data-column="2" style="border:1px solid #808080">
-                        <option value="" selected></option>
-                        {{-- <option value="ADMIN" style="color: Black;">ADMIN</option> --}}
-                        <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
-                        <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
-                        <option value="BOSS" style="color: Black;">BOSS</option>
-                    </select>
+                    <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
                 </td>
                 <td>
                     <select class="form-control filter-select form-select" data-column="3" style="border:1px solid #808080">
                         <option value="" selected></option>
-                        <option value="ADMIN" style="color: Black;">ADMIN</option>
-                        <option value="ENCODER" style="color: Black;">ENCODER</option>
-                        <option value="VIEWER" style="color: Black;">VIEWER</option>
-                        <option value="BOSS" style="color: Black;">BOSS</option>
+                        <option value="SUPERUSER" style="color: Black;">SUPERUSER</option>
+                        <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
+                        <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
                     </select>
                 </td>
                 <td>
-                    <select class="form-control form-select filter-select" data-column="4" style="border:1px solid #808080">
+                    <select class="form-control filter-select form-select" data-column="4" style="border:1px solid #808080">
+                        <option value="" selected></option>
+                        <option value="ADMIN" style="color: Black;">ADMIN</option>
+                        <option value="ENCODER" style="color: Black;">ENCODER</option>
+                        <option value="VIEWER" style="color: Black;">VIEWER</option>
+                        <option value="BOSS" style="color: Black;" class="superuser">BOSS</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control form-select filter-select" data-column="5" style="border:1px solid #808080">
                         <option value="" selected></option>
                         <option value="ACTIVE" style="font-weight: bold; color: #2ab934;">ACTIVE</option>
                         <option value="INACTIVE" style="font-weight: bold; color: #ca2222;">INACTIVE</option>
@@ -48,6 +50,7 @@
             <tr>
                 <th>FULL NAME</th>
                 <th>EMAIL ADDRESS</th>
+                <th>COMPANY</th>
                 <th>DEPARTMENT</th>
                 <th>USER LEVEL</th>
                 <th style="width: 120px;">STATUS</th>

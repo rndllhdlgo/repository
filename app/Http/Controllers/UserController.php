@@ -31,9 +31,9 @@ class UserController extends Controller
     }
 
     public function users_data(){
-        $list = User::query()->selectRaw('users.id AS user_id, users.name AS user_name, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
+        $list = User::query()->selectRaw('users.id AS user_id, users.name AS user_name, users.company, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
             ->join('roles', 'roles.id', 'users.userlevel');
-            if(auth()->user()->department != 'ADMIN'){
+            if(auth()->user()->department != 'SUPERUSER'){
                 $list->where('department', auth()->user()->department);
             }
             $list->orderBy('user_status', 'ASC')
@@ -81,6 +81,7 @@ class UserController extends Controller
         $users = new User;
         $users->name = $name;
         $users->email = strtolower($request->email);
+        $users->company = $request->company;
         $users->department = $request->department;
         $users->password = Hash::make($password);
         $users->userlevel = $request->role;
@@ -130,28 +131,83 @@ class UserController extends Controller
 
         $name = strtoupper($request->name);
         $email = strtolower($request->email);
+        $company = $request->company;
         $department = $request->department;
         $userlevel = $request->role;
 
         $name_orig = User::where('id',$request->user_id)->first()->name;
         $email_orig = User::where('id',$request->user_id)->first()->email;
+        $company_orig = User::where('id',$request->user_id)->first()->company;
         $department_orig = User::where('id',$request->user_id)->first()->department;
         $userlevel_orig = User::where('id',$request->user_id)->first()->userlevel;
 
+        $changes = 0;
         if($name != $name_orig){
             $name_change = "【Full Name: FROM '$name_orig' TO '$name'】";
+            $changes++;
         }
         else{
             $name_change = NULL;
         }
         if($email != $email_orig){
             $email_change = "【Email: FROM '$email_orig' TO '$email'】";
+            $changes++;
         }
         else{
             $email_change = NULL;
         }
+        if($company != $company_orig){
+            if($company_orig == '1,2,3'){
+                $company1 = 'APSOFT, IDSI, PLSI';
+            }
+            if($company_orig == '1,2'){
+                $company1 = 'APSOFT, IDSI';
+            }
+            if($company_orig == '2,3'){
+                $company1 = 'IDSI, PLSI';
+            }
+            if($company_orig == '1,3'){
+                $company1 = 'APSOFT, PLSI';
+            }
+            if($company_orig == '1'){
+                $company1 = 'APSOFT';
+            }
+            if($company_orig == '2'){
+                $company1 = 'IDSI';
+            }
+            if($company_orig == '3'){
+                $company1 = 'PLSI';
+            }
+            if($company == '1,2,3'){
+                $company2 = 'APSOFT, IDSI, PLSI';
+            }
+            if($company == '1,2'){
+                $company2 = 'APSOFT, IDSI';
+            }
+            if($company == '2,3'){
+                $company2 = 'IDSI, PLSI';
+            }
+            if($company == '1,3'){
+                $company2 = 'APSOFT, PLSI';
+            }
+            if($company == '1'){
+                $company2 = 'APSOFT';
+            }
+            if($company == '2'){
+                $company2 = 'IDSI';
+            }
+            if($company == '3'){
+                $company2 = 'PLSI';
+            }
+            $company_change = "【Company: FROM '$company1' TO '$company2'】";
+            $changes++;
+        }
+        else{
+            $company_change = NULL;
+        }
         if($department != $department_orig){
             $department_change = "【Department: FROM '$department_orig' TO '$department'】";
+            $changes++;
         }
         else{
             $department_change = NULL;
@@ -160,17 +216,19 @@ class UserController extends Controller
             $role_orig = Role::where('id', $userlevel_orig)->first()->name;
             $role_new = Role::where('id', $userlevel)->first()->name;
             $userlevel_change = "【User Level: FROM '$role_orig' TO '$role_new'】";
+            $changes++;
         }
         else{
             $userlevel_change = NULL;
         }
 
-        if($name_change == NULL && $email_change == NULL && $department_change == NULL && $userlevel_change == NULL){
+        if($changes == 0){
             return response('no changes');
         }
 
         $users = User::find($request->input('user_id'));
         $users->name = $name;
+        $users->company = $company;
         $users->department = $department;
         $users->email = $email;
         $users->userlevel = $userlevel;
@@ -186,7 +244,7 @@ class UserController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "UPDATED USER: User successfully updated details of $name with the following CHANGES: $name_change $email_change $department_change $userlevel_change.";
+            $userlogs->activity = "UPDATED USER: User successfully updated details of $name with the following CHANGES: $name_change $email_change $company_change $department_change $userlevel_change.";
             $userlogs->save();
         }
         return response($result);

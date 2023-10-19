@@ -1,5 +1,6 @@
 var current_location = $(location).attr('pathname')+window.location.search;
 var current_user = $('#current_user').val();
+var current_company = $('#current_company').val();
 var current_department = $('#current_department').val();
 var current_role = $('#current_role').val();
 var current_date = $('#current_date').val();
@@ -91,6 +92,11 @@ $('body').on('cut paste', function(){
         $(':focus').keyup();
     }, current_timeout);
 });
+
+function chosen_select(id){
+    $(id).chosen();
+    $(id+'_chosen').css({'width':'100%'});
+}
 
 function formatDate(dateString){
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

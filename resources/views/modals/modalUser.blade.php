@@ -20,14 +20,23 @@
                         <label for="email" class="formlabel form-label">EMAIL ADDRESS</label>
                     </div>
                 </div>
+                <div class="mb-4 classCompany">
+                    <div class="f-outline">
+                        <select class="forminput form-control form-select requiredField bg-white" id="company" name="company" data-placeholder="Select Company Name/s" multiple>
+                            <option value="1" style="color: Black;">APSOFT</option>
+                            <option value="2" style="color: Black;">IDSI</option>
+                            <option value="3" style="color: Black;">PLSI</option>
+                        </select>
+                        <label for="company" class="formlabel form-label">COMPANY</label>
+                    </div>
+                </div>
                 <div class="mb-4 classDepartment">
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="department" name="department">
                             <option value="" selected disabled style="color: Gray;">SELECT DEPARTMENT</option>
-                            <option value="ADMIN" style="color: Black;">ADMIN</option>
+                            <option value="SUPERUSER" style="color: Black;">SUPERUSER</option>
                             <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
                             <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
-                            <option value="BOSS" style="color: Black;">BOSS</option>
                         </select>
                         <label for="department" class="formlabel form-label">DEPARTMENT</label>
                     </div>
@@ -36,10 +45,10 @@
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="role" name="role">
                             <option value="" selected disabled style="color: Gray;">SELECT USER LEVEL</option>
-                            <option value="1" style="color: Black;" class="removeOption">ADMIN</option>
-                            <option value="2" style="color: Black;">ENCODER</option>
-                            <option value="3" style="color: Black;">VIEWER</option>
-                            <option value="4" style="color: Black;" class="removeOption" id="optionBoss">BOSS</option>
+                            <option value="1" style="color: Black;">ADMIN</option>
+                            <option value="2" style="color: Black;" class="user">ENCODER</option>
+                            <option value="3" style="color: Black;" class="user">VIEWER</option>
+                            <option value="4" style="color: Black;" class="superuser">BOSS</option>
                         </select>
                         <label for="role" class="formlabel form-label">USER LEVEL</label>
                     </div>

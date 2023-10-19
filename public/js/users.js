@@ -17,6 +17,32 @@ $(document).ready(function(){
         columns: [
             { data: 'user_name' },
             { data: 'user_email' },
+            {
+                data: 'company',
+                "render": function(data, type, row, meta){
+                    if(data == '1,2,3'){
+                        return 'APSOFT, IDSI, PLSI';
+                    }
+                    if(data == '1,2'){
+                        return 'APSOFT, IDSI';
+                    }
+                    if(data == '2,3'){
+                        return 'IDSI, PLSI';
+                    }
+                    if(data == '1,3'){
+                        return 'APSOFT, PLSI';
+                    }
+                    if(data == '1'){
+                        return 'APSOFT';
+                    }
+                    if(data == '2'){
+                        return 'IDSI';
+                    }
+                    if(data == '3'){
+                        return 'PLSI';
+                    }
+                }
+            },
             { data: 'department' },
             { data: 'role_name' },
             {
@@ -25,7 +51,7 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
-                    if(current_department != 'ADMIN' && row.role == '1'){
+                    if(current_department != 'SUPERADMIN' && row.role == '1'){
                         if(data == 'ACTIVE'){
                             return `<div style="width: 120px !important;"><center class="text-success"><b>${data}</b></center></div>`;
                         }
@@ -47,6 +73,7 @@ $(document).ready(function(){
         order: [],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
+            chosen_select('#company');
             $('#loading').hide();
         }
     });
@@ -127,47 +154,39 @@ $('#btnClear').on('click', function(){
 function btnAddUser(){
     $('.req').hide();
     $('#name').val('');
+    $('#company').val('');
+    $('#company').trigger('chosen:updated');
     $('#department').val('');
     $('#email').val('');
     $('#role').val('');
     $('.classRole').show();
 }
 
-$('#department').on('change',function(){
-    if($('#department').val() == 'BOSS'){
-        $('.classRole').hide();
-        $('#optionBoss').show();
-        $('#role').val('4');
+setInterval(() => {
+    if($('#department').val() == 'SUPERUSER'){
+        $('.superuser').show();
+        $('.user').hide();
     }
     else{
-        $('.classRole').show();
-        $('#optionBoss').hide();
-        $('#role').val('');
+        $('.superuser').hide();
+        $('.user').show();
     }
-});
+}, 0);
 
 $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
-    if(current_department != 'ADMIN' && data.role == '1'){
+    if(current_department != 'SUPERUSER' && data.role == '1'){
         return false;
     }
     $('.req').hide();
     $('#user_id').val(data.user_id);
     $('#name').val(data.user_name);
+    $('#company').val(data.company.split(','));
+    $('#company').trigger('chosen:updated');
     $('#department').val(data.department);
     $('#email').val(data.user_email);
     $('#role').val(data.role);
-
-    if($('#department').val() == 'BOSS'){
-        $('.classRole').hide();
-        $('#optionBoss').show();
-        $('#role').val('4');
-    }
-    else{
-        $('.classRole').show();
-        $('#optionBoss').hide();
-    }
 
     $('#modal_title').html('UPDATE USER');
     $('#btnSave').hide();
@@ -177,6 +196,7 @@ $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
 
 $('#btnSave').on('click',function(){
     var name = $.trim($('#name').val());
+    var company = $('#company').val().join(',');
     var department = $.trim($('#department').val());
     var email = $.trim($('#email').val());
     var role = $('#role').val();
@@ -218,8 +238,9 @@ $('#btnSave').on('click',function(){
                             data:{
                                 name: name,
                                 email: email,
-                                role: role,
+                                company: company,
                                 department: department,
+                                role: role,
                             },
                             success: function(data){
                                 if(data == 'true'){
@@ -252,6 +273,7 @@ $('#btnSave').on('click',function(){
 $('#btnUpdate').on('click',function(){
     var user_id = $('#user_id').val();
     var name = $.trim($('#name').val());
+    var company = $('#company').val().join(',');
     var department = $.trim($('#department').val());
     var email = $.trim($('#email').val());
     var role = $('#role').val();
@@ -292,8 +314,9 @@ $('#btnUpdate').on('click',function(){
                             data:{
                                 user_id: user_id,
                                 name: name,
-                                department: department,
                                 email: email,
+                                company: company,
+                                department: department,
                                 role: role,
                             },
                             success: function(data){
@@ -325,11 +348,3 @@ $('#btnUpdate').on('click',function(){
         }
     });
 });
-
-setInterval(() => {
-    if(current_department != 'ADMIN'){
-        $('.classDepartment').hide();
-        $('.removeOption').remove();
-        $('#department').val(current_department);
-    }
-}, 0);
