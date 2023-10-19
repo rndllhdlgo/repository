@@ -291,8 +291,8 @@ $(document).on('click','table.orTable tbody tr',function(){
     $('#entry_id').val(data.id);
     $('#official_receipt').val(data.official_receipt);
     $('#company').val(data.company);
-    $('#client_name').val(data.client_name);
-    $('#branch_name').val(data.branch_name);
+    $('#client_name').val(decodeHtml(data.client_name));
+    $('#branch_name').val(decodeHtml(data.branch_name));
     $('#uploaded_by').val(data.uploaded_by);
     $('#uploaded_by_div').show();
     $('#uploaded_by').prop('disabled', true);

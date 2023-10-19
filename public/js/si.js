@@ -307,9 +307,9 @@ $(document).on('click','table.siTable tbody tr',function(){
     $('#entry_id').val(data.id);
     $('#sales_invoice').val(data.sales_invoice);
     $('#company').val(data.company);
-    $('#client_name').val(data.client_name);
-    $('#business_name').val(data.business_name);
-    $('#branch_name').val(data.branch_name);
+    $('#client_name').val(decodeHtml(data.client_name));
+    $('#business_name').val(decodeHtml(data.business_name));
+    $('#branch_name').val(decodeHtml(data.branch_name));
     $('#uploaded_by').val(data.uploaded_by);
     $('#uploaded_by_div').show();
     $('#uploaded_by').prop('disabled', true);
