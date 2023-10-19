@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\PdfToText\Pdf;
 use thiagoalessio\TesseractOCR\TesseractOCR;
+use App\Models\Company;
 use App\Models\SalesInvoice;
 use App\Models\CollectionReceipt;
 use App\Models\BillingStatement;
@@ -21,6 +22,10 @@ class EventController extends Controller
     public function __construct()
     {
        $this->middleware('auth');
+    }
+
+    public function company_value(){
+        return Company::whereIn('id', explode(',', auth()->user()->company))->pluck('company')->toArray();
     }
 
     public function save_si(Request $request){
@@ -906,6 +911,7 @@ class EventController extends Controller
                 $sql = DeliveryReceipt::where('id', $request->entry_id)
                         ->update([
                         'delivery_receipt' => $request->delivery_receipt,
+                        'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
                         'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
@@ -1397,6 +1403,7 @@ class EventController extends Controller
             $sql = DeliveryReceipt::where('id', $request->entry_id)
                         ->update([
                         'delivery_receipt' => $request->delivery_receipt,
+                        'company' => $request->company,
                         'client_name' => strtoupper($request->client_name),
                         'business_name' => strtoupper($request->business_name),
                         'branch_name' => strtoupper($request->branch_name),
@@ -1618,7 +1625,7 @@ class EventController extends Controller
             $si_update = SalesInvoice::latest('updated_at')->first()->updated_at;
         }
 
-        $si_datas = SalesInvoice::all();
+        $si_datas = SalesInvoice::whereIn('company', $this->company_value())->get();
         $si_count = 0;
         $count = 0;
 
@@ -1654,7 +1661,7 @@ class EventController extends Controller
             $cr_update = CollectionReceipt::latest('updated_at')->first()->updated_at;
         }
 
-        $cr_datas = CollectionReceipt::all();
+        $cr_datas = CollectionReceipt::whereIn('company', $this->company_value())->get();
         $cr_count = 0;
         $count = 0;
 
@@ -1690,7 +1697,7 @@ class EventController extends Controller
             $bs_update = BillingStatement::latest('updated_at')->first()->updated_at;
         }
 
-        $bs_datas = BillingStatement::all();
+        $bs_datas = BillingStatement::whereIn('company', $this->company_value())->get();
         $bs_count = 0;
         $count = 0;
 
@@ -1726,7 +1733,7 @@ class EventController extends Controller
             $or_update = OfficialReceipt::latest('updated_at')->first()->updated_at;
         }
 
-        $or_datas = OfficialReceipt::all();
+        $or_datas = OfficialReceipt::whereIn('company', $this->company_value())->get();
         $or_count = 0;
         $count = 0;
 
@@ -1762,7 +1769,7 @@ class EventController extends Controller
             $dr_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
         }
 
-        $dr_datas = DeliveryReceipt::all();
+        $dr_datas = DeliveryReceipt::whereIn('company', $this->company_value())->get();
         $dr_count = 0;
         $count = 0;
 

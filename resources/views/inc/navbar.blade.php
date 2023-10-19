@@ -13,7 +13,7 @@
 					<i class="fa fa-user-circle fa-4x p-2" aria-hidden="true" role="button" onclick="$('#lblChangePassword').click()"></i>
 				</td>
 			</tr>
-			<tr>
+			<tr id="current_companies" title="">
 				<td class="m-0 p-0">
 					<b>{{ auth()->user()->name }}</b>&nbsp;
                     [{{ auth()->user()->department }} / {{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}]

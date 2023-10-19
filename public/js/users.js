@@ -348,3 +348,7 @@ $('#btnUpdate').on('click',function(){
         }
     });
 });
+
+$(document).on('click', '#company_chosen', function() {
+    $(this).focusout();
+});

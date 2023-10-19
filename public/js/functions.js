@@ -81,6 +81,28 @@ $(document).ready(function(){
         today_DateFormat = moment(today_DateFormat, 'YYYY-MM-DD').format('dddd, MMMM DD, YYYY');
         current_datetime.textContent = today_DateFormat + ', ' + today_Time;
     }
+
+    if(current_company == '1,2,3'){
+        $('#current_companies').attr('title', 'APSOFT, IDSI, PLSI');
+    }
+    if(current_company == '1,2'){
+        $('#current_companies').attr('title', 'APSOFT, IDSI');
+    }
+    if(current_company == '2,3'){
+        $('#current_companies').attr('title', 'IDSI, PLSI');
+    }
+    if(current_company == '1,3'){
+        $('#current_companies').attr('title', 'APSOFT, PLSI');
+    }
+    if(current_company == '1'){
+        $('#current_companies').attr('title', 'APSOFT');
+    }
+    if(current_company == '2'){
+        $('#current_companies').attr('title', 'IDSI');
+    }
+    if(current_company == '3'){
+        $('#current_companies').attr('title', 'PLSI');
+    }
 });
 
 $(document).on('click', '.page-reload', function(){
@@ -241,9 +263,3 @@ $(document).on('focusout', '.requiredField', function(){
 $(document).ready(function(){
     $('.filter-input').attr('title', 'SEARCH');
 });
-
-// $(document).on('keypress', '.spChar', function(e){
-//     var k;
-//     document.all ? k = e.keyCode : k = e.which;
-//     return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8  || k == 13 || (k >= 48 && k <= 57));
-// });
