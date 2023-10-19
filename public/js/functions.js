@@ -98,6 +98,30 @@ function chosen_select(id){
     $(id+'_chosen').css({'width':'100%'});
 }
 
+setInterval(() => {
+    $('.multiple_field').each(function(){
+        if($(this).val().length == 0 && $(this).hasClass('requiredField')){
+            $(this).next('.chosen-container').addClass('requiredField requiredInput redBorder');
+        }
+        else{
+            $(this).next('.chosen-container').removeClass('requiredField requiredInput redBorder');
+            var spanClass = $(this).attr('id') + '_chosen';
+            $('.className' + spanClass).remove();
+        }
+    });
+
+    $('.single_field').each(function(){
+        if(!$(this).val() && $(this).hasClass('requiredField')){
+            $(this).next('.chosen-container').addClass('requiredField requiredInput redBorder');
+        }
+        else{
+            $(this).next('.chosen-container').removeClass('requiredField requiredInput redBorder');
+            var spanClass = $(this).attr('id') + '_chosen';
+            $('.className' + spanClass).remove();
+        }
+    });
+}, 0);
+
 function formatDate(dateString){
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var date = new Date(dateString);

@@ -22,7 +22,7 @@
                 </div>
                 <div class="mb-4 classCompany">
                     <div class="f-outline">
-                        <select class="forminput form-control form-select requiredField bg-white" id="company" name="company" data-placeholder="Select Company Name/s" multiple>
+                        <select class="forminput form-control form-select requiredField multiple_field bg-white" id="company" name="company" data-placeholder="Select Company Name/s" multiple>
                             <option value="1" style="color: Black;">APSOFT</option>
                             <option value="2" style="color: Black;">IDSI</option>
                             <option value="3" style="color: Black;">PLSI</option>
