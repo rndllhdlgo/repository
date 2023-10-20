@@ -76,8 +76,8 @@
 		</ul>
 	</div>
 </nav>
-
 <input type="hidden" id="current_user" value="{{auth()->user()->id}}" readonly>
+<input type="hidden" id="current_updated_at" value="{{(new DateTime(auth()->user()->updated_at))->modify('-8 hours')->format('Y-m-d\TH:i:s.u\Z')}}" readonly>
 <input type="hidden" id="current_user_name" value="{{auth()->user()->name}}" readonly>
 <input type="hidden" id="current_company" value="{{auth()->user()->company}}" readonly>
 <input type="hidden" id="current_department" value="{{auth()->user()->department}}" readonly>

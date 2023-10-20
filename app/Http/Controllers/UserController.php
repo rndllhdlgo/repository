@@ -197,6 +197,7 @@ class UserController extends Controller
         else{
             if($companyChanges->isNotEmpty()){
                 $company_change = "【Company: FROM '$user' TO '$updated_user'】";
+                User::where('id', $request->input('user_id'))->update(['updated_at' => date('Y-m-d H:i:s')]);
                 $changes++;
             }
             else{

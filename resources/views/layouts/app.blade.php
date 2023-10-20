@@ -110,6 +110,21 @@
                 }, 0);
             </script>
         @endif
+        <script>
+            setInterval(function(){
+                if($('#loading').is(':hidden') && standby == false){
+                    $.ajax({
+                        url: "/user_change",
+                        success: function(data){
+                            if(data != $('#current_updated_at').val()){
+                                $('#current_updated_at').val(data);
+                                window.location.reload();
+                            }
+                        }
+                    });
+                }
+            }, 1000);
+        </script>
     @endif
     <main class="container-fluid content">
         @yield('content')

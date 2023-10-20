@@ -14,6 +14,7 @@ use App\Models\DeliveryReceipt;
 use App\Models\UserLogs;
 use App\Models\Role;
 use App\Models\RemarkLogs;
+use App\Models\User;
 use Spatie\PdfToImage\Pdf as Jpg;
 use Carbon\Carbon;
 
@@ -1816,5 +1817,12 @@ class EventController extends Controller
             'or_update' => $or_update, 'or_count' => $or_count,
             'dr_update' => $dr_update, 'dr_count' => $dr_count,
         );
+    }
+
+    public function user_change(){
+        if(User::count() == 0){
+            return 'NULL';
+        }
+        return User::where('id', auth()->user()->id)->first()->updated_at;
     }
 }
