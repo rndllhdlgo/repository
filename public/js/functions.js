@@ -1,6 +1,5 @@
 var current_location = $(location).attr('pathname')+window.location.search;
 var current_user = $('#current_user').val();
-var current_company = $('#current_company').val();
 var current_department = $('#current_department').val();
 var current_role = $('#current_role').val();
 var current_date = $('#current_date').val();
@@ -80,28 +79,6 @@ $(document).ready(function(){
         var today_DateFormat = today_Year + '-' + today_Month + '-' + today_Day;
         today_DateFormat = moment(today_DateFormat, 'YYYY-MM-DD').format('dddd, MMMM DD, YYYY');
         current_datetime.textContent = today_DateFormat + ', ' + today_Time;
-    }
-
-    if(current_company == '1,2,3'){
-        $('#current_companies').attr('title', 'APSOFT, IDSI, PLSI');
-    }
-    if(current_company == '1,2'){
-        $('#current_companies').attr('title', 'APSOFT, IDSI');
-    }
-    if(current_company == '2,3'){
-        $('#current_companies').attr('title', 'IDSI, PLSI');
-    }
-    if(current_company == '1,3'){
-        $('#current_companies').attr('title', 'APSOFT, PLSI');
-    }
-    if(current_company == '1'){
-        $('#current_companies').attr('title', 'APSOFT');
-    }
-    if(current_company == '2'){
-        $('#current_companies').attr('title', 'IDSI');
-    }
-    if(current_company == '3'){
-        $('#current_companies').attr('title', 'PLSI');
     }
 });
 

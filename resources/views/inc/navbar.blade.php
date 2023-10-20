@@ -13,7 +13,7 @@
 					<i class="fa fa-user-circle fa-4x p-2" aria-hidden="true" role="button" onclick="$('#lblChangePassword').click()"></i>
 				</td>
 			</tr>
-			<tr id="current_companies" title="">
+			<tr id="current_companies" title="{{ implode(', ', auth()->user()->companies->pluck('company')->all())}}">
 				<td class="m-0 p-0">
 					<b>{{ auth()->user()->name }}</b>&nbsp;
                     [{{ auth()->user()->department }} / {{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}]
@@ -79,7 +79,6 @@
 <input type="hidden" id="current_user" value="{{auth()->user()->id}}" readonly>
 <input type="hidden" id="current_updated_at" value="{{(new DateTime(auth()->user()->updated_at))->modify('-8 hours')->format('Y-m-d\TH:i:s.u\Z')}}" readonly>
 <input type="hidden" id="current_user_name" value="{{auth()->user()->name}}" readonly>
-<input type="hidden" id="current_company" value="{{auth()->user()->company}}" readonly>
 <input type="hidden" id="current_department" value="{{auth()->user()->department}}" readonly>
 <input type="hidden" id="current_role" value="{{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}" readonly>
 <input type="hidden" id="current_date" value="{{date('Y-m-d')}}" readonly>
