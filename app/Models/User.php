@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CompanyPermission;
 
 class User extends Authenticatable
 {
@@ -47,5 +48,10 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token){
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_has_permission', 'user_id', 'company_id');
     }
 }

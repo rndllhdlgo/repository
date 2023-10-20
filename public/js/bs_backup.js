@@ -8,7 +8,7 @@ $(document).ready(function(){
             left: 3,
         },
         dom: 'ltrip',
-        aLengthMenu:[[10,25,50,100,500,1000,-1], [10,25,50,100,500,1000,"All"]],
+        aLengthMenu:[[10,25,50,100, -1], [10,25,50,100, "All"]],
         language: {
             info: "Showing _START_ to _END_ of _TOTAL_ BILLING STATEMENT",
             lengthMenu: "Show _MENU_ BILLING STATEMENT",

@@ -13,6 +13,8 @@ use Yajra\Datatables\Datatables;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\UserLogs;
+use App\Models\CompanyPermission;
+use App\Models\Company;
 
 class UserController extends Controller
 {
@@ -30,9 +32,28 @@ class UserController extends Controller
         }
     }
 
-    public function users_data(){
+    public function users_dataX(){
         $list = User::query()->selectRaw('users.id AS user_id, users.name AS user_name, users.company, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
             ->join('roles', 'roles.id', 'users.userlevel');
+            if(auth()->user()->department != 'SUPERUSER'){
+                $list->where('department', auth()->user()->department);
+            }
+            $list->orderBy('user_status', 'ASC')
+            ->orderBy('role_name', 'ASC')
+            ->orderBy('user_name', 'ASC')
+            ->orderBy('users.id', 'ASC')
+            ->get();
+        return DataTables::of($list)->make(true);
+    }
+
+    public function users_data(){
+        $list = User::query()->selectRaw('users.id, users.id AS user_id, users.name AS user_name, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
+            ->join('roles', 'roles.id', 'users.userlevel')
+            ->with([
+                'companies' => function ($query){
+                    $query->select('company_id','company');
+                }
+            ]);
             if(auth()->user()->department != 'SUPERUSER'){
                 $list->where('department', auth()->user()->department);
             }
@@ -89,6 +110,10 @@ class UserController extends Controller
         $sql = $users->save();
         $id = $users->id;
         $users->assignRole($request->role);
+        $company_id = explode(',', $request->company);
+        foreach($company_id as $id){
+            CompanyPermission::create(['user_id' => $users->id, 'company_id' => $id]);
+        }
 
         if(!$sql){
             $result = 'false';
@@ -131,13 +156,11 @@ class UserController extends Controller
 
         $name = strtoupper($request->name);
         $email = strtolower($request->email);
-        $company = $request->company;
         $department = $request->department;
         $userlevel = $request->role;
 
         $name_orig = User::where('id',$request->user_id)->first()->name;
         $email_orig = User::where('id',$request->user_id)->first()->email;
-        $company_orig = User::where('id',$request->user_id)->first()->company;
         $department_orig = User::where('id',$request->user_id)->first()->department;
         $userlevel_orig = User::where('id',$request->user_id)->first()->userlevel;
 
@@ -156,55 +179,31 @@ class UserController extends Controller
         else{
             $email_change = NULL;
         }
-        if($company != $company_orig){
-            if($company_orig == '1,2,3'){
-                $company1 = 'APSOFT, IDSI, PLSI';
-            }
-            if($company_orig == '1,2'){
-                $company1 = 'APSOFT, IDSI';
-            }
-            if($company_orig == '2,3'){
-                $company1 = 'IDSI, PLSI';
-            }
-            if($company_orig == '1,3'){
-                $company1 = 'APSOFT, PLSI';
-            }
-            if($company_orig == '1'){
-                $company1 = 'APSOFT';
-            }
-            if($company_orig == '2'){
-                $company1 = 'IDSI';
-            }
-            if($company_orig == '3'){
-                $company1 = 'PLSI';
-            }
-            if($company == '1,2,3'){
-                $company2 = 'APSOFT, IDSI, PLSI';
-            }
-            if($company == '1,2'){
-                $company2 = 'APSOFT, IDSI';
-            }
-            if($company == '2,3'){
-                $company2 = 'IDSI, PLSI';
-            }
-            if($company == '1,3'){
-                $company2 = 'APSOFT, PLSI';
-            }
-            if($company == '1'){
-                $company2 = 'APSOFT';
-            }
-            if($company == '2'){
-                $company2 = 'IDSI';
-            }
-            if($company == '3'){
-                $company2 = 'PLSI';
-            }
-            $company_change = "【Company: FROM '$company1' TO '$company2'】";
+
+        $user = User::find($request->input('user_id'))->companies->pluck('company');
+        $company_old = CompanyPermission::where('user_id', $request->input('user_id'))->count();
+        CompanyPermission::where('user_id', $request->input('user_id'))->delete();
+        $company_id = explode(',', $request->company);
+        foreach($company_id as $id){
+            CompanyPermission::create(['user_id' => $request->input('user_id'), 'company_id' => $id]);
+        }
+        $updated_user = User::find($request->input('user_id'))->companies->pluck('company');
+        $company_new = CompanyPermission::where('user_id', $request->input('user_id'))->count();
+        $companyChanges = $user->diff($updated_user);
+        if($company_old < $company_new){
+            $company_change = "【Company: FROM '$user' TO '$updated_user'】";
             $changes++;
         }
         else{
-            $company_change = NULL;
+            if($companyChanges->isNotEmpty()){
+                $company_change = "【Company: FROM '$user' TO '$updated_user'】";
+                $changes++;
+            }
+            else{
+                $company_change = NULL;
+            }
         }
+
         if($department != $department_orig){
             $department_change = "【Department: FROM '$department_orig' TO '$department'】";
             $changes++;
@@ -228,7 +227,6 @@ class UserController extends Controller
 
         $users = User::find($request->input('user_id'));
         $users->name = $name;
-        $users->company = $company;
         $users->department = $department;
         $users->email = $email;
         $users->userlevel = $userlevel;
@@ -308,5 +306,16 @@ class UserController extends Controller
         }
 
         return response($result);
+    }
+
+    public function users_company(Request $request){
+        $user = User::find('2');
+        $companies = $user->companies->pluck('company');
+
+        $company = Company::find('2');
+        $users = $company->users;
+        return $users->pluck('name');
+
+        return $company = CompanyPermission::where('user_id', 1)->where('company_id', 2)->update(['company_id' => 1]);
     }
 }

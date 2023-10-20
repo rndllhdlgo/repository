@@ -3,7 +3,7 @@ $(document).ready(function(){
     $('table.userTable').dataTable().fnDestroy();
     table = $('table.userTable').DataTable({
         dom: 'ltrip',
-        aLengthMenu:[[10,25,50,100,500,1000,-1], [10,25,50,100,500,1000,"All"]],
+        aLengthMenu:[[10,25,50,100, -1], [10,25,50,100, "All"]],
         language: {
             info: "Showing _START_ to _END_ of _TOTAL_ Users",
             lengthMenu: "Show _MENU_ Users",
@@ -18,29 +18,13 @@ $(document).ready(function(){
             { data: 'user_name' },
             { data: 'user_email' },
             {
-                data: 'company',
+                data: null,
                 "render": function(data, type, row, meta){
-                    if(data == '1,2,3'){
-                        return 'APSOFT, IDSI, PLSI';
-                    }
-                    if(data == '1,2'){
-                        return 'APSOFT, IDSI';
-                    }
-                    if(data == '2,3'){
-                        return 'IDSI, PLSI';
-                    }
-                    if(data == '1,3'){
-                        return 'APSOFT, PLSI';
-                    }
-                    if(data == '1'){
-                        return 'APSOFT';
-                    }
-                    if(data == '2'){
-                        return 'IDSI';
-                    }
-                    if(data == '3'){
-                        return 'PLSI';
-                    }
+                    var companies = [];
+                    row.companies.forEach((company,index) => {
+                        companies.push(company.company);
+                    });
+                    return companies.join(', ');
                 }
             },
             { data: 'department' },
@@ -193,10 +177,19 @@ $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
     if(current_department != 'SUPERUSER' && data.role == '1'){
         return false;
     }
+    var companies = '';
+    data.companies.forEach((company,index) => {
+        if(index < data.companies.length - 1){
+            companies += company.company_id+',';
+        }
+        else{
+            companies += company.company_id;
+        }
+    });
     $('.req').hide();
     $('#user_id').val(data.user_id);
     $('#name').val(data.user_name);
-    $('#company').val(data.company.split(','));
+    $('#company').val(companies.split(','));
     $('#company').trigger('chosen:updated');
     $('#department').val(data.department);
     $('#email').val(data.user_email);

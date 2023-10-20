@@ -9,7 +9,6 @@ class CheckIpAddress
 {
     public function handle($request, Closure $next)
     {
-        // Get the user's IP address
         $userIp = $request->ip();
         $checkIp = Ipaddress::where('ipaddress', $userIp)->first();
         if (!$checkIp) {
@@ -25,10 +24,15 @@ class CheckIpAddress
             ]);
         }
         $allowedIps = Config::get('ip_whitelist.allowed_ips');
-
         if(in_array($userIp, $allowedIps)){
             return $next($request);
         }
-        abort(403, 'Unauthorized IP address');
+
+        if(env('APP_MAINTENANCE') == 'true'){
+            abort(403, 'THIS SITE IS UNDER MAINTENANCE');
+        }
+        else{
+            abort(403, 'Unauthorized IP address');
+        }
     }
 }

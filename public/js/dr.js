@@ -15,7 +15,7 @@ $(document).ready(function(){
                 className: 'font-weight-bold'
             }
         ],
-        aLengthMenu:[[10,25,50,100,500,1000,-1], [10,25,50,100,500,1000,"All"]],
+        aLengthMenu:[[10,25,50,100, -1], [10,25,50,100, "All"]],
         language: {
             info: "Showing _START_ to _END_ of _TOTAL_ DELIVERY RECEIPT",
             lengthMenu: "Show _MENU_ DELIVERY RECEIPT",

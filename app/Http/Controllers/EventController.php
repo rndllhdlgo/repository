@@ -24,12 +24,8 @@ class EventController extends Controller
        $this->middleware('auth');
     }
 
-    public function company_value(){
-        return Company::whereIn('id', explode(',', auth()->user()->company))->pluck('company')->toArray();
-    }
-
     public function save_si(Request $request){
-        if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->count() > 0) {
+        if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->where('company', $request->company)->count() > 0) {
             return 'Already exist';
         }
 
@@ -80,15 +76,15 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice).";
+            $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice) - $request->company.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
     }
 
     public function save_cr(Request $request){
-        if(CollectionReceipt::where('collection_receipt', $request->collection_receipt)->count() > 0) {
-            return 'COLLECTION RECEIPT Already Exist';
+        if(CollectionReceipt::where('collection_receipt', $request->collection_receipt)->where('company', $request->company)->count() > 0) {
+            return 'Already exist';
         }
 
         $file = $request->file('pdf_file');
@@ -136,15 +132,15 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY ADDED COLLECTION RECEIPT ($request->collection_receipt).";
+            $userlogs->activity = "USER SUCCESSFULLY ADDED COLLECTION RECEIPT ($request->collection_receipt) - $request->company.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
     }
 
     public function save_bs(Request $request){
-        if(BillingStatement::where('billing_statement', $request->billing_statement)->count() > 0) {
-            return 'BILLING STATEMENT Already Exist';
+        if(BillingStatement::where('billing_statement', $request->billing_statement)->where('company', $request->company)->count() > 0) {
+            return 'Already exist';
         }
 
         $file = $request->file('pdf_file');
@@ -193,15 +189,15 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY ADDED BILLING STATEMENT ($request->billing_statement).";
+            $userlogs->activity = "USER SUCCESSFULLY ADDED BILLING STATEMENT ($request->billing_statement) - $request->company.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
     }
 
     public function save_or(Request $request){
-        if(OfficialReceipt::where('official_receipt', $request->official_receipt)->count() > 0) {
-            return 'OFFICIAL RECEIPT NO. Already Exist';
+        if(OfficialReceipt::where('official_receipt', $request->official_receipt)->where('company', $request->company)->count() > 0) {
+            return 'Already exist';
         }
 
         $file = $request->file('pdf_file');
@@ -248,15 +244,15 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY ADDED OFFICIAL RECEIPT ($request->official_receipt).";
+                $userlogs->activity = "USER SUCCESSFULLY ADDED OFFICIAL RECEIPT ($request->official_receipt) - $request->company.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
     }
 
     public function save_dr(Request $request){
-        if(DeliveryReceipt::where('delivery_receipt', $request->delivery_receipt)->count() > 0) {
-            return 'DELIVERY RECEIPT Already Exist';
+        if(DeliveryReceipt::where('delivery_receipt', $request->delivery_receipt)->where('company', $request->company)->count() > 0) {
+            return 'Already exist';
         }
 
         $file = $request->file('pdf_file');
@@ -305,7 +301,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY ADDED DELIVERY RECEIPT ($request->delivery_receipt).";
+                $userlogs->activity = "USER SUCCESSFULLY ADDED DELIVERY RECEIPT ($request->delivery_receipt) - $request->company.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -444,7 +440,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
@@ -562,7 +558,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -690,7 +686,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -799,7 +795,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -927,7 +923,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
@@ -1420,19 +1416,19 @@ class EventController extends Controller
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
         if($request->current_page == 'si'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
         }
         if($request->current_page == 'cr'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
         }
         if($request->current_page == 'bs'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         if($request->current_page == 'or'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
         }
         if($request->current_page == 'dr'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
         }
         $userlogs->save();
 
@@ -1443,43 +1439,48 @@ class EventController extends Controller
         if($request->current_page == 'si'){
             $current_page = 'SALES INVOICE';
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $company = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $sql = SalesInvoice::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'cr'){
             $current_page = 'COLLECTION RECEIPT';
             $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
+            $company = CollectionReceipt::where('id', $request->entry_id)->first()->company;
             $sql = CollectionReceipt::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
+            $company = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+            $company = OfficialReceipt::where('id', $request->entry_id)->first()->company;
             $sql = OfficialReceipt::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $company = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number).";
+        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
         $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number).";
+        $userlogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';
@@ -1489,43 +1490,48 @@ class EventController extends Controller
         if($request->current_page == 'si'){
             $current_page = 'SALES INVOICE';
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $$company = SalesInvoice::where('id', $request->entry_id)->first()->$company;
             $sql = SalesInvoice::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'cr'){
             $current_page = 'COLLECTION RECEIPT';
             $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
+            $$company = CollectionReceipt::where('id', $request->entry_id)->first()->$company;
             $sql = CollectionReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
+            $$company = BillingStatement::where('id', $request->entry_id)->first()->$company;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+            $$company = OfficialReceipt::where('id', $request->entry_id)->first()->$company;
             $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $$company = DeliveryReceipt::where('id', $request->entry_id)->first()->$company;
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks $request->remarks.";
+        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks $request->remarks.";
         $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) with remarks $request->remarks.";
+        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks $request->remarks.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';
@@ -1535,43 +1541,48 @@ class EventController extends Controller
         if($request->current_page == 'si'){
             $current_page = 'SALES INVOICE';
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+            $$company = SalesInvoice::where('id', $request->entry_id)->first()->$company;
             $sql = SalesInvoice::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'cr'){
             $current_page = 'COLLECTION RECEIPT';
             $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
+            $$company = CollectionReceipt::where('id', $request->entry_id)->first()->$company;
             $sql = CollectionReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
+            $$company = BillingStatement::where('id', $request->entry_id)->first()->$company;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+            $$company = OfficialReceipt::where('id', $request->entry_id)->first()->$company;
             $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $$company = DeliveryReceipt::where('id', $request->entry_id)->first()->$company;
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) with remarks $request->remarks.";
+        $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks $request->remarks.";
         $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) with remarks $request->remarks.";
+        $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks $request->remarks.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';
@@ -1625,7 +1636,7 @@ class EventController extends Controller
             $si_update = SalesInvoice::latest('updated_at')->first()->updated_at;
         }
 
-        $si_datas = SalesInvoice::whereIn('company', $this->company_value())->get();
+        $si_datas = SalesInvoice::whereIn('company', auth()->user()->companies->pluck('company'))->get();
         $si_count = 0;
         $count = 0;
 
@@ -1661,7 +1672,7 @@ class EventController extends Controller
             $cr_update = CollectionReceipt::latest('updated_at')->first()->updated_at;
         }
 
-        $cr_datas = CollectionReceipt::whereIn('company', $this->company_value())->get();
+        $cr_datas = CollectionReceipt::whereIn('company', auth()->user()->companies->pluck('company'))->get();
         $cr_count = 0;
         $count = 0;
 
@@ -1697,7 +1708,7 @@ class EventController extends Controller
             $bs_update = BillingStatement::latest('updated_at')->first()->updated_at;
         }
 
-        $bs_datas = BillingStatement::whereIn('company', $this->company_value())->get();
+        $bs_datas = BillingStatement::whereIn('company', auth()->user()->companies->pluck('company'))->get();
         $bs_count = 0;
         $count = 0;
 
@@ -1733,7 +1744,7 @@ class EventController extends Controller
             $or_update = OfficialReceipt::latest('updated_at')->first()->updated_at;
         }
 
-        $or_datas = OfficialReceipt::whereIn('company', $this->company_value())->get();
+        $or_datas = OfficialReceipt::whereIn('company', auth()->user()->companies->pluck('company'))->get();
         $or_count = 0;
         $count = 0;
 
@@ -1769,7 +1780,7 @@ class EventController extends Controller
             $dr_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
         }
 
-        $dr_datas = DeliveryReceipt::whereIn('company', $this->company_value())->get();
+        $dr_datas = DeliveryReceipt::whereIn('company', auth()->user()->companies->pluck('company'))->get();
         $dr_count = 0;
         $count = 0;
 

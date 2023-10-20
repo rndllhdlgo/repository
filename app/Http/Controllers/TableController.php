@@ -16,13 +16,9 @@ class TableController extends Controller
     public function __construct(){
         $this->middleware('auth');
     }
-    
-    public function company_value(){
-        return Company::whereIn('id', explode(',', auth()->user()->company))->pluck('company')->toArray();
-    }
 
     public function si_data(){
-        $data = SalesInvoice::whereIn('company', $this->company_value())
+        $data = SalesInvoice::whereIn('company', auth()->user()->companies->pluck('company'))
             ->orderBy('status', 'ASC')
             ->orderBy('stage', 'DESC')
             ->orderBy('updated_at','DESC')
@@ -31,7 +27,7 @@ class TableController extends Controller
     }
 
     public function cr_data(){
-        $data = CollectionReceipt::whereIn('company', $this->company_value())
+        $data = CollectionReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
             ->orderBy('status', 'ASC')
             ->orderBy('stage', 'DESC')
             ->orderBy('updated_at','DESC')
@@ -40,7 +36,7 @@ class TableController extends Controller
     }
 
     public function bs_data(){
-        $data = BillingStatement::whereIn('company', $this->company_value())
+        $data = BillingStatement::whereIn('company', auth()->user()->companies->pluck('company'))
             ->orderBy('status', 'ASC')
             ->orderBy('stage', 'DESC')
             ->orderBy('updated_at','DESC')
@@ -49,7 +45,7 @@ class TableController extends Controller
     }
 
     public function or_data(){
-        $data = OfficialReceipt::whereIn('company', $this->company_value())
+        $data = OfficialReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
             ->orderBy('status', 'ASC')
             ->orderBy('stage', 'DESC')
             ->orderBy('updated_at','DESC')
@@ -58,8 +54,7 @@ class TableController extends Controller
     }
 
     public function dr_data(){
-        
-        $data = DeliveryReceipt::whereIn('company', $this->company_value())
+        $data = DeliveryReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
             ->orderBy('status', 'ASC')
             ->orderBy('stage', 'DESC')
             ->orderBy('updated_at','DESC')
