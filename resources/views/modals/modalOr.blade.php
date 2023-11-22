@@ -1,8 +1,8 @@
-<div id="orModal" class="modal fade" data-bs-focus="false" style="height: auto;">
+<div id="orModal" class="modal fade modal_repo" data-bs-focus="false" style="height: auto;">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-default">
-                <h5 class="modal-title w-100 text-center" id="siTitle"></h5>
+                <h5 class="modal-title w-100 text-center" id="orTitle"></h5>
                 <button type="button" class="btn-close btn-close-white close btnClose" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">

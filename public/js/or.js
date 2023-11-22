@@ -164,6 +164,9 @@ $(document).ready(function(){
 });
 
 $('#orAdd').on('click',function(){
+    $('#entry_id').val('');
+    $('#entry_id').attr('updated_at', '');
+    $('#entry_id').attr('check_table', '');
     $('#orTitle').html('ADD OFFICIAL RECEIPT');
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
@@ -176,7 +179,7 @@ $('#orAdd').on('click',function(){
     $('#status_div').hide();
     $('.form_disable').prop('disabled', false);
     $('.divReplaceFile').hide();
-    $('.req').hide();
+    $('.req').remove();
 
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
@@ -282,13 +285,16 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.orTable tbody tr',function(){
-    $('.req').hide();
+    $('.req').remove();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#orTitle').html('OFFICIAL RECEIPT DETAILS');
 
     $('#entry_id').val(data.id);
+    $('#entry_id').attr('updated_at', adjust_datetime(data.updated_at));
+    $('#entry_id').attr('check_table', 'official_receipts');
+
     $('#official_receipt').val(data.official_receipt);
     $('#company').val(data.company);
     $('#client_name').val(decodeHtml(data.client_name));

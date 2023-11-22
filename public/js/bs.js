@@ -173,6 +173,9 @@ $(document).ready(function(){
 });
 
 $('#bsAdd').on('click',function(){
+    $('#entry_id').val('');
+    $('#entry_id').attr('updated_at', '');
+    $('#entry_id').attr('check_table', '');
     $('#bsTitle').html('ADD BILLING STATEMENT');
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
@@ -185,7 +188,7 @@ $('#bsAdd').on('click',function(){
     $('#status_div').hide();
     $('.form_disable').prop('disabled', false);
     $('.divReplaceFile').hide();
-    $('.req').hide();
+    $('.req').remove();
 
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
@@ -297,13 +300,16 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.bsTable tbody tr',function(){
-    $('.req').hide();
+    $('.req').remove();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#bsTitle').html('BILLING STATEMENT DETAILS');
 
     $('#entry_id').val(data.id);
+    $('#entry_id').attr('updated_at', adjust_datetime(data.updated_at));
+    $('#entry_id').attr('check_table', 'billing_statements');
+
     $('#billing_statement').val(data.billing_statement);
     $('#company').val(data.company);
     $('#client_name').val(decodeHtml(data.client_name));

@@ -136,7 +136,7 @@ $('#btnClear').on('click', function(){
 });
 
 function btnAddUser(){
-    $('.req').hide();
+    $('.req').remove();
     $('#name').val('');
     $('#company').val('');
     $('#company').trigger('chosen:updated');
@@ -186,7 +186,7 @@ $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
             companies += company.company_id;
         }
     });
-    $('.req').hide();
+    $('.req').remove();
     $('#user_id').val(data.user_id);
     $('#name').val(data.user_name);
     $('#company').val(companies.split(','));

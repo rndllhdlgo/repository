@@ -17,6 +17,7 @@ use App\Models\RemarkLogs;
 use App\Models\User;
 use Spatie\PdfToImage\Pdf as Jpg;
 use Carbon\Carbon;
+use DB;
 
 class EventController extends Controller
 {
@@ -1824,5 +1825,18 @@ class EventController extends Controller
             return 'NULL';
         }
         return User::where('id', auth()->user()->id)->first()->updated_at;
+    }
+
+    public function checkLatest(Request $request){
+        $latest = DB::table($request->check_table)
+                    ->where('id', $request->check_current_id)
+                    ->first()
+                    ->updated_at;
+        $current = $request->check_updated_at;
+        $data = array(
+            'result' => $latest != $current ? 'true' : 'false',
+            'changed_id' => $request->check_current_id
+        );
+        return $data;
     }
 }

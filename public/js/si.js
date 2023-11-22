@@ -174,6 +174,9 @@ $(document).ready(function(){
 });
 
 $('#siAdd').on('click',function(){
+    $('#entry_id').val('');
+    $('#entry_id').attr('updated_at', '');
+    $('#entry_id').attr('check_table', '');
     $('#siTitle').html('ADD SALES INVOICE');
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
@@ -186,7 +189,7 @@ $('#siAdd').on('click',function(){
     $('#status_div').hide();
     $('.form_disable').prop('disabled', false);
     $('.divReplaceFile').hide();
-    $('.req').hide();
+    $('.req').remove();
 
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
@@ -298,13 +301,16 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.siTable tbody tr',function(){
-    $('.req').hide();
+    $('.req').remove();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#siTitle').html('SALES INVOICE DETAILS');
 
     $('#entry_id').val(data.id);
+    $('#entry_id').attr('updated_at', adjust_datetime(data.updated_at));
+    $('#entry_id').attr('check_table', 'sales_invoices');
+
     $('#sales_invoice').val(data.sales_invoice);
     $('#company').val(data.company);
     $('#client_name').val(decodeHtml(data.client_name));

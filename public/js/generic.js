@@ -480,6 +480,57 @@ setInterval(() => {
     }
 }, 0);
 
+var check_modules = ['/si','/cr','/bs','/or','/dr'];
+var changed_id;
+setInterval(() => {
+    if($.inArray($(location).attr('pathname'), check_modules) !== -1){
+        if(
+            standby == false &&
+            $('.modal_repo').is(':visible') && 
+            $('#entry_id').attr('updated_at') && 
+            $('#entry_id').attr('check_table')
+        ){
+            var check_table = $('#entry_id').attr('check_table');
+            var check_current_id = $('#entry_id').val();
+            var check_updated_at = $('#entry_id').attr('updated_at');
+            changed_id = '';
+            console.log(check_table+', '+check_current_id+', '+check_updated_at);
+
+            $.ajax({
+                url: "/checkLatest",
+                async: false,
+                data: {
+                    check_table: check_table,
+                    check_current_id: check_current_id,
+                    check_updated_at: check_updated_at
+                },
+                success: function(data){
+                    if(data.result == 'true'){
+                        changed_id = data.changed_id;
+                    }
+                }
+            });
+            if(parseInt(changed_id) == parseInt($('#entry_id').val())){
+                changed_id = '';
+                if($(".swal2-container:visible").length == 0){
+                    Swal.fire({
+                        title: 'ENTRY UPDATED',
+                        html: '<span id="another">Another user updated this entry.</span>',
+                        icon: 'warning',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonText: 'CLOSE'
+                    }).then((save) => {
+                        if(save.isConfirmed){
+                            $('.btnClose').click();
+                        }
+                    });
+                }
+            }
+        }
+    }
+}, 1100);
+
 $(document).on('click', '#btnViewFile', function(){
     $('#displayFile').empty().append(`
         <embed src="${$('#fetchFileName').attr('href')}" width="100%" height="600px"/>

@@ -135,6 +135,10 @@ function formatDate(dateString){
     return formattedDate;
 }
 
+function adjust_datetime(datetime){
+    return moment(moment(datetime, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD HH:mm:ss")).add(8, 'hours').format("YYYY-MM-DD HH:mm:ss")
+}
+
 function decodeHtml(str){
     var map = {'&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#039;': "'"};
     return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function(m){return map[m];});

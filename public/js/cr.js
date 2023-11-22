@@ -165,6 +165,9 @@ $(document).ready(function(){
 });
 
 $('#crAdd').on('click',function(){
+    $('#entry_id').val('');
+    $('#entry_id').attr('updated_at', '');
+    $('#entry_id').attr('check_table', '');
     $('#crTitle').html('ADD COLLECTION RECEIPT');
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
@@ -177,7 +180,7 @@ $('#crAdd').on('click',function(){
     $('#status_div').hide();
     $('.form_disable').prop('disabled', false);
     $('.divReplaceFile').hide();
-    $('.req').hide();
+    $('.req').remove();
 
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
@@ -285,13 +288,16 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.crTable tbody tr',function(){
-    $('.req').hide();
+    $('.req').remove();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 
     $('#crTitle').html('COLLECTION RECEIPT DETAILS');
 
     $('#entry_id').val(data.id);
+    $('#entry_id').attr('updated_at', adjust_datetime(data.updated_at));
+    $('#entry_id').attr('check_table', 'collection_receipts');
+
     $('#collection_receipt').val(data.collection_receipt);
     $('#company').val(data.company);
     $('#client_name').val(decodeHtml(data.client_name));

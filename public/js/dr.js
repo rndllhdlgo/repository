@@ -173,6 +173,9 @@ $(document).ready(function(){
 });
 
 $('#drAdd').on('click',function(){
+    $('#entry_id').val('');
+    $('#entry_id').attr('updated_at', '');
+    $('#entry_id').attr('check_table', '');
     $('#drTitle').html('ADD DELIVERY RECEIPT');
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
@@ -185,7 +188,7 @@ $('#drAdd').on('click',function(){
     $('#status_div').hide();
     $('.form_disable').prop('disabled', false);
     $('.divReplaceFile').hide();
-    $('.req').hide();
+    $('.req').remove();
 
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
@@ -301,6 +304,9 @@ $(document).on('click','table.drTable tbody tr',function(){
     $('#drTitle').html('DELIVERY RECEIPT DETAILS');
 
     $('#entry_id').val(data.id);
+    $('#entry_id').attr('updated_at', adjust_datetime(data.updated_at));
+    $('#entry_id').attr('check_table', 'delivery_receipts');
+
     $('#delivery_receipt').val(data.delivery_receipt);
     $('#company').val(data.company);
     $('#client_name').val(decodeHtml(data.client_name));

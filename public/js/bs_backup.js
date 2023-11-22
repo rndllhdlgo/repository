@@ -119,7 +119,7 @@ $('#bsAdd').on('click',function(){
     $('#btnSave').show();
     $('#btnEdit').hide();
     $('#btnClear').show();
-    $('.req').hide();
+    $('.req').remove();
 
     $('#file_div').empty().append(`
         <div class="col-7">
@@ -222,7 +222,7 @@ $('#btnSave').on('click', function(){
 });
 
 $(document).on('click','table.bsTable tbody tr',function(){
-    $('.req').hide();
+    $('.req').remove();
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
 

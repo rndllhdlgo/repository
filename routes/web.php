@@ -33,6 +33,7 @@ Route::middleware(['session'])->group(function () {
         Route::any('/table_reload', 'table_reload');
         Route::any('/notif_update', 'notif_update');
         Route::any('/user_change', 'user_change');
+        Route::any('/checkLatest', 'checkLatest');
     });
 
     Route::controller(HomeController::class)->group(function(){

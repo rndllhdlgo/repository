@@ -1,4 +1,4 @@
-<div id="siModal" class="modal fade" data-bs-focus="false" style="height: auto;">
+<div id="siModal" class="modal fade modal_repo" data-bs-focus="false" style="height: auto;">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-default">
