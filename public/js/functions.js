@@ -244,3 +244,22 @@ $(document).on('focusout', '.requiredField', function(){
 $(document).ready(function(){
     $('.filter-input').attr('title', 'SEARCH');
 });
+
+$(window).on('beforeunload', function(){
+    $('#loading').show();
+});
+
+$(document).keydown(function(e){
+    if(current_role == 'ADMIN'){
+        if(e.ctrlKey && e.shiftKey && e.key === 'Z'){
+            if($('#btnApprove').is(':visible')){
+                $('#btnApprove').click();
+            }
+        }
+        if(e.ctrlKey && e.shiftKey && e.key === 'X'){
+            if($('#btnDisapprove').is(':visible')){
+                $('#btnDisapprove').click();
+            }
+        }
+    }
+});

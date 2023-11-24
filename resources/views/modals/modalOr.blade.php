@@ -89,8 +89,8 @@
                                 <div class="col">
                                     @role('ADMIN')
                                         <span class="mr-auto">
-                                            <button type="button" id="btnApprove" class="btn btn-success" style="display:none;"><i class="fas fa-check"></i> <b>VALID</b></button>
-                                            <button type="button" id="btnDisapprove" class="btn btn-danger" style="display:none;"><i class="fa-solid fa-xmark"></i> <b>INVALID</b></button>
+                                            <button type="button" id="btnApprove" class="btn btn-success" style="display:none;" title="Shortcut: Ctrl+Shift+Z"><i class="fas fa-check"></i> <b>VALID</b></button>
+                                            <button type="button" id="btnDisapprove" class="btn btn-danger" style="display:none;" title="Shortcut: Ctrl+Shift+X"><i class="fa-solid fa-xmark"></i> <b>INVALID</b></button>
                                             <button type="button" id="btnReturn" class="btn btn-danger" style="display:none;"><i class="fa-solid fa-share fa-flip-horizontal"></i> <b>RETURN TO ENCODER</b></button>
                                         </span>
                                     @endrole
