@@ -7,7 +7,7 @@ $(document).ready(function(){
             emptyTable: "NO DATA AVAILABLE",
         },
         processing: true,
-        serverSide: false,
+        serverSide: true,
         ajax:{
             url: '/index/data',
         },

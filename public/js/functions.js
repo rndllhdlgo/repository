@@ -83,6 +83,7 @@ $(document).ready(function(){
 });
 
 $(document).on('click', '.page-reload', function(){
+    $('#loading').show();
     window.location.href = window.location.href.split(/[?#]/)[0];
 });
 
