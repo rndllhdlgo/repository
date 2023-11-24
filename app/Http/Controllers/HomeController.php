@@ -38,8 +38,7 @@ class HomeController extends Controller
     }
 
     public function logs(){
-        $role = Role::query()->select()->get()->sortBy('name');
-        return view('pages.logs', compact('role'));
+        return view('pages.logs');
     }
 
     public function index_data()

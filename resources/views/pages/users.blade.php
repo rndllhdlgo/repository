@@ -28,6 +28,7 @@
                         <option value="SUPERUSER" style="color: Black;">SUPERUSER</option>
                         <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
                         <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
+                        <option value="SALES" style="color: Black;">SALES</option>
                     </select>
                 </td>
                 <td>
@@ -36,7 +37,7 @@
                         <option value="ADMIN" style="color: Black;">ADMIN</option>
                         <option value="ENCODER" style="color: Black;">ENCODER</option>
                         <option value="VIEWER" style="color: Black;">VIEWER</option>
-                        <option value="BOSS" style="color: Black;" class="superuser">BOSS</option>
+                        <option value="BOSS" style="color: Black;">BOSS</option>
                     </select>
                 </td>
                 <td>
