@@ -34,10 +34,18 @@
                     <div class="f-outline">
                         <select class="forminput form-control form-select requiredField bg-white" id="department" name="department">
                             <option value="" selected disabled style="color: Gray;">SELECT DEPARTMENT</option>
-                            <option value="SUPERUSER" style="color: Black;">SUPERUSER</option>
-                            <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
-                            <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
-                            <option value="SALES" style="color: Black;">SALES</option>
+                            @if(auth()->user()->department == 'SUPERUSER')
+                                <option value="SUPERUSER" style="color: Black;">SUPERUSER</option>
+                            @endif
+                            @if(auth()->user()->department == 'SUPERUSER' || auth()->user()->department == 'ACCOUNTING')
+                                <option value="ACCOUNTING" style="color: Black;">ACCOUNTING</option>
+                            @endif
+                            @if(auth()->user()->department == 'SUPERUSER' || auth()->user()->department == 'WAREHOUSE')
+                                <option value="WAREHOUSE" style="color: Black;">WAREHOUSE</option>
+                            @endif
+                            @if(auth()->user()->department == 'SUPERUSER' || auth()->user()->department == 'SALES')
+                                <option value="SALES" style="color: Black;">SALES</option>
+                            @endif
                         </select>
                         <label for="department" class="formlabel form-label">DEPARTMENT</label>
                     </div>

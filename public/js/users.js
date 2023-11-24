@@ -174,7 +174,7 @@ setInterval(() => {
 $(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
-    if(current_department != 'SUPERUSER' && data.role == '1'){
+    if(current_department != 'SUPERUSER' && data.role == '1' && data.user_id != current_user){
         return false;
     }
     var companies = '';
