@@ -39,7 +39,7 @@ $(document).ready(function(){
     });
 
     $('.filter-select').on('change', function(){
-        table.column($(this).data('column')).search(!$(this).val()?'':'^'+$(this).val()+'$',true,false,true).draw();
+        table.column($(this).data('column')).search(!$(this).val()?'':$(this).val(),true,false,true).draw();
     });
 
     $('.filter-input').on('keyup search', function(){
@@ -66,9 +66,9 @@ $(document).ready(function(){
         var value = table.row(this).data();
         Swal.fire({
             title: moment(value.created_at).format('dddd, MMMM DD, YYYY, h:mm:ss A'),
-            html: `<h4>` + value.username + `[`+ value.role +`]` + `</h4>` + `<br>` + `<ol style="text-align: left !important;font-weight:600 !important;">` +  decodeHtml(value.activity).replaceAll(" 【", "<li>【") + `</li></ol>`,
+            html: `<h4>${value.username} [${value.role}]</h4><br><ol style="text-align: left !important;font-weight:600 !important;">${decodeHtml(value.activity).replaceAll(" 【", "<li>【")}</li></ol>`,
             icon: 'info',
-            customClass: 'swal-wide'
+            width: 900
         });
     });
 

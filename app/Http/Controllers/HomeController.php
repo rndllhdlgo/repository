@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 
+use App\Models\User;
 use App\Models\Role;
 use App\Models\UserLogs;
 
@@ -43,9 +44,11 @@ class HomeController extends Controller
 
     public function index_data()
     {
-        $list = UserLogs::query()
-            ->select()
-            ->orderBy('user_logs.id', 'DESC')->get();
+        $list = UserLogs::query();
+        if(auth()->user()->department == 'ACCOUNTING' || auth()->user()->department == 'WAREHOUSE'){
+            $list->where('role', 'LIKE', auth()->user()->department.' - %');
+        }
+        $list->orderBy('user_logs.id', 'DESC');
         return DataTables::of($list)->make(true);
     }
 

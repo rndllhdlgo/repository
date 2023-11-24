@@ -32,20 +32,6 @@ class UserController extends Controller
         }
     }
 
-    public function users_dataX(){
-        $list = User::query()->selectRaw('users.id AS user_id, users.name AS user_name, users.company, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
-            ->join('roles', 'roles.id', 'users.userlevel');
-            if(auth()->user()->department != 'SUPERUSER'){
-                $list->where('department', auth()->user()->department);
-            }
-            $list->orderBy('user_status', 'ASC')
-            ->orderBy('role_name', 'ASC')
-            ->orderBy('user_name', 'ASC')
-            ->orderBy('users.id', 'ASC')
-            ->get();
-        return DataTables::of($list)->make(true);
-    }
-
     public function users_data(){
         $list = User::query()->selectRaw('users.id, users.id AS user_id, users.name AS user_name, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
             ->join('roles', 'roles.id', 'users.userlevel')
@@ -125,7 +111,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "ADDED USER: User successfully saved details of $name with UserID#$id.";
             $userlogs->save();
         }
@@ -242,7 +228,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "UPDATED USER: User successfully updated details of $name with the following CHANGES: $name_change $email_change $company_change $department_change $userlevel_change.";
             $userlogs->save();
         }
@@ -274,7 +260,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "USER UPDATED: User successfully updated details of $name with UserID#$request->id with the following CHANGES: $status.";
             $userlogs->save();
         }
@@ -301,7 +287,7 @@ class UserController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "CHANGE PASSWORD: User successfully changed own account password.";
             $userlogs->save();
         }

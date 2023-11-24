@@ -77,7 +77,7 @@ class EventController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "USER SUCCESSFULLY ADDED SALES INVOICE ($request->sales_invoice) - $request->company.";
             $userlogs->save();
 
@@ -133,7 +133,7 @@ class EventController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "USER SUCCESSFULLY ADDED COLLECTION RECEIPT ($request->collection_receipt) - $request->company.";
             $userlogs->save();
 
@@ -190,7 +190,7 @@ class EventController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "USER SUCCESSFULLY ADDED BILLING STATEMENT ($request->billing_statement) - $request->company.";
             $userlogs->save();
 
@@ -245,7 +245,7 @@ class EventController extends Controller
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
-                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
                 $userlogs->activity = "USER SUCCESSFULLY ADDED OFFICIAL RECEIPT ($request->official_receipt) - $request->company.";
                 $userlogs->save();
 
@@ -302,7 +302,7 @@ class EventController extends Controller
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
-                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
                 $userlogs->activity = "USER SUCCESSFULLY ADDED DELIVERY RECEIPT ($request->delivery_receipt) - $request->company.";
                 $userlogs->save();
 
@@ -441,7 +441,7 @@ class EventController extends Controller
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
-            $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
             $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
             $userlogs->save();
 
@@ -559,7 +559,7 @@ class EventController extends Controller
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
-                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
                 $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
@@ -687,7 +687,7 @@ class EventController extends Controller
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
-                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
                 $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
@@ -796,7 +796,7 @@ class EventController extends Controller
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
-                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
                 $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
                 $userlogs->save();
 
@@ -924,7 +924,7 @@ class EventController extends Controller
 
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
-                $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
                 $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
@@ -1416,7 +1416,7 @@ class EventController extends Controller
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
-        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
         if($request->current_page == 'si'){
             $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
         }
@@ -1481,7 +1481,7 @@ class EventController extends Controller
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
-        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
         $userlogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
         $userlogs->save();
 
@@ -1532,7 +1532,7 @@ class EventController extends Controller
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
-        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
         $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks $request->remarks.";
         $userlogs->save();
 
@@ -1583,7 +1583,7 @@ class EventController extends Controller
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
-        $userlogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
         $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks $request->remarks.";
         $userlogs->save();
 

@@ -300,15 +300,6 @@ textarea{
 .swal2-actions{
     zoom: 120% !important;
 }
-.swal-mid{
-    width: 700px !important;
-}
-.swal-wide{
-    width: 900px !important;
-}
-/* .dt-buttons{
-    display: none;
-} */
 .sidebar{
     height: 100%;
     width: 0px;
