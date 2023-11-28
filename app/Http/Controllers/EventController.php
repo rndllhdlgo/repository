@@ -436,7 +436,8 @@ class EventController extends Controller
                         'pdf_file' => $filename,
                         'remarks' => '',
                         'status' => 'FOR VALIDATION',
-                        'stage' => '0'
+                        'stage' => '0',
+                        'created_at' => Carbon::now()
             ]);
 
             $userlogs = new UserLogs;
@@ -554,7 +555,8 @@ class EventController extends Controller
                         'pdf_file' => $filename,
                         'remarks' => '',
                         'status' => 'FOR VALIDATION',
-                        'stage' => '0'
+                        'stage' => '0',
+                        'created_at' => Carbon::now()
                 ]);
 
                 $userlogs = new UserLogs;
@@ -682,7 +684,8 @@ class EventController extends Controller
                             'pdf_file' => $filename,
                             'remarks' => '',
                             'status' => 'FOR VALIDATION',
-                            'stage' => '0'
+                            'stage' => '0',
+                            'created_at' => Carbon::now()
                 ]);
 
                 $userlogs = new UserLogs;
@@ -791,7 +794,8 @@ class EventController extends Controller
                         'pdf_file' => $filename,
                         'remarks' => '',
                         'status' => 'FOR VALIDATION',
-                        'stage' => '0'
+                        'stage' => '0',
+                        'created_at' => Carbon::now()
                 ]);
 
                 $userlogs = new UserLogs;
@@ -919,7 +923,8 @@ class EventController extends Controller
                         'pdf_file' => $filename,
                         'remarks' => '',
                         'status' => 'FOR VALIDATION',
-                        'stage' => '0'
+                        'stage' => '0',
+                        'created_at' => Carbon::now()
                 ]);
 
                 $userlogs = new UserLogs;
