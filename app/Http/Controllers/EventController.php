@@ -604,7 +604,7 @@ class EventController extends Controller
                 $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
                 $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
                 $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
-                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+                $stage_orig = BillingStatement::where('id', $request->entry_id)->first()->stage;
 
                 if($stage_orig == '1'){
                     $edited = 'CORRECTED';
@@ -731,7 +731,7 @@ class EventController extends Controller
                 $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
                 $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
                 $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
-                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+                $stage_orig = OfficialReceipt::where('id', $request->entry_id)->first()->stage;
 
                 if($stage_orig == '1'){
                     $edited = 'CORRECTED';
@@ -841,7 +841,7 @@ class EventController extends Controller
                 $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
                 $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
                 $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
-                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
+                $stage_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->stage;
 
                 if($stage_orig == '1'){
                     $edited = 'CORRECTED';
@@ -925,7 +925,7 @@ class EventController extends Controller
                 $userlogs = new UserLogs;
                 $userlogs->username = auth()->user()->name;
                 $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name $branch_name_change $sales_order_change $purchase_order_change.";
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
                 $userlogs->save();
 
                 return 'FOR VALIDATION';
