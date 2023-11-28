@@ -531,7 +531,7 @@ setInterval(() => {
 
 $(document).on('click', '#btnViewFile', function(){
     $('#displayFile').empty().append(`
-        <embed src="${$('#fetchFileName').attr('href')}" width="100%" height="600px"/>
+        <embed src="${$('#fetchFileName').attr('href')}?${Math.random().toString(36).substring(2,12)}" width="100%" height="600px"/>
     `);
 });
 
