@@ -33,6 +33,11 @@
                             @enderror
                         </div>
                         <div class="row mb-0">
+                            <div class="mb-3 ml-3 text-default" style="cursor:pointer;">
+                                <input type="checkbox" id="show_password" style="display:none">
+                                <i class="fa-solid fa-eye fa-lg" id="show_password_eye"></i>
+                                <b id="show_password_text" style="font-size:14px;">SHOW PASSWORD</b>
+                            </div>
                             <div class="col-md-12">
                                 <button id="btnLogin" type="submit" class="btn btn-primary btnLogin bp">
                                     {{ __('LOGIN') }}<i class="fa fa-sign-in ml-2" aria-hidden="true"></i>
@@ -97,6 +102,24 @@
                 });
             }
         }
+    });
+    $(document).ready(function(){
+        $('#show_password_eye').click(function(){
+            $('#show_password').click();
+            if($('#show_password').is(':checked')){
+                $('#show_password_text').text('HIDE PASSWORD');
+                $('#show_password_eye').removeClass('fa-eye').addClass('fa-eye-slash');
+                $('#password').attr('type', 'search');
+            }
+            else{
+                $('#show_password_text').text('SHOW PASSWORD');
+                $('#show_password_eye').addClass('fa-eye').removeClass('fa-eye-slash');
+                $('#password').attr('type', 'password');
+            }
+        });
+        $('#show_password_text').click(function(){
+            $('#show_password_eye').click();
+        });
     });
 </script>
 @endsection
