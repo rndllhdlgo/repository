@@ -615,7 +615,7 @@ $(document).on('change','#pdf_file', function(e){
     $('.divReplaceFile').show();
 });
 
-$(document).on('keyup','.current_search',function(){
+$(document).on('keyup search','.current_search',function(){
     $("label:contains('Search:')").find("input:first").val($(this).val());
     $("label:contains('Search:')").find("input:first").keyup();
 });
