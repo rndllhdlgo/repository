@@ -1492,35 +1492,35 @@ class EventController extends Controller
         if($request->current_page == 'si'){
             $current_page = 'SALES INVOICE';
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $$company = SalesInvoice::where('id', $request->entry_id)->first()->$company;
+            $company = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $sql = SalesInvoice::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'cr'){
             $current_page = 'COLLECTION RECEIPT';
             $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
-            $$company = CollectionReceipt::where('id', $request->entry_id)->first()->$company;
+            $company = CollectionReceipt::where('id', $request->entry_id)->first()->company;
             $sql = CollectionReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
-            $$company = BillingStatement::where('id', $request->entry_id)->first()->$company;
+            $company = BillingStatement::where('id', $request->entry_id)->first()->company;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
-            $$company = OfficialReceipt::where('id', $request->entry_id)->first()->$company;
+            $company = OfficialReceipt::where('id', $request->entry_id)->first()->company;
             $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
-            $$company = DeliveryReceipt::where('id', $request->entry_id)->first()->$company;
+            $company = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
@@ -1543,35 +1543,35 @@ class EventController extends Controller
         if($request->current_page == 'si'){
             $current_page = 'SALES INVOICE';
             $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $$company = SalesInvoice::where('id', $request->entry_id)->first()->$company;
+            $company = SalesInvoice::where('id', $request->entry_id)->first()->company;
             $sql = SalesInvoice::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'cr'){
             $current_page = 'COLLECTION RECEIPT';
             $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
-            $$company = CollectionReceipt::where('id', $request->entry_id)->first()->$company;
+            $company = CollectionReceipt::where('id', $request->entry_id)->first()->company;
             $sql = CollectionReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'bs'){
             $current_page = 'BILLING STATEMENT';
             $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
-            $$company = BillingStatement::where('id', $request->entry_id)->first()->$company;
+            $company = BillingStatement::where('id', $request->entry_id)->first()->company;
             $sql = BillingStatement::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'or'){
             $current_page = 'OFFICIAL RECEIPT';
             $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
-            $$company = OfficialReceipt::where('id', $request->entry_id)->first()->$company;
+            $company = OfficialReceipt::where('id', $request->entry_id)->first()->company;
             $sql = OfficialReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
-            $$company = DeliveryReceipt::where('id', $request->entry_id)->first()->$company;
+            $company = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
