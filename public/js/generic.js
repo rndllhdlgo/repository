@@ -494,8 +494,6 @@ setInterval(() => {
             var check_current_id = $('#entry_id').val();
             var check_updated_at = $('#entry_id').attr('updated_at');
             changed_id = '';
-            console.log(check_table+', '+check_current_id+', '+check_updated_at);
-
             $.ajax({
                 url: "/checkLatest",
                 async: false,
@@ -515,7 +513,7 @@ setInterval(() => {
                 if($(".swal2-container:visible").length == 0){
                     Swal.fire({
                         title: 'ENTRY UPDATED',
-                        html: '<span id="another">Another user updated this entry.</span>',
+                        html: 'Another user updated this entry.',
                         icon: 'warning',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
