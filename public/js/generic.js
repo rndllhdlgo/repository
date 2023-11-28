@@ -144,8 +144,8 @@ function edit_pdf(){
         var company = $('#company').val();
         var client_name = $('#client_name').val();
         var branch_name = $('#branch_name').val();
-        var purchase_order = $('#purchase_order').val();
         var sales_order = $('#sales_order').val();
+        var purchase_order = $('#purchase_order').val();
         var delivery_receipt = $('#delivery_receipt').val();
         var uploaded_by = $('#uploaded_by').val();
         var pdf_files = $('#pdf_file').prop('files');
@@ -155,8 +155,8 @@ function edit_pdf(){
         formData.append('company', company);
         formData.append('client_name', client_name);
         formData.append('branch_name', branch_name);
-        formData.append('purchase_order', purchase_order);
         formData.append('sales_order', sales_order);
+        formData.append('purchase_order', purchase_order);
         formData.append('delivery_receipt', delivery_receipt);
         formData.append('uploaded_by', uploaded_by);
         for(let i = 0; i < pdf_files.length; i++){
@@ -220,6 +220,7 @@ function edit_pdf(){
         var client_name = $('#client_name').val();
         var business_name = $('#business_name').val();
         var branch_name = $('#branch_name').val();
+        var sales_order = $('#sales_order').val();
         var purchase_order = $('#purchase_order').val();
         var uploaded_by = $('#uploaded_by').val();
         var pdf_files = $('#pdf_file').prop('files');
@@ -230,8 +231,8 @@ function edit_pdf(){
         formData.append('client_name', client_name);
         formData.append('business_name', business_name);
         formData.append('branch_name', branch_name);
-        formData.append('purchase_order', purchase_order);
         formData.append('sales_order', sales_order);
+        formData.append('purchase_order', purchase_order);
         formData.append('uploaded_by', uploaded_by);
         for(let i = 0; i < pdf_files.length; i++){
             formData.append('pdf_file[]', pdf_files[i]);
