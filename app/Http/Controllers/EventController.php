@@ -1527,13 +1527,13 @@ class EventController extends Controller
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks $request->remarks.";
+        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
         $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks $request->remarks.";
+        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';
@@ -1578,13 +1578,13 @@ class EventController extends Controller
         $remarklogs = new RemarkLogs;
         $remarklogs->username = auth()->user()->name;
         $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks $request->remarks.";
+        $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
         $remarklogs->save();
 
         $userlogs = new UserLogs;
         $userlogs->username = auth()->user()->name;
         $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks $request->remarks.";
+        $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
         $userlogs->save();
 
         return $sql ? 'true' : 'false';
