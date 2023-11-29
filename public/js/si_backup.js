@@ -136,7 +136,7 @@ $('#siAdd').on('click',function(){
                 <span id="txtUploadPdf">UPLOAD FILE</span>
             </button>
             <span style="visibility:hidden">
-                <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".jpg,.pdf"/>
+                <input type="file" id="pdf_file" name="pdf_file" class="form-control requiredField" accept=".jpeg,.jpg,.png,.pdf"/>
             </span>
         </div>`
     );

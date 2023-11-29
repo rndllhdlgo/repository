@@ -572,6 +572,7 @@ function resetUpload(){
         <center id="logoUpload" class="mt-5" onclick="$('#pdf_file').click();" title="UPLOAD FILE">
             <i class="fa-solid fa-file-arrow-up" style="zoom: 1500%;"></i><br><br>
             <h3>CLICK HERE TO UPLOAD FILE</h3>
+            <span style="white-space: normal; width: 45vw;">Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg; AND with file size not greater than 2.5 MB each.</span><br>
         </center>
     `);
 }

@@ -122,7 +122,7 @@
                                     <span id="txtUploadPdf">REPLACE FILE</span>
                                 </button>
                                 <span class="d-none">
-                                    <input type="file" id="pdf_file" name="pdf_file[]" class="form-control " accept=".jpg,.pdf" multiple/>
+                                    <input type="file" id="pdf_file" name="pdf_file[]" class="form-control " accept=".jpeg,.jpg,.png,.pdf" multiple/>
                                 </span>
                             </div>
                         </div>
