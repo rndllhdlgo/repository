@@ -487,8 +487,8 @@ setInterval(() => {
     if($.inArray($(location).attr('pathname'), check_modules) !== -1){
         if(
             standby == false &&
-            $('.modal_repo').is(':visible') && 
-            $('#entry_id').attr('updated_at') && 
+            $('.modal_repo').is(':visible') &&
+            $('#entry_id').attr('updated_at') &&
             $('#entry_id').attr('check_table')
         ){
             var check_table = $('#entry_id').attr('check_table');
@@ -538,80 +538,6 @@ $(document).on('click', '#btnViewFile', function(){
 
 $(document).on('contextmenu', '.preventRightClick', function(e) {
     e.preventDefault();
-});
-
-
-$(document).on('change','#pdf_file', function(e){
-    var files = e.target.files;
-
-    var pdf_count = 0;
-    var img_count = 0;
-    if (!files.length) {
-        return false;
-    }
-    $('.pItem').remove();
-    $("#displayFile").empty();
-    for(var i = 0; i < files.length; i++){
-        var file = files[i];
-        var fileType = getExtension(file.name);
-
-        if(fileType === 'jpg' || fileType === 'jpeg'){
-            img_count++;
-        }
-        else if(fileType === 'pdf'){
-            pdf_count++;
-        }
-    }
-
-    if(pdf_count > 1){
-        Swal.fire({
-            icon: 'warning',
-            title: 'MAX LIMIT REACHED',
-            html: '<span id="checkUpload">Only 1 PDF file can be uploaded.</span>'
-        });
-
-        resetUpload();
-        return false;
-    }
-    else if(pdf_count > 0 && img_count > 0){
-        Swal.fire({
-            icon: 'warning',
-            title: 'INVALID UPLOAD',
-            html: '<span id="checkUpload">Cannot upload different file types.</span>'
-        });
-
-        resetUpload();
-        return false;
-    }
-
-    for(var i = 0; i < files.length; i++){
-      var file = files[i];
-
-      var reader = new FileReader();
-
-      reader.onload = function(e){
-        var fileType = getFileType(e.target.result);
-
-        if(fileType === 'jpg' || fileType === 'jpeg' || fileType === 'pdf'){
-            if(fileType === 'pdf'){
-                var embed = $("<embed style='height:470px; width:100%;'>").attr("src", e.target.result).addClass("pdf-embed");
-                $("#displayFile").append(embed);
-            }
-            else{
-                var img = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result); // Create an <img> element
-                $("#displayFile").append(img);
-            }
-        }
-      };
-      $('.pagi:last').after(`<li class="page-item pagi pItem"><a class="page-link" onclick="paging(${i+1})">${i+1}</a></li>`)
-      reader.readAsDataURL(file);
-      if(i+1 == files.length){
-        setTimeout(() => {
-            paging('1');
-        }, 200);
-      }
-    }
-    $('.divReplaceFile').show();
 });
 
 $(document).on('keyup search','.current_search',function(){
@@ -787,3 +713,130 @@ function formRestrictions(data){
 setInterval(() => {
     $('body').css('padding-right','0px');
 }, 0);
+
+$(document).on('change','#pdf_file', function(e){
+    var files_length = $("#pdf_file").get(0).files.length;
+    var error_ext = 0;
+    var error_mb = 0;
+    var total_file_size = 0;
+    for(var i = 0; i < files_length; ++i) {
+        var file1=$("#pdf_file").get(0).files[i].name;
+        var file_size = $("#pdf_file").get(0).files[i].size;
+        var ext = file1.split('.').pop().toLowerCase();
+        if($.inArray(ext,['pdf','png','jpg','jpeg'])===-1){
+            error_ext++;
+        }
+        if(file_size > 5242880 / 2){
+            error_mb++;
+        }
+        total_file_size+=file_size;
+    }
+    if(error_ext > 0 && error_mb > 0){
+        Swal.fire('INVALID file type AND EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg; AND with file size not greater than 2.5 MB each.', 'error');
+        $('#pdf_file').val('');
+        $('#pdf_file').focus();
+        $('.divReplaceFile').hide();
+        resetUpload();
+        return false;
+    }
+    else if(error_ext > 0){
+        Swal.fire('INVALID file type!', 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg.', 'error');
+        $('#pdf_file').val('');
+        $('#pdf_file').focus();
+        $('.divReplaceFile').hide();
+        resetUpload();
+        return false;
+    }
+    else if(error_mb > 0){
+        Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
+        $('#pdf_file').val('');
+        $('#pdf_file').focus();
+        $('.divReplaceFile').hide();
+        resetUpload();
+        return false;
+    }
+    else if(total_file_size > (5242880*4)){
+        Swal.fire('EXCEEDED maximum total file size (20 MB)!', 'Please upload valid file/s with total file size not greater than 20 MB.', 'error');
+        $('#pdf_file').val('');
+        $('#pdf_file').focus();
+        $('.divReplaceFile').hide();
+        resetUpload();
+        return false;
+    }
+
+    var files = e.target.files;
+
+    var pdf_count = 0;
+    var img_count = 0;
+    if (!files.length) {
+        return false;
+    }
+    $('.pItem').remove();
+    $("#displayFile").empty();
+    for(var i = 0; i < files.length; i++){
+        var file = files[i];
+        var fileType = getExtension(file.name);
+
+        if(fileType === 'jpg' || fileType === 'jpeg'){
+            img_count++;
+        }
+        else if(fileType === 'pdf'){
+            pdf_count++;
+        }
+    }
+
+    if(pdf_count > 1){
+        Swal.fire({
+            icon: 'error',
+            title: 'MAX LIMIT REACHED',
+            html: '<span id="checkUpload">Only 1 PDF file can be uploaded.</span>'
+        });
+
+        resetUpload();
+        return false;
+    }
+    else if(pdf_count > 0 && img_count > 0){
+        Swal.fire({
+            icon: 'error',
+            title: 'INVALID COMBINATION',
+            html: '<span id="checkUpload">Cannot upload different file types.</span>'
+        });
+
+        resetUpload();
+        return false;
+    }
+    
+    for(var i = 0; i < files.length; i++){
+      var file = files[i];
+
+      var reader = new FileReader();
+
+      reader.onload = function(e){
+        var fileType = getFileType(e.target.result);
+
+        if(fileType === 'jpg' || fileType === 'jpeg' || fileType === 'pdf'){
+            if(fileType === 'pdf'){
+                var embed = $("<embed style='height:470px; width:100%;'>").attr("src", e.target.result).addClass("pdf-embed");
+                $("#displayFile").append(embed);
+            }
+            else{
+                var img = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result); // Create an <img> element
+                $("#displayFile").append(img);
+            }
+        }
+      };
+      $('.pagi:last').after(`<li class="page-item pagi pItem"><a class="page-link" onclick="paging(${i+1})">${i+1}</a></li>`)
+      reader.readAsDataURL(file);
+      if(i+1 == files.length){
+        setTimeout(() => {
+            paging('1');
+        }, 200);
+      }
+    }
+    $('.divReplaceFile').show();
+});
+
+$(document).on('click', '#btnClear', function(){
+    $('.divReplaceFile').hide();
+    resetUpload();
+});
