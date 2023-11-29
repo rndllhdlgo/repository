@@ -1703,19 +1703,23 @@ class EventController extends Controller
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['status' => 'VALID', 'stage' => '1']);
         }
 
-        $remarklogs = new RemarkLogs;
-        $remarklogs->username = auth()->user()->name;
-        $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
-        $remarklogs->save();
+        if($sql){
+            $remarklogs = new RemarkLogs;
+            $remarklogs->username = auth()->user()->name;
+            $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $remarklogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
+            $remarklogs->save();
 
-        $userlogs = new UserLogs;
-        $userlogs->username = auth()->user()->name;
-        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
-        $userlogs->save();
-
-        return $sql ? 'true' : 'false';
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY MARKED AS VALID $current_page ($reference_number) - $company.";
+            $userlogs->save();
+            return 'true';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function disapprove(Request $request){
@@ -1754,19 +1758,23 @@ class EventController extends Controller
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'INVALID', 'stage' => '1']);
         }
 
-        $remarklogs = new RemarkLogs;
-        $remarklogs->username = auth()->user()->name;
-        $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
-        $remarklogs->save();
-
-        $userlogs = new UserLogs;
-        $userlogs->username = auth()->user()->name;
-        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
-        $userlogs->save();
-
-        return $sql ? 'true' : 'false';
+        if($sql){
+            $remarklogs = new RemarkLogs;
+            $remarklogs->username = auth()->user()->name;
+            $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
+            $remarklogs->save();
+    
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
+            $userlogs->save();
+            return 'true';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function return_to_encoder(Request $request){
@@ -1805,19 +1813,23 @@ class EventController extends Controller
             $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['remarks' => $request->remarks, 'status' => 'FOR VALIDATION']);
         }
 
-        $remarklogs = new RemarkLogs;
-        $remarklogs->username = auth()->user()->name;
-        $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
-        $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
-        $remarklogs->save();
-
-        $userlogs = new UserLogs;
-        $userlogs->username = auth()->user()->name;
-        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-        $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
-        $userlogs->save();
-
-        return $sql ? 'true' : 'false';
+        if($sql){
+            $remarklogs = new RemarkLogs;
+            $remarklogs->username = auth()->user()->name;
+            $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
+            $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
+            $remarklogs->save();
+    
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
+            $userlogs->save();
+            return 'true';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function table_reload(Request $request){
