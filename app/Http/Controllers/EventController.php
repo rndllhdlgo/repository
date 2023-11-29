@@ -18,6 +18,8 @@ use App\Models\User;
 use Spatie\PdfToImage\Pdf as Jpg;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 
 class EventController extends Controller
 {
@@ -27,6 +29,23 @@ class EventController extends Controller
     }
 
     public function save_si(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->where('company', $request->company)->count() > 0) {
             return 'Already exist';
         }
@@ -61,20 +80,21 @@ class EventController extends Controller
             }
         }
 
-            SalesInvoice::create([
-                'sales_invoice' => strtoupper($request->sales_invoice),
-                'company' => $request->company,
-                'client_name' => strtoupper($request->client_name),
-                'business_name' => strtoupper($request->business_name),
-                'branch_name' => strtoupper($request->branch_name),
-                'uploaded_by' => auth()->user()->name,
-                'purchase_order' => strtoupper($request->purchase_order),
-                'sales_order' => strtoupper($request->sales_order),
-                'delivery_receipt' => strtoupper($request->delivery_receipt),
-                'pdf_file' => $request->company.'-'.$filename,
-                'status' => 'FOR VALIDATION'
-            ]);
+        $sql = SalesInvoice::create([
+            'sales_invoice' => strtoupper($request->sales_invoice),
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'business_name' => strtoupper($request->business_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => auth()->user()->name,
+            'purchase_order' => strtoupper($request->purchase_order),
+            'sales_order' => strtoupper($request->sales_order),
+            'delivery_receipt' => strtoupper($request->delivery_receipt),
+            'pdf_file' => $request->company.'-'.$filename,
+            'status' => 'FOR VALIDATION'
+        ]);
 
+        if($sql){
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -82,9 +102,30 @@ class EventController extends Controller
             $userlogs->save();
 
             return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function save_cr(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         if(CollectionReceipt::where('collection_receipt', $request->collection_receipt)->where('company', $request->company)->count() > 0) {
             return 'Already exist';
         }
@@ -119,18 +160,19 @@ class EventController extends Controller
             }
         }
 
-            CollectionReceipt::create([
-                'collection_receipt' => $request->collection_receipt,
-                'company' => $request->company,
-                'client_name' => strtoupper($request->client_name),
-                'branch_name' => strtoupper($request->branch_name),
-                'uploaded_by' => auth()->user()->name,
-                'sales_order' => strtoupper($request->sales_order),
-                'sales_invoice' => strtoupper($request->sales_invoice),
-                'pdf_file' => $request->company.'-'.$filename,
-                'status' => 'FOR VALIDATION'
-            ]);
+        $sql = CollectionReceipt::create([
+            'collection_receipt' => $request->collection_receipt,
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => auth()->user()->name,
+            'sales_order' => strtoupper($request->sales_order),
+            'sales_invoice' => strtoupper($request->sales_invoice),
+            'pdf_file' => $request->company.'-'.$filename,
+            'status' => 'FOR VALIDATION'
+        ]);
 
+        if($sql){
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -138,9 +180,30 @@ class EventController extends Controller
             $userlogs->save();
 
             return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function save_bs(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         if(BillingStatement::where('billing_statement', $request->billing_statement)->where('company', $request->company)->count() > 0) {
             return 'Already exist';
         }
@@ -175,19 +238,20 @@ class EventController extends Controller
             }
         }
 
-            BillingStatement::create([
-                'billing_statement' => $request->billing_statement,
-                'company' => $request->company,
-                'client_name' => strtoupper($request->client_name),
-                'business_name' => strtoupper($request->business_name),
-                'branch_name' => strtoupper($request->branch_name),
-                'uploaded_by' => auth()->user()->name,
-                'sales_order' => strtoupper($request->sales_order),
-                'purchase_order' => strtoupper($request->purchase_order),
-                'pdf_file' => $request->company.'-'.$filename,
-                'status' => 'FOR VALIDATION'
-            ]);
+        $sql = BillingStatement::create([
+            'billing_statement' => $request->billing_statement,
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'business_name' => strtoupper($request->business_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => auth()->user()->name,
+            'sales_order' => strtoupper($request->sales_order),
+            'purchase_order' => strtoupper($request->purchase_order),
+            'pdf_file' => $request->company.'-'.$filename,
+            'status' => 'FOR VALIDATION'
+        ]);
 
+        if($sql){
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -195,9 +259,30 @@ class EventController extends Controller
             $userlogs->save();
 
             return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function save_or(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         if(OfficialReceipt::where('official_receipt', $request->official_receipt)->where('company', $request->company)->count() > 0) {
             return 'Already exist';
         }
@@ -232,27 +317,48 @@ class EventController extends Controller
             }
         }
 
-                OfficialReceipt::create([
-                    'official_receipt' => $request->official_receipt,
-                    'company' => $request->company,
-                    'client_name' => strtoupper($request->client_name),
-                    'branch_name' => strtoupper($request->branch_name),
-                    'uploaded_by' => auth()->user()->name,
-                    'sales_order' => $request->sales_order,
-                    'pdf_file' => $request->company.'-'.$filename,
-                    'status' => 'FOR VALIDATION'
-                ]);
+        $sql = OfficialReceipt::create([
+            'official_receipt' => $request->official_receipt,
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => auth()->user()->name,
+            'sales_order' => $request->sales_order,
+            'pdf_file' => $request->company.'-'.$filename,
+            'status' => 'FOR VALIDATION'
+        ]);
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY ADDED OFFICIAL RECEIPT ($request->official_receipt) - $request->company.";
+            $userlogs->save();
 
-                $userlogs = new UserLogs;
-                $userlogs->username = auth()->user()->name;
-                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY ADDED OFFICIAL RECEIPT ($request->official_receipt) - $request->company.";
-                $userlogs->save();
-
-                return 'FOR VALIDATION';
+            return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function save_dr(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         if(DeliveryReceipt::where('delivery_receipt', $request->delivery_receipt)->where('company', $request->company)->count() > 0) {
             return 'Already exist';
         }
@@ -287,29 +393,51 @@ class EventController extends Controller
             }
         }
 
-                DeliveryReceipt::create([
-                    'delivery_receipt' => $request->delivery_receipt,
-                    'company' => $request->company,
-                    'client_name' => strtoupper($request->client_name),
-                    'business_name' => strtoupper($request->business_name),
-                    'branch_name' => strtoupper($request->branch_name),
-                    'uploaded_by' => auth()->user()->name,
-                    'purchase_order' => strtoupper($request->purchase_order),
-                    'sales_order' => strtoupper($request->sales_order),
-                    'pdf_file' => $request->company.'-'.$filename,
-                    'status' => 'FOR VALIDATION'
-                ]);
+        $sql = DeliveryReceipt::create([
+            'delivery_receipt' => $request->delivery_receipt,
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'business_name' => strtoupper($request->business_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => auth()->user()->name,
+            'purchase_order' => strtoupper($request->purchase_order),
+            'sales_order' => strtoupper($request->sales_order),
+            'pdf_file' => $request->company.'-'.$filename,
+            'status' => 'FOR VALIDATION'
+        ]);
 
-                $userlogs = new UserLogs;
-                $userlogs->username = auth()->user()->name;
-                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY ADDED DELIVERY RECEIPT ($request->delivery_receipt) - $request->company.";
-                $userlogs->save();
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY ADDED DELIVERY RECEIPT ($request->delivery_receipt) - $request->company.";
+            $userlogs->save();
 
-                return 'FOR VALIDATION';
+            return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function edit_si(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         $file = $request->file('pdf_file');
         if(count($file) >= 1){
             $count = 0;
@@ -340,106 +468,106 @@ class EventController extends Controller
             }
         }
 
-            $current_page = 'SALES INVOICE';
-            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
-            $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
-            $business_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->business_name;
-            $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
-            $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
-            $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
-            $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
-            $stage_orig = SalesInvoice::where('id', $request->entry_id)->first()->stage;
+        $current_page = 'SALES INVOICE';
+        $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
+        $company_orig = SalesInvoice::where('id', $request->entry_id)->first()->company;
+        $client_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->client_name;
+        $business_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->business_name;
+        $branch_name_orig = SalesInvoice::where('id', $request->entry_id)->first()->branch_name;
+        $purchase_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->purchase_order;
+        $sales_order_orig = SalesInvoice::where('id', $request->entry_id)->first()->sales_order;
+        $delivery_receipt_orig = SalesInvoice::where('id', $request->entry_id)->first()->delivery_receipt;
+        $stage_orig = SalesInvoice::where('id', $request->entry_id)->first()->stage;
 
-            if($stage_orig == '1'){
-                $edited = 'CORRECTED';
-            }
-            else{
-                $edited = 'UPDATED';
-            }
+        if($stage_orig == '1'){
+            $edited = 'CORRECTED';
+        }
+        else{
+            $edited = 'UPDATED';
+        }
 
-            if($request->sales_invoice != $reference_number){
-                $sales_invoice_new = $request->sales_invoice;
-                $sales_invoice_change = "【SALES INVOICE: FROM '$reference_number' TO '$sales_invoice_new'】";
-            }
-            else{
-                $sales_invoice_change = NULL;
-            }
+        if($request->sales_invoice != $reference_number){
+            $sales_invoice_new = $request->sales_invoice;
+            $sales_invoice_change = "【SALES INVOICE: FROM '$reference_number' TO '$sales_invoice_new'】";
+        }
+        else{
+            $sales_invoice_change = NULL;
+        }
 
-            if($request->company != $company_orig){
-                $company_new = $request->company;
-                $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
-            }
-            else{
-                $company_change = NULL;
-            }
+        if($request->company != $company_orig){
+            $company_new = $request->company;
+            $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+        }
+        else{
+            $company_change = NULL;
+        }
 
-            if(strtoupper($request->client_name) != $client_name_orig){
-                $client_name_new = strtoupper($request->client_name);
-                $client_name_change = "【SOLD TO: FROM '$client_name_orig' TO '$client_name_new'】";
-            }
-            else{
-                $client_name_change = NULL;
-            }
+        if(strtoupper($request->client_name) != $client_name_orig){
+            $client_name_new = strtoupper($request->client_name);
+            $client_name_change = "【SOLD TO: FROM '$client_name_orig' TO '$client_name_new'】";
+        }
+        else{
+            $client_name_change = NULL;
+        }
 
-            if(strtoupper($request->business_name) != $business_name_orig){
-                $business_name_new = strtoupper($request->business_name);
-                $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
-            }
-            else{
-                $business_name_change = NULL;
-            }
+        if(strtoupper($request->business_name) != $business_name_orig){
+            $business_name_new = strtoupper($request->business_name);
+            $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+        }
+        else{
+            $business_name_change = NULL;
+        }
 
-            if(strtoupper($request->branch_name) != $branch_name_orig){
-                $branch_name_new = strtoupper($request->branch_name);
-                $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
-            }
-            else{
-                $branch_name_change = NULL;
-            }
+        if(strtoupper($request->branch_name) != $branch_name_orig){
+            $branch_name_new = strtoupper($request->branch_name);
+            $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+        }
+        else{
+            $branch_name_change = NULL;
+        }
 
-            if($request->purchase_order != $purchase_order_orig){
-                $purchase_order_new = $request->purchase_order;
-                $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
-            }
-            else{
-                $purchase_order_change = NULL;
-            }
+        if($request->purchase_order != $purchase_order_orig){
+            $purchase_order_new = $request->purchase_order;
+            $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+        }
+        else{
+            $purchase_order_change = NULL;
+        }
 
-            if($request->sales_order != $sales_order_orig){
-                $sales_order_new = $request->sales_order;
-                $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
-            }
-            else{
-                $sales_order_change = NULL;
-            }
+        if($request->sales_order != $sales_order_orig){
+            $sales_order_new = $request->sales_order;
+            $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+        }
+        else{
+            $sales_order_change = NULL;
+        }
 
-            if($request->delivery_receipt != $delivery_receipt_orig){
-                $delivery_receipt_new = $request->delivery_receipt;
-                $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
-            }
-            else{
-                $delivery_receipt_change = NULL;
-            }
+        if($request->delivery_receipt != $delivery_receipt_orig){
+            $delivery_receipt_new = $request->delivery_receipt;
+            $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$delivery_receipt_orig' TO '$sales_order_new'】";
+        }
+        else{
+            $delivery_receipt_change = NULL;
+        }
 
-            $sql = SalesInvoice::where('id', $request->entry_id)
-                        ->update([
-                        'sales_invoice' => strtoupper($request->sales_invoice),
-                        'company' => $request->company,
-                        'client_name' => strtoupper($request->client_name),
-                        'business_name' => strtoupper($request->business_name),
-                        'branch_name' => strtoupper($request->branch_name),
-                        'uploaded_by' => strtoupper($request->uploaded_by),
-                        'purchase_order' => strtoupper($request->purchase_order),
-                        'sales_order' => strtoupper($request->sales_order),
-                        'delivery_receipt' => strtoupper($request->delivery_receipt),
-                        'pdf_file' => $request->company.'-'.$filename,
-                        'remarks' => '',
-                        'status' => 'FOR VALIDATION',
-                        'stage' => '0',
-                        'created_at' => Carbon::now()
-            ]);
+        $sql = SalesInvoice::where('id', $request->entry_id)->update([
+            'sales_invoice' => strtoupper($request->sales_invoice),
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'business_name' => strtoupper($request->business_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => strtoupper($request->uploaded_by),
+            'purchase_order' => strtoupper($request->purchase_order),
+            'sales_order' => strtoupper($request->sales_order),
+            'delivery_receipt' => strtoupper($request->delivery_receipt),
+            'pdf_file' => $request->company.'-'.$filename,
+            'remarks' => '',
+            'status' => 'FOR VALIDATION',
+            'stage' => '0',
+            'created_at' => Carbon::now()
+        ]);
 
+        if($sql){
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -447,9 +575,30 @@ class EventController extends Controller
             $userlogs->save();
 
             return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function edit_cr(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         $file = $request->file('pdf_file');
         if(count($file) >= 1){
             $count = 0;
@@ -479,96 +628,118 @@ class EventController extends Controller
                 $imagick->writeImages($imagePath, true);
             }
         }
-                $current_page = 'COLLECTION RECEIPT';
-                $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
-                $company_orig = CollectionReceipt::where('id', $request->entry_id)->first()->company;
-                $client_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->client_name;
-                $branch_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->branch_name;
-                $sales_order_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_order;
-                $sales_invoice_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_invoice;
-                $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
 
-                if($stage_orig == '1'){
-                    $edited = 'CORRECTED';
-                }
-                else{
-                    $edited = 'UPDATED';
-                }
+        $current_page = 'COLLECTION RECEIPT';
+        $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
+        $company_orig = CollectionReceipt::where('id', $request->entry_id)->first()->company;
+        $client_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->client_name;
+        $branch_name_orig = CollectionReceipt::where('id', $request->entry_id)->first()->branch_name;
+        $sales_order_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_order;
+        $sales_invoice_orig = CollectionReceipt::where('id', $request->entry_id)->first()->sales_invoice;
+        $stage_orig = CollectionReceipt::where('id', $request->entry_id)->first()->stage;
 
-                if($request->collection_receipt != $reference_number){
-                    $collection_receipt_new = $request->collection_receipt;
-                    $collection_receipt_change = "【COLLECTION RECEIPT: FROM '$reference_number' TO '$collection_receipt_new'】";
-                }
-                else{
-                    $collection_receipt_change = NULL;
-                }
+        if($stage_orig == '1'){
+            $edited = 'CORRECTED';
+        }
+        else{
+            $edited = 'UPDATED';
+        }
 
-                if($request->company != $company_orig){
-                    $company_new = $request->company;
-                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
-                }
-                else{
-                    $company_change = NULL;
-                }
+        if($request->collection_receipt != $reference_number){
+            $collection_receipt_new = $request->collection_receipt;
+            $collection_receipt_change = "【COLLECTION RECEIPT: FROM '$reference_number' TO '$collection_receipt_new'】";
+        }
+        else{
+            $collection_receipt_change = NULL;
+        }
 
-                if(strtoupper($request->client_name) != $client_name_orig){
-                    $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
-                }
-                else{
-                    $client_name_change = NULL;
-                }
+        if($request->company != $company_orig){
+            $company_new = $request->company;
+            $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+        }
+        else{
+            $company_change = NULL;
+        }
 
-                if(strtoupper($request->branch_name) != $branch_name_orig){
-                    $branch_name_new = strtoupper($request->branch_name);
-                    $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
-                }
-                else{
-                    $branch_name_change = NULL;
-                }
+        if(strtoupper($request->client_name) != $client_name_orig){
+            $client_name_new = strtoupper($request->client_name);
+            $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
+        }
+        else{
+            $client_name_change = NULL;
+        }
 
-                if($request->sales_order != $sales_order_orig){
-                    $sales_order_new = $request->sales_order;
-                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
-                }
-                else{
-                    $sales_order_change = NULL;
-                }
+        if(strtoupper($request->branch_name) != $branch_name_orig){
+            $branch_name_new = strtoupper($request->branch_name);
+            $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+        }
+        else{
+            $branch_name_change = NULL;
+        }
 
-                if($request->sales_invoice != $sales_invoice_orig){
-                    $sales_invoice_new = $request->delivery_receipt;
-                    $sales_invoice_change = "【SALES INVOICE: FROM '$sales_invoice_orig' TO '$sales_invoice_new'】";
-                }
-                else{
-                    $sales_invoice_change = NULL;
-                }
+        if($request->sales_order != $sales_order_orig){
+            $sales_order_new = $request->sales_order;
+            $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+        }
+        else{
+            $sales_order_change = NULL;
+        }
 
-                $sql = CollectionReceipt::where('id', $request->entry_id)
-                        ->update([
-                        'collection_receipt' => $request->collection_receipt,
-                        'company' => $request->company,
-                        'client_name' => strtoupper($request->client_name),
-                        'branch_name' => strtoupper($request->branch_name),
-                        'uploaded_by' => strtoupper($request->uploaded_by),
-                        'sales_order' => strtoupper($request->sales_order),
-                        'sales_invoice' => strtoupper($request->sales_invoice),
-                        'pdf_file' => $request->company.'-'.$filename,
-                        'remarks' => '',
-                        'status' => 'FOR VALIDATION',
-                        'stage' => '0',
-                        'created_at' => Carbon::now()
-                ]);
+        if($request->sales_invoice != $sales_invoice_orig){
+            $sales_invoice_new = $request->delivery_receipt;
+            $sales_invoice_change = "【SALES INVOICE: FROM '$sales_invoice_orig' TO '$sales_invoice_new'】";
+        }
+        else{
+            $sales_invoice_change = NULL;
+        }
 
-                $userlogs = new UserLogs;
-                $userlogs->username = auth()->user()->name;
-                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
-                $userlogs->save();
+        $sql = CollectionReceipt::where('id', $request->entry_id)->update([
+                'collection_receipt' => $request->collection_receipt,
+                'company' => $request->company,
+                'client_name' => strtoupper($request->client_name),
+                'branch_name' => strtoupper($request->branch_name),
+                'uploaded_by' => strtoupper($request->uploaded_by),
+                'sales_order' => strtoupper($request->sales_order),
+                'sales_invoice' => strtoupper($request->sales_invoice),
+                'pdf_file' => $request->company.'-'.$filename,
+                'remarks' => '',
+                'status' => 'FOR VALIDATION',
+                'stage' => '0',
+                'created_at' => Carbon::now()
+        ]);
 
-                return 'FOR VALIDATION';
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->save();
+
+            return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function edit_bs(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         $file = $request->file('pdf_file');
         if(count($file) >= 1){
             $count = 0;
@@ -598,107 +769,128 @@ class EventController extends Controller
                 $imagick->writeImages($imagePath, true);
             }
         }
-                $current_page = 'BILLING STATEMENT';
-                $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
-                $company_orig = BillingStatement::where('id', $request->entry_id)->first()->company;
-                $client_name_orig = BillingStatement::where('id', $request->entry_id)->first()->client_name;
-                $business_name_orig = BillingStatement::where('id', $request->entry_id)->first()->business_name;
-                $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
-                $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
-                $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
-                $stage_orig = BillingStatement::where('id', $request->entry_id)->first()->stage;
 
-                if($stage_orig == '1'){
-                    $edited = 'CORRECTED';
-                }
-                else{
-                    $edited = 'UPDATED';
-                }
+        $current_page = 'BILLING STATEMENT';
+        $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
+        $company_orig = BillingStatement::where('id', $request->entry_id)->first()->company;
+        $client_name_orig = BillingStatement::where('id', $request->entry_id)->first()->client_name;
+        $business_name_orig = BillingStatement::where('id', $request->entry_id)->first()->business_name;
+        $branch_name_orig = BillingStatement::where('id', $request->entry_id)->first()->branch_name;
+        $sales_order_orig = BillingStatement::where('id', $request->entry_id)->first()->sales_order;
+        $purchase_order_orig = BillingStatement::where('id', $request->entry_id)->first()->purchase_order;
+        $stage_orig = BillingStatement::where('id', $request->entry_id)->first()->stage;
 
-                if($request->billing_statement != $reference_number){
-                    $billing_statement_new = $request->billing_statement;
-                    $billing_statement_change = "【BILLING STATEMENT: FROM '$reference_number' TO '$billing_statement_new'】";
-                }
-                else{
-                    $billing_statement_change = NULL;
-                }
+        if($stage_orig == '1'){
+            $edited = 'CORRECTED';
+        }
+        else{
+            $edited = 'UPDATED';
+        }
 
-                if($request->company != $company_orig){
-                    $company_new = $request->company;
-                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
-                }
-                else{
-                    $company_change = NULL;
-                }
+        if($request->billing_statement != $reference_number){
+            $billing_statement_new = $request->billing_statement;
+            $billing_statement_change = "【BILLING STATEMENT: FROM '$reference_number' TO '$billing_statement_new'】";
+        }
+        else{
+            $billing_statement_change = NULL;
+        }
 
-                if(strtoupper($request->client_name) != $client_name_orig){
-                    $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【BILLED TO: FROM '$client_name_orig' TO '$client_name_new'】";
-                }
-                else{
-                    $client_name_change = NULL;
-                }
+        if($request->company != $company_orig){
+            $company_new = $request->company;
+            $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+        }
+        else{
+            $company_change = NULL;
+        }
 
-                if(strtoupper($request->business_name) != $business_name_orig){
-                    $business_name_new = strtoupper($request->business_name);
-                    $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
-                }
-                else{
-                    $business_name_change = NULL;
-                }
+        if(strtoupper($request->client_name) != $client_name_orig){
+            $client_name_new = strtoupper($request->client_name);
+            $client_name_change = "【BILLED TO: FROM '$client_name_orig' TO '$client_name_new'】";
+        }
+        else{
+            $client_name_change = NULL;
+        }
 
-                if(strtoupper($request->branch_name) != $branch_name_orig){
-                    $branch_name_new = strtoupper($request->branch_name);
-                    $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
-                }
-                else{
-                    $branch_name_change = NULL;
-                }
+        if(strtoupper($request->business_name) != $business_name_orig){
+            $business_name_new = strtoupper($request->business_name);
+            $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+        }
+        else{
+            $business_name_change = NULL;
+        }
 
-                if($request->sales_order != $sales_order_orig){
-                    $sales_order_new = $request->sales_order;
-                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
-                }
-                else{
-                    $sales_order_change = NULL;
-                }
+        if(strtoupper($request->branch_name) != $branch_name_orig){
+            $branch_name_new = strtoupper($request->branch_name);
+            $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+        }
+        else{
+            $branch_name_change = NULL;
+        }
 
-                if($request->purchase_order != $purchase_order_orig){
-                    $purchase_order_new = $request->purchase_order;
-                    $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
-                }
-                else{
-                    $purchase_order_change = NULL;
-                }
+        if($request->sales_order != $sales_order_orig){
+            $sales_order_new = $request->sales_order;
+            $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+        }
+        else{
+            $sales_order_change = NULL;
+        }
 
-                $sql = BillingStatement::where('id', $request->entry_id)
-                            ->update([
-                            'billing_statement' => $request->billing_statement,
-                            'company' => $request->company,
-                            'client_name' => strtoupper($request->client_name),
-                            'business_name' => strtoupper($request->business_name),
-                            'branch_name' => strtoupper($request->branch_name),
-                            'uploaded_by' => strtoupper($request->uploaded_by),
-                            'sales_order' => $request->sales_order,
-                            'purchase_order' => $request->purchase_order,
-                            'pdf_file' => $request->company.'-'.$filename,
-                            'remarks' => '',
-                            'status' => 'FOR VALIDATION',
-                            'stage' => '0',
-                            'created_at' => Carbon::now()
-                ]);
+        if($request->purchase_order != $purchase_order_orig){
+            $purchase_order_new = $request->purchase_order;
+            $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+        }
+        else{
+            $purchase_order_change = NULL;
+        }
 
-                $userlogs = new UserLogs;
-                $userlogs->username = auth()->user()->name;
-                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
-                $userlogs->save();
+        $sql = BillingStatement::where('id', $request->entry_id)->update([
+            'billing_statement' => $request->billing_statement,
+            'company' => $request->company,
+            'client_name' => strtoupper($request->client_name),
+            'business_name' => strtoupper($request->business_name),
+            'branch_name' => strtoupper($request->branch_name),
+            'uploaded_by' => strtoupper($request->uploaded_by),
+            'sales_order' => $request->sales_order,
+            'purchase_order' => $request->purchase_order,
+            'pdf_file' => $request->company.'-'.$filename,
+            'remarks' => '',
+            'status' => 'FOR VALIDATION',
+            'stage' => '0',
+            'created_at' => Carbon::now()
+        ]);
 
-                return 'FOR VALIDATION';
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->save();
 
+            return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function edit_or(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         $file = $request->file('pdf_file');
         if(count($file) >= 1){
             $count = 0;
@@ -728,86 +920,109 @@ class EventController extends Controller
                 $imagick->writeImages($imagePath, true);
             }
         }
-                $current_page = 'OFFICIAL RECEIPT';
-                $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
-                $company_orig = OfficialReceipt::where('id', $request->entry_id)->first()->company;
-                $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
-                $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
-                $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
-                $stage_orig = OfficialReceipt::where('id', $request->entry_id)->first()->stage;
 
-                if($stage_orig == '1'){
-                    $edited = 'CORRECTED';
-                }
-                else{
-                    $edited = 'UPDATED';
-                }
+        $current_page = 'OFFICIAL RECEIPT';
+        $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
+        $company_orig = OfficialReceipt::where('id', $request->entry_id)->first()->company;
+        $client_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->client_name;
+        $branch_name_orig = OfficialReceipt::where('id', $request->entry_id)->first()->branch_name;
+        $sales_order_orig = OfficialReceipt::where('id', $request->entry_id)->first()->sales_order;
+        $stage_orig = OfficialReceipt::where('id', $request->entry_id)->first()->stage;
 
-                if($request->official_receipt != $reference_number){
-                    $official_receipt_new = $request->official_receipt;
-                    $official_receipt_change = "【OFFICIAL RECEIPT: FROM '$reference_number' TO '$official_receipt_new'】";
-                }
-                else{
-                    $official_receipt_change = NULL;
-                }
+        if($stage_orig == '1'){
+            $edited = 'CORRECTED';
+        }
+        else{
+            $edited = 'UPDATED';
+        }
 
-                if($request->company != $company_orig){
-                    $company_new = $request->company;
-                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
-                }
-                else{
-                    $company_change = NULL;
-                }
+        if($request->official_receipt != $reference_number){
+            $official_receipt_new = $request->official_receipt;
+            $official_receipt_change = "【OFFICIAL RECEIPT: FROM '$reference_number' TO '$official_receipt_new'】";
+        }
+        else{
+            $official_receipt_change = NULL;
+        }
 
-                if(strtoupper($request->client_name) != $client_name_orig){
-                    $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
-                }
-                else{
-                    $client_name_change = NULL;
-                }
+        if($request->company != $company_orig){
+            $company_new = $request->company;
+            $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+        }
+        else{
+            $company_change = NULL;
+        }
 
-                if(strtoupper($request->branch_name) != $branch_name_orig){
-                    $branch_name_new = strtoupper($request->branch_name);
-                    $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
-                }
-                else{
-                    $branch_name_change = NULL;
-                }
+        if(strtoupper($request->client_name) != $client_name_orig){
+            $client_name_new = strtoupper($request->client_name);
+            $client_name_change = "【RECEIVED FROM: FROM '$client_name_orig' TO '$client_name_new'】";
+        }
+        else{
+            $client_name_change = NULL;
+        }
 
-                if($request->sales_order != $sales_order_orig){
-                    $sales_order_new = $request->sales_order;
-                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
-                }
-                else{
-                    $sales_order_change = NULL;
-                }
+        if(strtoupper($request->branch_name) != $branch_name_orig){
+            $branch_name_new = strtoupper($request->branch_name);
+            $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+        }
+        else{
+            $branch_name_change = NULL;
+        }
 
-                $sql = OfficialReceipt::where('id', $request->entry_id)
-                        ->update([
-                        'official_receipt' => $request->official_receipt,
-                        'company' => $request->company,
-                        'client_name' => strtoupper($request->client_name),
-                        'branch_name' => strtoupper($request->branch_name),
-                        'uploaded_by' => strtoupper($request->uploaded_by),
-                        'sales_order' => $request->sales_order,
-                        'pdf_file' => $request->company.'-'.$filename,
-                        'remarks' => '',
-                        'status' => 'FOR VALIDATION',
-                        'stage' => '0',
-                        'created_at' => Carbon::now()
-                ]);
+        if($request->sales_order != $sales_order_orig){
+            $sales_order_new = $request->sales_order;
+            $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+        }
+        else{
+            $sales_order_change = NULL;
+        }
 
-                $userlogs = new UserLogs;
-                $userlogs->username = auth()->user()->name;
-                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
-                $userlogs->save();
+        $sql = OfficialReceipt::where('id', $request->entry_id)
+                ->update([
+                'official_receipt' => $request->official_receipt,
+                'company' => $request->company,
+                'client_name' => strtoupper($request->client_name),
+                'branch_name' => strtoupper($request->branch_name),
+                'uploaded_by' => strtoupper($request->uploaded_by),
+                'sales_order' => $request->sales_order,
+                'pdf_file' => $request->company.'-'.$filename,
+                'remarks' => '',
+                'status' => 'FOR VALIDATION',
+                'stage' => '0',
+                'created_at' => Carbon::now()
+        ]);
 
-                return 'FOR VALIDATION';
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->save();
+
+            return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function edit_dr(Request $request){
+        try{
+            $maxSize = 2500 * 1024;
+            $ext_array = ['pdf','jpg','jpeg','png'];
+            foreach($request->file('pdf_file') as $file){
+                $extension = strtolower($file->getClientOriginalExtension());
+                if(!in_array($extension, $ext_array)){
+                    return 'FILE EXTENSION';
+                }
+                else if($file->getSize() > $maxSize){
+                    return 'MAX SIZE';
+                }
+            }
+        }
+        catch(PostTooLargeException $th){
+            return 'MAX SIZE';
+        }
+
         $file = $request->file('pdf_file');
         if(count($file) >= 1){
             $count = 0;
@@ -837,103 +1052,109 @@ class EventController extends Controller
                 $imagick->writeImages($imagePath, true);
             }
         }
-                $current_page = 'DELIVERY RECEIPT';
-                $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
-                $company_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
-                $client_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->client_name;
-                $business_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->business_name;
-                $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
-                $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
-                $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
-                $stage_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->stage;
 
-                if($stage_orig == '1'){
-                    $edited = 'CORRECTED';
-                }
-                else{
-                    $edited = 'UPDATED';
-                }
+        $current_page = 'DELIVERY RECEIPT';
+        $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+        $company_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
+        $client_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->client_name;
+        $business_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->business_name;
+        $branch_name_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->branch_name;
+        $purchase_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->purchase_order;
+        $sales_order_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->sales_order;
+        $stage_orig = DeliveryReceipt::where('id', $request->entry_id)->first()->stage;
 
-                if($request->delivery_receipt != $reference_number){
-                    $delivery_receipt_new = $request->delivery_receipt;
-                    $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$reference_number' TO '$delivery_receipt_new'】";
-                }
-                else{
-                    $delivery_receipt_change = NULL;
-                }
+        if($stage_orig == '1'){
+            $edited = 'CORRECTED';
+        }
+        else{
+            $edited = 'UPDATED';
+        }
 
-                if($request->company != $company_orig){
-                    $company_new = $request->company;
-                    $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
-                }
-                else{
-                    $company_change = NULL;
-                }
+        if($request->delivery_receipt != $reference_number){
+            $delivery_receipt_new = $request->delivery_receipt;
+            $delivery_receipt_change = "【DELIVERY RECEIPT: FROM '$reference_number' TO '$delivery_receipt_new'】";
+        }
+        else{
+            $delivery_receipt_change = NULL;
+        }
 
-                if(strtoupper($request->client_name) != $client_name_orig){
-                    $client_name_new = strtoupper($request->client_name);
-                    $client_name_change = "【DELIVERED TO: FROM '$client_name_orig' TO '$client_name_new'】";
-                }
-                else{
-                    $client_name_change = NULL;
-                }
+        if($request->company != $company_orig){
+            $company_new = $request->company;
+            $company_change = "【COMPANY: FROM '$company_orig' TO '$company_new'】";
+        }
+        else{
+            $company_change = NULL;
+        }
 
-                if(strtoupper($request->business_name) != $business_name_orig){
-                    $business_name_new = strtoupper($request->business_name);
-                    $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
-                }
-                else{
-                    $business_name_change = NULL;
-                }
+        if(strtoupper($request->client_name) != $client_name_orig){
+            $client_name_new = strtoupper($request->client_name);
+            $client_name_change = "【DELIVERED TO: FROM '$client_name_orig' TO '$client_name_new'】";
+        }
+        else{
+            $client_name_change = NULL;
+        }
 
-                if(strtoupper($request->branch_name) != $branch_name_orig){
-                    $branch_name_new = strtoupper($request->branch_name);
-                    $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
-                }
-                else{
-                    $branch_name_change = NULL;
-                }
+        if(strtoupper($request->business_name) != $business_name_orig){
+            $business_name_new = strtoupper($request->business_name);
+            $business_name_change = "【BUSINESS NAME: FROM '$business_name_orig' TO '$business_name_new'】";
+        }
+        else{
+            $business_name_change = NULL;
+        }
 
-                if($request->purchase_order != $purchase_order_orig){
-                    $purchase_order_new = $request->purchase_order;
-                    $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
-                }
-                else{
-                    $purchase_order_change = NULL;
-                }
+        if(strtoupper($request->branch_name) != $branch_name_orig){
+            $branch_name_new = strtoupper($request->branch_name);
+            $branch_name_change = "【BRANCH NAME: FROM '$branch_name_orig' TO '$branch_name_new'】";
+        }
+        else{
+            $branch_name_change = NULL;
+        }
 
-                if($request->sales_order != $sales_order_orig){
-                    $sales_order_new = $request->sales_order;
-                    $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
-                }
-                else{
-                    $sales_order_change = NULL;
-                }
+        if($request->purchase_order != $purchase_order_orig){
+            $purchase_order_new = $request->purchase_order;
+            $purchase_order_change = "【PURCHASE ORDER: FROM '$purchase_order_orig' TO '$purchase_order_new'】";
+        }
+        else{
+            $purchase_order_change = NULL;
+        }
 
-                $sql = DeliveryReceipt::where('id', $request->entry_id)
-                        ->update([
-                        'delivery_receipt' => $request->delivery_receipt,
-                        'company' => $request->company,
-                        'client_name' => strtoupper($request->client_name),
-                        'business_name' => strtoupper($request->business_name),
-                        'branch_name' => strtoupper($request->branch_name),
-                        'uploaded_by' => strtoupper($request->uploaded_by),
-                        'purchase_order' => $request->purchase_order,
-                        'sales_order' => $request->sales_order,
-                        'pdf_file' => $request->company.'-'.$filename,
-                        'remarks' => '',
-                        'status' => 'FOR VALIDATION',
-                        'stage' => '0',
-                        'created_at' => Carbon::now()
-                ]);
+        if($request->sales_order != $sales_order_orig){
+            $sales_order_new = $request->sales_order;
+            $sales_order_change = "【SALES ORDER: FROM '$sales_order_orig' TO '$sales_order_new'】";
+        }
+        else{
+            $sales_order_change = NULL;
+        }
 
-                $userlogs = new UserLogs;
-                $userlogs->username = auth()->user()->name;
-                $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
-                $userlogs->save();
+        $sql = DeliveryReceipt::where('id', $request->entry_id)
+                ->update([
+                'delivery_receipt' => $request->delivery_receipt,
+                'company' => $request->company,
+                'client_name' => strtoupper($request->client_name),
+                'business_name' => strtoupper($request->business_name),
+                'branch_name' => strtoupper($request->branch_name),
+                'uploaded_by' => strtoupper($request->uploaded_by),
+                'purchase_order' => $request->purchase_order,
+                'sales_order' => $request->sales_order,
+                'pdf_file' => $request->company.'-'.$filename,
+                'remarks' => '',
+                'status' => 'FOR VALIDATION',
+                'stage' => '0',
+                'created_at' => Carbon::now()
+        ]);
 
-                return 'FOR VALIDATION';
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->save();
+
+            return 'FOR VALIDATION';
+        }
+        else{
+            return 'false';
+        }
     }
 
     public function edit(Request $request){
@@ -1419,27 +1640,31 @@ class EventController extends Controller
             ]);
         }
 
-        $userlogs = new UserLogs;
-        $userlogs->username = auth()->user()->name;
-        $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-        if($request->current_page == 'si'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            if($request->current_page == 'si'){
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $business_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            }
+            if($request->current_page == 'cr'){
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            }
+            if($request->current_page == 'bs'){
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            }
+            if($request->current_page == 'or'){
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            }
+            if($request->current_page == 'dr'){
+                $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            }
+            $userlogs->save();
+            return 'true';
         }
-        if($request->current_page == 'cr'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+        else{
+            return 'false';
         }
-        if($request->current_page == 'bs'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
-        }
-        if($request->current_page == 'or'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
-        }
-        if($request->current_page == 'dr'){
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
-        }
-        $userlogs->save();
-
-        return $sql ? 'true' : 'false';
     }
 
     public function approve(Request $request){

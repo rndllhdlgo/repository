@@ -255,26 +255,13 @@ function edit_pdf(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
+            save_upload(response);
+        },
+        error: function(response){
             $('#loading').hide();
-            if(response == 'no changes'){
-                $('#loading').hide();
-                Swal.fire("NO CHANGES FOUND", "", "error");
-            }
-            else if(response == 'Invalid file format'){
-                Swal.fire({
-                    title: 'EDIT FAILED',
-                    html: "INVALID FILE FORMAT",
-                    icon: 'error',
-                });
-            }
-            else{
-                Swal.fire({
-                    title: 'SAVE SUCCESS',
-                    html: 'FILE UPLOADED SUCCESSFULLY FOR VALIDATION',
-                    icon: 'success'
-                });
-                $('.modal').modal('hide');
-            }
+            Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
+            $('.divReplaceFile').hide();
+            resetUpload();
         }
     });
 }
@@ -714,12 +701,73 @@ setInterval(() => {
     $('body').css('padding-right','0px');
 }, 0);
 
+function save_upload(response){
+    $('#loading').hide();
+    if(response == 'no changes'){
+        Swal.fire("NO CHANGES FOUND", "", "error");
+        $('.divReplaceFile').hide();
+        resetUpload();
+    }
+    else if(response == 'MAX SIZE'){
+        Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
+        $('.divReplaceFile').hide();
+        resetUpload();
+    }
+    else if(response == 'FILE EXTENSION'){
+        Swal.fire('INVALID file type!', 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg.', 'error');
+        $('.divReplaceFile').hide();
+        resetUpload();
+    }
+    else if(response == 'FOR VALIDATION'){
+        Swal.fire({
+            title: 'SUBMIT SUCCESS',
+            html: 'SUBMITTED FOR VALIDATION',
+            icon: 'success'
+        });
+        $('.modal').modal('hide');
+    }
+    else if(response == 'Invalid file format'){
+        Swal.fire({
+            title: 'SUBMIT FAILED',
+            html: "INVALID FILE FORMAT",
+            icon: 'warning',
+        });
+        $('.divReplaceFile').hide();
+        resetUpload();
+    }
+    else if(response == 'Already exist'){
+        Swal.fire({
+            title: 'ALREADY EXISTS',
+            icon: 'error'
+        });
+        $('.divReplaceFile').hide();
+        resetUpload();
+    }
+    else if(response == 'false'){
+        Swal.fire({
+            title: 'SUBMIT ERROR',
+            html: 'FILE SUBMIT ERROR',
+            icon: 'error'
+        });
+        $('.divReplaceFile').hide();
+        resetUpload();
+    }
+    else{
+        Swal.fire({
+            title: 'SUBMIT SUCCESS',
+            html: 'SUBMITTED FOR VALIDATION',
+            icon: 'success'
+        });
+        $('.modal').modal('hide');
+    }
+}
+
 $(document).on('change','#pdf_file', function(e){
     var files_length = $("#pdf_file").get(0).files.length;
     var error_ext = 0;
     var error_mb = 0;
     var total_file_size = 0;
-    for(var i = 0; i < files_length; ++i) {
+    for(var i = 0; i < files_length; ++i){
         var file1=$("#pdf_file").get(0).files[i].name;
         var file_size = $("#pdf_file").get(0).files[i].size;
         var ext = file1.split('.').pop().toLowerCase();
@@ -732,7 +780,12 @@ $(document).on('change','#pdf_file', function(e){
         total_file_size+=file_size;
     }
     if(error_ext > 0 && error_mb > 0){
-        Swal.fire('INVALID file type AND EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg; AND with file size not greater than 2.5 MB each.', 'error');
+        Swal.fire({
+            title: 'INVALID file type AND EXCEEDED maximum individual file size (2.5 MB)!',
+            html: 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg; AND with file size not greater than 2.5 MB each.',
+            icon: 'error',
+            width: 700
+        });
         $('#pdf_file').val('');
         $('#pdf_file').focus();
         $('.divReplaceFile').hide();

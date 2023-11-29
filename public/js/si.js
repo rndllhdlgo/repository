@@ -242,35 +242,13 @@ function save_pdf(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response){
+            save_upload(response);
+        },
+        error: function(response){
             $('#loading').hide();
-            if(response == 'FOR VALIDATION'){
-                Swal.fire({
-                    title: 'SUBMIT SUCCESS',
-                    html: 'SUBMITTED FOR VALIDATION',
-                    icon: 'success'
-                });
-                $('#siModal').modal('hide');
-            }
-            else if(response == 'Invalid file format'){
-                Swal.fire({
-                    title: 'SUBMIT FAILED',
-                    html: "INVALID FILE FORMAT",
-                    icon: 'warning',
-                });
-            }
-            else if(response == 'Already exist'){
-                Swal.fire({
-                    title: 'SALES INVOICE ALREADY EXISTS',
-                    icon: 'error'
-                });
-            }
-            else{
-                Swal.fire({
-                    title: 'SUBMIT ERROR',
-                    html: 'FILE SUBMIT ERROR',
-                    icon: 'error'
-                });
-            }
+            Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
+            $('.divReplaceFile').hide();
+            resetUpload();
         }
     });
 }
