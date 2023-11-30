@@ -27,7 +27,7 @@
 		</thead>
 	</table>
 </div>
-<nav class="navbar navbar-expand-sm bg-default w-100 navcontent" style="font-weight: bolder;">
+<nav class="navbar navbar-expand-sm bg-default w-100 navcontent" style="font-weight: bolder; zoom:90%;">
 	<div class="container-fluid">
 		@if(auth()->user()->department == 'SALES')
 			<ul class="navbar-nav">
