@@ -518,9 +518,24 @@ setInterval(() => {
 }, 1100);
 
 $(document).on('click', '#btnViewFile', function(){
-    $('#displayFile').empty().append(`
-        <embed src="${$('#fetchFileName').attr('href')}?${Math.random().toString(36).substring(2,12)}" width="100%" height="600px"/>
-    `);
+    $('#loading').show();
+    var file_url = $('#fetchFileName').attr('href');
+    var rand_str = Math.random().toString(36).substring(2,12);
+    console.log(file_url);
+    $.ajax({
+        url: '/checkURL',
+        async: false,
+        data:{
+            file_url: file_url
+        },
+        success: function(data){
+            if(data == 'false'){ file_url = '/image/404.jpg'; }
+            $('#displayFile').empty().append(`
+                <embed src="${file_url}?${rand_str}" width="100%" height="600px"/>
+            `);
+            $('#loading').hide();
+        }
+    });
 });
 
 $(document).on('contextmenu', '.preventRightClick', function(e) {

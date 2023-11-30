@@ -41,6 +41,7 @@ Route::middleware(['session'])->group(function () {
         Route::get('/logs', 'logs');
         Route::get('/index/data', 'index_data');
         Route::get('/index/logs/reload', 'logs_reload');
+        Route::get('/checkURL', 'checkURL');
     });
 
     Route::controller(PageController::class)->group(function(){

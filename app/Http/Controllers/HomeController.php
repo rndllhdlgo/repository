@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\Facades\DataTables;
+use Spatie\Permission\Models\Permission;
 
 use App\Models\User;
 use App\Models\Role;
@@ -54,5 +55,9 @@ class HomeController extends Controller
     public function logs_reload(){
         $logs = UserLogs::select()->count();
         return $logs;
+    }
+
+    public function checkURL(Request $request){
+        return Http::head(env('APP_URL').substr($request->file_url, 1))->successful() ? 'true' : 'false';
     }
 }
