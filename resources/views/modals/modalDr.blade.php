@@ -3,11 +3,12 @@
         <div class="modal-content">
             <div class="modal-header bg-default">
                 <h5 class="modal-title w-100 text-center" id="drTitle"></h5>
+                <button type="button" id="btnTogglePreview" class="btn btn-primary" style="display: none;">Maximize<i class="fa-solid fa-magnifying-glass-plus fa-lg ml-2"></i></button>
                 <button type="button" class="btn-close btn-close-white close btnClose" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="left-side col">
                         <input type="hidden" id="entry_id">
                         <form id="form_reset">
                             <div class="row mb-3">
@@ -117,7 +118,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-6">
+                    <div class="right-side col">
                         <div class="row">
                             <div class="col">
                                 <ul id="pagi" class="pagination">

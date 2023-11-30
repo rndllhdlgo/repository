@@ -521,7 +521,6 @@ $(document).on('click', '#btnViewFile', function(){
     $('#loading').show();
     var file_url = $('#fetchFileName').attr('href');
     var rand_str = Math.random().toString(36).substring(2,12);
-    console.log(file_url);
     $.ajax({
         url: '/checkURL',
         async: false,
@@ -909,3 +908,25 @@ $(document).on('click', '#btnClear', function(){
     $('.divReplaceFile').hide();
     resetUpload();
 });
+
+$(document).on('click', '#btnTogglePreview', function(){
+    if($(this).text() == 'Maximize'){
+        $(this).html(`Minimize<i class="fa-solid fa-magnifying-glass-minus fa-lg ml-2"></i>`);
+        $('.left-side').hide();
+        $('#btnViewFile').click();
+    }
+    else{
+        $(this).html(`Maximize<i class="fa-solid fa-magnifying-glass-plus fa-lg ml-2"></i>`);
+        $('.left-side').show();
+        $('#btnViewFile').click();
+    }
+});
+
+setInterval(() => {
+    if(!$('#entry_id').val()){
+        $('#btnTogglePreview').hide();
+    }
+    else{
+        $('#btnTogglePreview').show();
+    }
+}, 0);
