@@ -8,23 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('user_logs', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->string('role');
-            $table->string('activity');
+        Schema::create('ipaddress', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('ipaddress', 50)->nullable()->default('0');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('user_logs');
+        Schema::dropIfExists('ipaddress');
     }
 };
