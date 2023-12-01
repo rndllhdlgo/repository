@@ -300,7 +300,7 @@ $(document).on('click','#btnApprove', function(){
                             $(`.row_id[row_id="${data}"]`).closest('tr').click();
                         }
                     });
-                }, 1500);
+                }, 1200);
             }
             else{
                 $('#loading').hide();
@@ -630,7 +630,7 @@ function formRestrictions(data){
             $('#remarks_div').hide();
         }
         if(data.status == 'VALID'){
-            if(($('#current_user_name').val() != $('#uploaded_by').val())){
+            if((current_user_name != $('#uploaded_by').val())){
                 $('.form_disable').prop('disabled', true);
                 $('#file_div').empty().append(`
                     <div class="col mt-2">
@@ -652,7 +652,7 @@ function formRestrictions(data){
             }
         }
         else{
-            if(($('#current_user_name').val() != $('#uploaded_by').val())){
+            if((current_user_name != $('#uploaded_by').val())){
                 $('.form_disable').prop('disabled', true);
                 $('#file_div').empty().append(`
                     <div class="col mt-2">

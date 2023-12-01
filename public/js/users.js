@@ -115,7 +115,7 @@ $(document).ready(function(){
 });
 
 $('#btnAddUser').on('click',function(){
-    if(current_email == 'Y'){
+    if(current_mailserver == 'Y'){
         $('#modal_title').html('ADD USER');
         btnAddUser();
         $('#btnSave').show();

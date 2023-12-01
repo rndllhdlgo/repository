@@ -1,12 +1,14 @@
 var current_location = $(location).attr('pathname')+window.location.search;
 var current_user = $('#current_user').val();
+var current_user_name = $('#current_user_name').val();
+var current_updated_at = $('#current_updated_at').val();
 var current_department = $('#current_department').val();
 var current_role = $('#current_role').val();
 var current_date = $('#current_date').val();
 var current_session = $('#current_session').val();
 var current_token = $('#current_token').val();
 var current_timeout = $('#current_timeout').val();
-var current_email = $('#current_email').val();
+var current_mailserver = $('#current_mailserver').val();
 var data_update, standby = true;
 var si_update = 'NULL', cr_update = 'NULL', bs_update = 'NULL', or_update = 'NULL', dr_update = 'NULL';
 

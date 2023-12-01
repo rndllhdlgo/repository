@@ -77,12 +77,12 @@
 	</div>
 </nav>
 <input type="hidden" id="current_user" value="{{auth()->user()->id}}" readonly>
-<input type="hidden" id="current_updated_at" value="{{(new DateTime(auth()->user()->updated_at))->modify('-8 hours')->format('Y-m-d\TH:i:s.u\Z')}}" readonly>
 <input type="hidden" id="current_user_name" value="{{auth()->user()->name}}" readonly>
+<input type="hidden" id="current_updated_at" value="{{(new DateTime(auth()->user()->updated_at))->modify('-8 hours')->format('Y-m-d\TH:i:s.u\Z')}}" readonly>
 <input type="hidden" id="current_department" value="{{auth()->user()->department}}" readonly>
 <input type="hidden" id="current_role" value="{{ App\Models\User::select('roles.name')->where('users.id', auth()->user()->id)->join('roles', 'roles.id', 'users.userlevel')->first()->name }}" readonly>
 <input type="hidden" id="current_date" value="{{date('Y-m-d')}}" readonly>
 <input type="hidden" id="current_session" value="{{\Session::getId()}}" readonly>
 <input type="hidden" id="current_token" value="{{\Illuminate\Support\Str::random(50)}}" readonly>
 <input type="hidden" id="current_timeout" value="{{ env('APP_TIMEOUT') }}" readonly>
-<input type="hidden" id="current_email" value="{{ env('MAIL_ENABLED') }}" readonly>
+<input type="hidden" id="current_mailserver" value="{{ env('MAIL_ENABLED') }}" readonly>
