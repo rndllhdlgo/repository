@@ -316,7 +316,7 @@ $(document).on('click','#btnReturn', function(){
 });
 
 setInterval(function(){
-    if($('#loading').is(':hidden') && standby == false){
+    if($('#loading').is(':hidden') && standby == false && 1 == 0){
         $.ajax({
             url: "/table_reload",
             data:{
@@ -337,25 +337,44 @@ setInterval(function(){
         $.ajax({
             url: "/notif_update",
             success: function(data){
+                if(data.user_update != $('#current_updated_at').val()){
+                    $('#current_updated_at').val(data.user_update);
+                    window.location.reload();
+                }
                 if(data.si_update != si_update){
                     si_update = data.si_update;
                     $('#si_notif').html(data.si_count);
+                    if($('#current_page').val() == 'si'){
+                        table.ajax.reload(null, false);
+                    }
                 }
                 if(data.cr_update != cr_update){
                     cr_update = data.cr_update;
                     $('#cr_notif').html(data.cr_count);
+                    if($('#current_page').val() == 'cr'){
+                        table.ajax.reload(null, false);
+                    }
                 }
                 if(data.bs_update != bs_update){
                     bs_update = data.bs_update;
                     $('#bs_notif').html(data.bs_count);
+                    if($('#current_page').val() == 'bs'){
+                        table.ajax.reload(null, false);
+                    }
                 }
                 if(data.or_update != or_update){
                     or_update = data.or_update;
                     $('#or_notif').html(data.or_count);
+                    if($('#current_page').val() == 'or'){
+                        table.ajax.reload(null, false);
+                    }
                 }
                 if(data.dr_update != dr_update){
                     dr_update = data.dr_update;
                     $('#dr_notif').html(data.dr_count);
+                    if($('#current_page').val() == 'dr'){
+                        table.ajax.reload(null, false);
+                    }
                 }
             }
         });
@@ -399,10 +418,8 @@ setInterval(() => {
     }
 }, 0);
 
-var check_modules = ['/si','/cr','/bs','/or','/dr'];
-var changed_id;
 setInterval(() => {
-    if($.inArray($(location).attr('pathname'), check_modules) !== -1){
+    if($.inArray($(location).attr('pathname'), ['/si','/cr','/bs','/or','/dr']) !== -1){
         if(
             standby == false &&
             $('.modal_repo').is(':visible') &&

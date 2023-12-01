@@ -47,6 +47,10 @@
                         $.ajax({
                             url: "/notif_update",
                             success: function(data){
+                                if(data.user_update != $('#current_updated_at').val()){
+                                    $('#current_updated_at').val(data.user_update);
+                                    window.location.reload();
+                                }
                                 if(data.si_update != si_update){
                                     si_update = data.si_update;
                                     $('#si_notif').html(data.si_count);
@@ -112,7 +116,7 @@
         @endif
         <script>
             setInterval(function(){
-                if($('#loading').is(':hidden') && standby == false){
+                if($('#loading').is(':hidden') && standby == false && 1 == 0){
                     $.ajax({
                         url: "/user_change",
                         success: function(data){

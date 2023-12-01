@@ -2065,6 +2065,7 @@ class EventController extends Controller
         $dr_count = $count;
 
         return $data = array(
+            'user_update' => !User::count() ? 'NULL' : User::where('id', auth()->user()->id)->first()->updated_at,
             'si_update' => $si_update, 'si_count' => $si_count,
             'cr_update' => $cr_update, 'cr_count' => $cr_count,
             'bs_update' => $bs_update, 'bs_count' => $bs_count,
