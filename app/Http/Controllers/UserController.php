@@ -209,7 +209,7 @@ class UserController extends Controller
         }
 
         if($changes == 0){
-            return response('no changes');
+            return response('NO CHANGES');
         }
 
         $users = User::find($request->input('user_id'));

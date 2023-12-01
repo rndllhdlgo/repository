@@ -45,7 +45,7 @@ $(document).on('click','#btnEdit', function(){
                             uploaded_by: $('#uploaded_by').val()
                         },
                         success: function(data){
-                            if(data == 'no changes'){
+                            if(data == 'NO CHANGES'){
                                 $('#loading').hide();
                                 Swal.fire("NO CHANGES FOUND", "", "error");
                             }
@@ -89,7 +89,7 @@ $(document).on('click','#btnEdit', function(){
                         uploaded_by: $('#uploaded_by').val()
                     },
                     success: function(data){
-                        if(data == 'no changes'){
+                        if(data == 'NO CHANGES'){
                             $('#loading').hide();
                             Swal.fire("NO CHANGES FOUND", "", "error");
                         }
@@ -730,7 +730,7 @@ setInterval(() => {
 
 function save_upload(response){
     $('#loading').hide();
-    if(response == 'no changes'){
+    if(response == 'NO CHANGES'){
         Swal.fire("NO CHANGES FOUND", "", "error");
         $('.divReplaceFile').hide();
         resetUpload();
@@ -753,7 +753,7 @@ function save_upload(response){
         });
         $('.modal').modal('hide');
     }
-    else if(response == 'Invalid file format'){
+    else if(response == 'INVALID'){
         Swal.fire({
             title: 'SUBMIT FAILED',
             html: "INVALID FILE FORMAT",
@@ -762,7 +762,7 @@ function save_upload(response){
         $('.divReplaceFile').hide();
         resetUpload();
     }
-    else if(response == 'Already exist'){
+    else if(response == 'DUPLICATE'){
         Swal.fire({
             title: 'ALREADY EXISTS',
             icon: 'error'

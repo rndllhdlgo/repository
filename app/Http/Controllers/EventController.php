@@ -48,7 +48,7 @@ class EventController extends Controller
         }
 
         if(SalesInvoice::where('sales_invoice', $request->sales_invoice)->where('company', $request->company)->count() > 0) {
-            return 'Already exist';
+            return 'DUPLICATE';
         }
 
         $file = $request->file('pdf_file');
@@ -70,7 +70,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -129,7 +129,7 @@ class EventController extends Controller
         }
 
         if(CollectionReceipt::where('collection_receipt', $request->collection_receipt)->where('company', $request->company)->count() > 0) {
-            return 'Already exist';
+            return 'DUPLICATE';
         }
 
         $file = $request->file('pdf_file');
@@ -151,7 +151,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -208,7 +208,7 @@ class EventController extends Controller
         }
 
         if(BillingStatement::where('billing_statement', $request->billing_statement)->where('company', $request->company)->count() > 0) {
-            return 'Already exist';
+            return 'DUPLICATE';
         }
 
         $file = $request->file('pdf_file');
@@ -230,7 +230,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -288,7 +288,7 @@ class EventController extends Controller
         }
 
         if(OfficialReceipt::where('official_receipt', $request->official_receipt)->where('company', $request->company)->count() > 0) {
-            return 'Already exist';
+            return 'DUPLICATE';
         }
 
         $file = $request->file('pdf_file');
@@ -310,7 +310,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -365,7 +365,7 @@ class EventController extends Controller
         }
 
         if(DeliveryReceipt::where('delivery_receipt', $request->delivery_receipt)->where('company', $request->company)->count() > 0) {
-            return 'Already exist';
+            return 'DUPLICATE';
         }
 
         $file = $request->file('pdf_file');
@@ -387,7 +387,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -463,7 +463,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -625,7 +625,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -767,7 +767,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -919,7 +919,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -1052,7 +1052,7 @@ class EventController extends Controller
                     }
                 }
                 else{
-                    return 'Invalid file format';
+                    return 'INVALID';
                 }
             }
             if($count > 0){
@@ -1261,7 +1261,7 @@ class EventController extends Controller
                 && $sales_order_change == NULL
                 && $delivery_receipt_change == NULL
                 ){
-                return 'no changes';
+                return 'NO CHANGES';
             }
 
             $sql = SalesInvoice::where('id', $request->entry_id)
@@ -1353,7 +1353,7 @@ class EventController extends Controller
                 && $sales_order_change == NULL
                 && $sales_invoice_change == NULL
                 ){
-                return 'no changes';
+                return 'NO CHANGES';
             }
 
             $sql = CollectionReceipt::where('id', $request->entry_id)
@@ -1453,7 +1453,7 @@ class EventController extends Controller
                 && $sales_order_change == NULL
                 && $purchase_order_change == NULL
                 ){
-                return 'no changes';
+                return 'NO CHANGES';
             }
 
             $sql = BillingStatement::where('id', $request->entry_id)
@@ -1533,7 +1533,7 @@ class EventController extends Controller
                 && $branch_name_change == NULL
                 && $sales_order_change == NULL
                 ){
-                return 'no changes';
+                return 'NO CHANGES';
             }
 
             $sql = OfficialReceipt::where('id', $request->entry_id)
@@ -1632,7 +1632,7 @@ class EventController extends Controller
                 && $purchase_order_change == NULL
                 && $sales_order_change == NULL
                 ){
-                return 'no changes';
+                return 'NO CHANGES';
             }
 
             $sql = DeliveryReceipt::where('id', $request->entry_id)

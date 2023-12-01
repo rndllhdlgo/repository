@@ -332,7 +332,7 @@ $('#btnUpdate').on('click',function(){
                                     Swal.fire("UPDATE SUCCESS", "User details updated successfully!", "success");
                                     setTimeout(function(){window.location.href="/users"}, 2000);
                                 }
-                                else if(data == 'no changes'){
+                                else if(data == 'NO CHANGES'){
                                     $('#loading').hide();
                                     Swal.fire("NO CHANGES FOUND", "User Details are all still the same!", "warning");
                                 }
