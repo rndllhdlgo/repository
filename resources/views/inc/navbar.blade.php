@@ -10,7 +10,7 @@
 					<span id="current_datetime">{{ Carbon\Carbon::now()->isoformat('dddd, MMMM DD, YYYY, h:mm:ss A') }}</span>
 				</td>
 				<td  class="m-0 p-0" rowspan="3">
-					<i class="fa fa-user-circle fa-4x p-2" aria-hidden="true" role="button" onclick="$('#lblChangePassword').click()"></i>
+					<i class="fa fa-user-circle fa-4x p-2" aria-hidden="true" role="button" onclick="$('#lblChangePassword').click()" title="User ID: {{ auth()->user()->id }}&#10;Email: {{ auth()->user()->email }}"></i>
 				</td>
 			</tr>
 			<tr id="current_companies" title="{{ implode(', ', auth()->user()->companies->pluck('company')->all())}}">

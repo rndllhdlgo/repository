@@ -65,7 +65,13 @@ $(document).ready(function(){
                     return `<span title="VALID">${data.toUpperCase()}</span>`;
                 }
             },
-            { data: 'company', name:'company'},
+            {
+                data: 'company',
+                name: 'company',
+                "render":function(data,type,row){
+                    return `<span class="row_id" row_id="${row.id}">${data}</span>`;
+                },
+            },
             {
                 data: 'client_name',
                 name: 'client_name',

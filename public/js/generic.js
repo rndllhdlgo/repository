@@ -289,6 +289,18 @@ $(document).on('click','#btnApprove', function(){
                     showConfirmButton: false
                 });
                 $('.modal').modal('hide');
+                setTimeout(() => {
+                    $.ajax({
+                        url: "/checkNext",
+                        async: false,
+                        data: {
+                            current_location: current_location,
+                        },
+                        success: function(data){
+                            $(`.row_id[row_id="${data}"]`).closest('tr').click();
+                        }
+                    });
+                }, 1500);
             }
             else{
                 $('#loading').hide();

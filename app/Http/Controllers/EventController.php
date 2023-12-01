@@ -1775,7 +1775,7 @@ class EventController extends Controller
             $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $remarklogs->activity = "USER SUCCESSFULLY MARKED AS INVALID $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
             $remarklogs->save();
-    
+
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -1830,7 +1830,7 @@ class EventController extends Controller
             $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
             $remarklogs->activity = "USER SUCCESSFULLY RETURNED TO ENCODER $current_page ($reference_number) - $company with remarks: '$request->remarks'.";
             $remarklogs->save();
-    
+
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -2091,5 +2091,23 @@ class EventController extends Controller
             'changed_id' => $request->check_current_id
         );
         return $data;
+    }
+
+    public function checkNext(Request $request){
+        $tables = [
+            '/si' => 'sales_invoices',
+            '/cr' => 'collection_receipts',
+            '/bs' => 'billing_statements',
+            '/or' => 'official_receipts',
+            '/dr' => 'delivery_receipts',
+        ];
+
+        $table = $tables[$request->current_location];
+        $next = DB::table($table)
+                    ->where('status', 'FOR VALIDATION')
+                    ->latest('updated_at')
+                    ->first()
+                    ->id;
+        return $next ? $next : '0';
     }
 }
