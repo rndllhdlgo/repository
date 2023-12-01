@@ -1,4 +1,5 @@
 var current_location = $(location).attr('pathname')+window.location.search;
+var current_email = $('#current_email').val();
 var current_user = $('#current_user').val();
 var current_user_name = $('#current_user_name').val();
 var current_updated_at = $('#current_updated_at').val();

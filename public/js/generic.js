@@ -208,6 +208,8 @@ $(document).on('click','#btnApprove', function(){
                     showConfirmButton: false
                 });
                 $('.modal').modal('hide');
+                $('.current_search').val('').keyup();
+                $(`.paginate_button[data-dt-idx="0"]`).click();
                 setTimeout(() => {
                     $.ajax({
                         url: "/checkNext",
@@ -219,7 +221,7 @@ $(document).on('click','#btnApprove', function(){
                             $(`.row_id[row_id="${data}"]`).closest('tr').click();
                         }
                     });
-                }, 1200);
+                }, 1100);
             }
             else{
                 $('#loading').hide();
