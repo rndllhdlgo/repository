@@ -382,43 +382,6 @@ setInterval(function(){
 }, 1000);
 
 setInterval(() => {
-    if(parseInt($('#si_notif').text()) == 0){
-        $('#si_notif').addClass('d-none')
-    }
-    else{
-        $('#si_notif').removeClass('d-none');
-    }
-
-    if(parseInt($('#cr_notif').text()) == 0){
-        $('#cr_notif').addClass('d-none')
-    }
-    else{
-        $('#cr_notif').removeClass('d-none');
-    }
-
-    if(parseInt($('#bs_notif').text()) == 0){
-        $('#bs_notif').addClass('d-none')
-    }
-    else{
-        $('#bs_notif').removeClass('d-none');
-    }
-
-    if(parseInt($('#or_notif').text()) == 0){
-        $('#or_notif').addClass('d-none')
-    }
-    else{
-        $('#or_notif').removeClass('d-none');
-    }
-
-    if(parseInt($('#dr_notif').text()) == 0){
-        $('#dr_notif').addClass('d-none')
-    }
-    else{
-        $('#dr_notif').removeClass('d-none');
-    }
-}, 0);
-
-setInterval(() => {
     if($.inArray($(location).attr('pathname'), ['/si','/cr','/bs','/or','/dr']) !== -1){
         if(
             standby == false &&

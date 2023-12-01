@@ -46,14 +46,13 @@ $(document).ready(function(){
         table.column($(this).data('column')).search($(this).val()).draw();
     });
 
-    var logs;
     setInterval(function(){
-        if($('#loading').is(':hidden') && standby == false){
+        if($('#loading').is(':hidden') && standby == false && 1 == 0){
             $.ajax({
                 url: "/index/logs/reload",
                 success: function(data){
-                    if(data != logs){
-                        logs = data;
+                    if(data != data_update){
+                        data_update = data;
                         table.ajax.reload(null, false);
                     }
                 }

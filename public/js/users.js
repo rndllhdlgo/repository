@@ -81,7 +81,7 @@ $(document).ready(function(){
     });
 
     setInterval(function(){
-        if($('#loading').is(':hidden') && standby == false){
+        if($('#loading').is(':hidden') && standby == false && 1 == 0){
             $.ajax({
                 url: "/users/reload",
                 success: function(data){
@@ -171,7 +171,7 @@ setInterval(() => {
     }
 }, 0);
 
-$(document).on('click', '#userTable tbody tr td:not(:nth-child(5))', function(){
+$(document).on('click', '#userTable tbody tr td:not(:nth-child(6))', function(){
     if(!table.data().any()){ return false; }
     var data = table.row(this).data();
     if(current_department != 'SUPERUSER' && data.role == '1' && data.user_id != current_user){

@@ -2064,13 +2064,17 @@ class EventController extends Controller
         }
         $dr_count = $count;
 
+        $user_update = !User::count() ? 'NULL' : User::where('id', auth()->user()->id)->first()->updated_at;
+        $acc_update = !User::count() ? 'NULL' : User::latest('updated_at')->first()->updated_at;
+        $log_update = !UserLogs::count() ? 0 : UserLogs::select()->count();
+
         return $data = array(
-            'user_update' => !User::count() ? 'NULL' : User::where('id', auth()->user()->id)->first()->updated_at,
             'si_update' => $si_update, 'si_count' => $si_count,
             'cr_update' => $cr_update, 'cr_count' => $cr_count,
             'bs_update' => $bs_update, 'bs_count' => $bs_count,
             'or_update' => $or_update, 'or_count' => $or_count,
             'dr_update' => $dr_update, 'dr_count' => $dr_count,
+            'user_update' => $user_update, 'acc_update' => $acc_update, 'log_update' => $log_update,
         );
     }
 
