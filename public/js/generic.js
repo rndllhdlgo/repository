@@ -1,4 +1,4 @@
-$(document).on('click','#btnEdit', function(){
+$(document).on('click', '#btnEdit', function(){
     Swal.fire({
         title: 'Do you want to update?',
         allowOutsideClick: false,
@@ -31,9 +31,9 @@ $(document).on('click','#btnEdit', function(){
                         data:{
                             entry_id: $('#entry_id').val(),
                             current_page: $('#current_page').val(),
-                            billing_statement: $('#billing_statement').val(),
                             sales_invoice: $('#sales_invoice').val(),
                             collection_receipt: $('#collection_receipt').val(),
+                            billing_statement: $('#billing_statement').val(),
                             official_receipt: $('#official_receipt').val(),
                             delivery_receipt: $('#delivery_receipt').val(),
                             company: $('#company').val(),
@@ -75,9 +75,9 @@ $(document).on('click','#btnEdit', function(){
                     data:{
                         entry_id: $('#entry_id').val(),
                         current_page: $('#current_page').val(),
-                        billing_statement: $('#billing_statement').val(),
                         sales_invoice: $('#sales_invoice').val(),
                         collection_receipt: $('#collection_receipt').val(),
+                        billing_statement: $('#billing_statement').val(),
                         official_receipt: $('#official_receipt').val(),
                         delivery_receipt: $('#delivery_receipt').val(),
                         company: $('#company').val(),
@@ -113,135 +113,54 @@ $(document).on('click','#btnEdit', function(){
 
 function edit_pdf(){
     var formData = new FormData();
-    if($('#current_page').val() == 'bs'){
-        var entry_id = $('#entry_id').val();
+    var entry_id = $('#entry_id').val();
+    var company = $('#company').val();
+    var client_name = $('#client_name').val();
+    var branch_name = $('#branch_name').val();
+    var sales_order = $('#sales_order').val();
+    var purchase_order = $('#purchase_order').val();
+    var uploaded_by = $('#uploaded_by').val();
+    var pdf_files = $('#pdf_file').prop('files');
+    var current_page = $('#current_page').val();
+    var url_name = '/edit_'+current_page;
+
+    if(current_page == 'bs'){
         var billing_statement = $('#billing_statement').val();
-        var company = $('#company').val();
-        var client_name = $('#client_name').val();
-        var branch_name = $('#branch_name').val();
-        var sales_order = $('#sales_order').val();
-        var purchase_order = $('#purchase_order').val();
-        var uploaded_by = $('#uploaded_by').val();
-        var pdf_files = $('#pdf_file').prop('files');
-
-        formData.append('entry_id', entry_id);
         formData.append('billing_statement', billing_statement);
-        formData.append('company', company);
-        formData.append('client_name', client_name);
-        formData.append('branch_name', branch_name);
-        formData.append('sales_order', sales_order);
-        formData.append('purchase_order', purchase_order);
-        formData.append('uploaded_by', uploaded_by);
-        for(let i = 0; i < pdf_files.length; i++){
-            formData.append('pdf_file[]', pdf_files[i]);
-        }
-
-        var url_name = '/edit_bs';
     }
-    else if($('#current_page').val() == 'si'){
-        var entry_id = $('#entry_id').val();
+    else if (current_page == 'si'){
         var sales_invoice = $('#sales_invoice').val();
-        var company = $('#company').val();
-        var client_name = $('#client_name').val();
-        var branch_name = $('#branch_name').val();
-        var sales_order = $('#sales_order').val();
-        var purchase_order = $('#purchase_order').val();
         var delivery_receipt = $('#delivery_receipt').val();
-        var uploaded_by = $('#uploaded_by').val();
-        var pdf_files = $('#pdf_file').prop('files');
-
-        formData.append('entry_id', entry_id);
         formData.append('sales_invoice', sales_invoice);
-        formData.append('company', company);
-        formData.append('client_name', client_name);
-        formData.append('branch_name', branch_name);
-        formData.append('sales_order', sales_order);
-        formData.append('purchase_order', purchase_order);
         formData.append('delivery_receipt', delivery_receipt);
-        formData.append('uploaded_by', uploaded_by);
-        for(let i = 0; i < pdf_files.length; i++){
-            formData.append('pdf_file[]', pdf_files[i]);
-        }
-
-        var url_name = '/edit_si';
     }
-    else if($('#current_page').val() == 'cr'){
-        var entry_id = $('#entry_id').val();
+    else if (current_page == 'cr'){
         var collection_receipt = $('#collection_receipt').val();
-        var company = $('#company').val();
-        var client_name = $('#client_name').val();
-        var branch_name = $('#branch_name').val();
-        var sales_order = $('#sales_order').val();
         var sales_invoice = $('#sales_invoice').val();
-        var uploaded_by = $('#uploaded_by').val();
-        var pdf_files = $('#pdf_file').prop('files');
-
-        formData.append('entry_id', entry_id);
         formData.append('collection_receipt', collection_receipt);
-        formData.append('company', company);
-        formData.append('client_name', client_name);
-        formData.append('branch_name', branch_name);
-        formData.append('sales_order', sales_order);
         formData.append('sales_invoice', sales_invoice);
-        formData.append('uploaded_by', uploaded_by);
-        for(let i = 0; i < pdf_files.length; i++){
-            formData.append('pdf_file[]', pdf_files[i]);
-        }
-
-        var url_name = '/edit_cr';
     }
-    else if($('#current_page').val() == 'or'){
-        var entry_id = $('#entry_id').val();
+    else if (current_page == 'or'){
         var official_receipt = $('#official_receipt').val();
-        var company = $('#company').val();
-        var client_name = $('#client_name').val();
-        var branch_name = $('#branch_name').val();
-        var sales_order = $('#sales_order').val();
-        var uploaded_by = $('#uploaded_by').val();
-        var pdf_files = $('#pdf_file').prop('files');
-
-        formData.append('entry_id', entry_id);
         formData.append('official_receipt', official_receipt);
-        formData.append('company', company);
-        formData.append('client_name', client_name);
-        formData.append('branch_name', branch_name);
-        formData.append('sales_order', sales_order);
-        formData.append('uploaded_by', uploaded_by);
-        for(let i = 0; i < pdf_files.length; i++){
-            formData.append('pdf_file[]', pdf_files[i]);
-        }
-
-        var url_name = '/edit_or';
     }
-    else if($('#current_page').val() == 'dr'){
-        var entry_id = $('#entry_id').val();
+    else if (current_page == 'dr'){
         var delivery_receipt = $('#delivery_receipt').val();
-        var company = $('#company').val();
-        var client_name = $('#client_name').val();
         var business_name = $('#business_name').val();
-        var branch_name = $('#branch_name').val();
-        var sales_order = $('#sales_order').val();
-        var purchase_order = $('#purchase_order').val();
-        var uploaded_by = $('#uploaded_by').val();
-        var pdf_files = $('#pdf_file').prop('files');
-
-        formData.append('entry_id', entry_id);
         formData.append('delivery_receipt', delivery_receipt);
-        formData.append('company', company);
-        formData.append('client_name', client_name);
         formData.append('business_name', business_name);
-        formData.append('branch_name', branch_name);
-        formData.append('sales_order', sales_order);
-        formData.append('purchase_order', purchase_order);
-        formData.append('uploaded_by', uploaded_by);
-        for(let i = 0; i < pdf_files.length; i++){
-            formData.append('pdf_file[]', pdf_files[i]);
-        }
-
-        var url_name = '/edit_dr';
     }
-    else{
-        return false;
+
+    formData.append('entry_id', entry_id);
+    formData.append('company', company);
+    formData.append('client_name', client_name);
+    formData.append('branch_name', branch_name);
+    formData.append('sales_order', sales_order);
+    formData.append('purchase_order', purchase_order);
+    formData.append('uploaded_by', uploaded_by);
+
+    for(let i = 0; i < pdf_files.length; i++){
+        formData.append('pdf_file[]', pdf_files[i]);
     }
 
     $.ajax({
@@ -549,11 +468,11 @@ $(document).on('click', '#btnViewFile', function(){
     });
 });
 
-$(document).on('contextmenu', '.preventRightClick', function(e) {
+$(document).on('contextmenu', '.preventRightClick', function(e){
     e.preventDefault();
 });
 
-$(document).on('keyup search','.current_search',function(){
+$(document).on('keyup search', '.current_search', function(){
     $("label:contains('Search:')").find("input:first").val($(this).val());
     $("label:contains('Search:')").find("input:first").keyup();
 });
