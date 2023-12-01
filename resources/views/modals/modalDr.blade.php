@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header bg-default">
                 <h5 class="modal-title w-100 text-center" id="drTitle"></h5>
-                <button type="button" id="btnTogglePreview" class="btn btn-primary" style="display: none;">Maximize<i class="fa-solid fa-magnifying-glass-plus fa-lg ml-2"></i></button>
+                <button type="button" id="btnTogglePreview" class="btn btn-primary text-right mr-1" style="width: 140px; display: none;">Maximize<i class="fa-solid fa-magnifying-glass-plus fa-lg ml-2"></i></button>
                 <button type="button" class="btn-close btn-close-white close btnClose" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
