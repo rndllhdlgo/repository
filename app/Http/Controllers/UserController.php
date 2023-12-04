@@ -51,14 +51,6 @@ class UserController extends Controller
         return DataTables::of($list)->make(true);
     }
 
-    public function users_reload(){
-        if(User::count() == 0){
-            return 'NULL';
-        }
-        $data_update = User::latest('updated_at')->first()->updated_at;
-        return $data_update;
-    }
-
     public function validate_users_save(Request $request){
         $email = User::query()->select()
             ->where('email', $request->email)

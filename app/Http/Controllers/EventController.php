@@ -1843,45 +1843,6 @@ class EventController extends Controller
         }
     }
 
-    public function table_reload(Request $request){
-        if($request->current_page == 'si'){
-            if(SalesInvoice::count() == 0){
-                return 'NULL';
-            }
-            $data_update = SalesInvoice::latest('updated_at')->first()->updated_at;
-        }
-
-        if($request->current_page == 'cr'){
-            if(CollectionReceipt::count() == 0){
-                return 'NULL';
-            }
-            $data_update = CollectionReceipt::latest('updated_at')->first()->updated_at;
-        }
-
-        if($request->current_page == 'bs'){
-            if(BillingStatement::count() == 0){
-                return 'NULL';
-            }
-            $data_update = BillingStatement::latest('updated_at')->first()->updated_at;
-        }
-
-        if($request->current_page == 'or'){
-            if(OfficialReceipt::count() == 0){
-                return 'NULL';
-            }
-            $data_update = OfficialReceipt::latest('updated_at')->first()->updated_at;
-        }
-
-        if($request->current_page == 'dr'){
-            if(DeliveryReceipt::count() == 0){
-                return 'NULL';
-            }
-            $data_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
-        }
-
-        return $data = array('data_update' => $data_update);
-    }
-
     public function notif_update(Request $request){
         $current_role = Role::where('id', auth()->user()->userlevel)->first()->name;
         if(SalesInvoice::count() == 0){
@@ -2092,26 +2053,6 @@ class EventController extends Controller
             'dr_update' => $dr_update, 'dr_count' => $dr_count,
             'user_update' => $user_update, 'acc_update' => $acc_update, 'log_update' => $log_update,
         );
-    }
-
-    public function user_change(){
-        if(User::count() == 0){
-            return 'NULL';
-        }
-        return User::where('id', auth()->user()->id)->first()->updated_at;
-    }
-
-    public function checkLatest(Request $request){
-        $latest = DB::table($request->check_table)
-                    ->where('id', $request->check_current_id)
-                    ->first()
-                    ->updated_at;
-        $current = $request->check_updated_at;
-        $data = array(
-            'result' => $latest != $current ? 'true' : 'false',
-            'changed_id' => $request->check_current_id
-        );
-        return $data;
     }
 
     public function checkNext(Request $request){

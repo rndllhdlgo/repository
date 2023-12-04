@@ -52,11 +52,6 @@ class HomeController extends Controller
         return DataTables::of($list)->make(true);
     }
 
-    public function logs_reload(){
-        $logs = UserLogs::select()->count();
-        return $logs;
-    }
-
     public function checkURL(Request $request){
         return Http::head(env('APP_URL').substr($request->file_url, 1))->successful() ? 'true' : 'false';
     }

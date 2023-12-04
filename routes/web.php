@@ -30,10 +30,7 @@ Route::middleware(['session'])->group(function () {
         Route::post('/edit_bs', 'edit_bs');
         Route::post('/edit_or', 'edit_or');
         Route::post('/edit_dr', 'edit_dr');
-        Route::any('/table_reload', 'table_reload');
-        Route::any('/notif_update', 'notif_update');
-        Route::any('/user_change', 'user_change');
-        Route::any('/checkLatest', 'checkLatest');
+        Route::any('/notif_update', 'notif_update')->name('notif_update');
         Route::any('/checkNext', 'checkNext');
     });
 
@@ -41,7 +38,6 @@ Route::middleware(['session'])->group(function () {
         Route::get('/', 'index');
         Route::get('/logs', 'logs');
         Route::get('/index/data', 'index_data');
-        Route::get('/index/logs/reload', 'logs_reload');
         Route::get('/checkURL', 'checkURL');
     });
 
@@ -64,7 +60,6 @@ Route::middleware(['session'])->group(function () {
     Route::controller(UserController::class)->group(function(){
         Route::get('/users', 'users');
         Route::get('/users/data', 'users_data');
-        Route::get('/users/reload', 'users_reload');
         Route::any('/users/validate/save', 'validate_users_save');
         Route::any('/users/save', 'users_save');
         Route::any('/users/validate/update', 'validate_users_update');
@@ -72,6 +67,5 @@ Route::middleware(['session'])->group(function () {
         Route::any('/users/status', 'users_status');
         Route::any('/change/validate', 'change_validate');
         Route::any('/change/password', 'change_password');
-        // Route::any('/users/company','users_company');
     });
 });

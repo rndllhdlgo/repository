@@ -2,11 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use Session;
 use Closure;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session;
-use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
 class CheckSessionid
 {
@@ -19,10 +20,12 @@ class CheckSessionid
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check()){
-            if(auth()->user()->session_id !== Session::getId()){
-                Auth::logout();
-                return redirect('/login?user=session');
+        if(Route::current()->getName() !== 'notif_update'){
+            if(Auth::check()){
+                if(auth()->user()->session_id !== Session::getId()){
+                    Auth::logout();
+                    return redirect('/login?user=session');
+                }
             }
         }
         return $next($request);

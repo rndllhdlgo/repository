@@ -80,20 +80,6 @@ $(document).ready(function(){
         table.column($(this).data('column')).search($(this).val()).draw();
     });
 
-    setInterval(function(){
-        if($('#loading').is(':hidden') && standby == false && 1 == 0){
-            $.ajax({
-                url: "/users/reload",
-                success: function(data){
-                    if(data != data_update){
-                        data_update = data;
-                        table.ajax.reload(null, false);
-                    }
-                }
-            });
-        }
-    }, 1000);
-
     $(document).on('change', '.togBtn', function(){
         var id = $(this).attr("id");
         var data = table.row(id).data();
