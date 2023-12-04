@@ -379,22 +379,6 @@ function resetUpload(){
     `);
 }
 
-setInterval(() => {
-    if($('.imgPreview').length){
-        $('#pagi').show();
-    }
-    else{
-        $('#pagi').hide();
-
-    }
-    if($('#pagi').is(':visible')){
-        $('.imgPreview:not([id])').each(function(index){
-            var newId = 'imgPreview' + (index + 1);
-            $(this).attr('id', newId);
-        });
-    }
-}, 0);
-
 function formRestrictions(data){
     if(current_role == 'ENCODER'){
         if(data.remarks){
@@ -519,18 +503,7 @@ $(document).on('click', '#btnTogglePreview', function(){
     }
 });
 
-setInterval(() => {
-    $('body').css('padding-right','0px');
-    $('#uploaded_by').prop('disabled', true);
-    if(!$('#entry_id').val()){
-        $('#btnTogglePreview').hide();
-    }
-    else{
-        $('#btnTogglePreview').show();
-    }
-}, 0);
-
-$(document).on('click','#btnApprove', function(){
+$(document).on('click', '#btnApprove', function(){
     $.ajax({
         url: "/approve",
         method: 'post',
@@ -576,7 +549,7 @@ $(document).on('click','#btnApprove', function(){
     });
 });
 
-$(document).on('click','#btnDisapprove', function(){
+$(document).on('click', '#btnDisapprove', function(){
     Swal.fire({
         title: 'MARK AS INVALID?',
         html: `<textarea class="w-100 requiredField" rows="5" placeholder="Please leave a comment here" id="remarks"></textarea>`,
@@ -619,7 +592,7 @@ $(document).on('click','#btnDisapprove', function(){
     });
 });
 
-$(document).on('click','#btnReturn', function(){
+$(document).on('click', '#btnReturn', function(){
     Swal.fire({
         title: 'RETURN TO ENCODER?',
         html: `<textarea class="w-100 requiredField" rows="5" placeholder="Please leave a comment here" id="remarks"></textarea>`,
@@ -751,6 +724,30 @@ setInterval(function(){
         });
     }
 }, 1100);
+
+setInterval(() => {
+    $('body').css('padding-right','0px');
+    $('#uploaded_by').prop('disabled', true);
+    if(!$('#entry_id').val()){
+        $('#btnTogglePreview').hide();
+    }
+    else{
+        $('#btnTogglePreview').show();
+    }
+    if($('.imgPreview').length){
+        $('#pagi').show();
+    }
+    else{
+        $('#pagi').hide();
+
+    }
+    if($('#pagi').is(':visible')){
+        $('.imgPreview:not([id])').each(function(index){
+            var newId = 'imgPreview' + (index + 1);
+            $(this).attr('id', newId);
+        });
+    }
+}, 0);
 
 $(document).on('keyup search', '.current_search', function(){
     $("label:contains('Search:')").find("input:first").val($(this).val());
