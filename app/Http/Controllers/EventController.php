@@ -2064,11 +2064,27 @@ class EventController extends Controller
         }
         $dr_count = $count;
 
+        if($request->checking != 'default'){
+            $latest = DB::table($request->check_table)
+                        ->where('id', $request->check_current_id)
+                        ->first()
+                        ->updated_at;
+            $current = $request->check_updated_at;
+
+            $result = $latest != $current ? 'true' : 'false';
+            $changed_id = $request->check_current_id;
+        }
+        else{
+            $result = 'false';
+            $changed_id = '0';
+        }
+
         $user_update = !User::count() ? 'NULL' : User::where('id', auth()->user()->id)->first()->updated_at;
         $acc_update = !User::count() ? 'NULL' : User::latest('updated_at')->first()->updated_at;
         $log_update = !UserLogs::count() ? 0 : UserLogs::select()->count();
 
         return $data = array(
+            'result' => $result, 'changed_id' => $changed_id,
             'si_update' => $si_update, 'si_count' => $si_count,
             'cr_update' => $cr_update, 'cr_count' => $cr_count,
             'bs_update' => $bs_update, 'bs_count' => $bs_count,

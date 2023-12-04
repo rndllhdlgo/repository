@@ -336,9 +336,50 @@ setInterval(function(){
 
 setInterval(function(){
     if($('#loading').is(':hidden') && standby == false){
+        if($('.modal_repo').is(':visible') && $('#entry_id').attr('updated_at') && $('#entry_id').attr('check_table')){
+            var checking = 'modal';
+            var check_table = $('#entry_id').attr('check_table');
+            var check_current_id = $('#entry_id').val();
+            var check_updated_at = $('#entry_id').attr('updated_at');
+            changed_id = '';
+        }
+        else{
+            var checking = 'default';
+            changed_id = '';
+        }
+
+        var ajaxData = { checking: checking };
+        if(checking === 'modal'){
+            ajaxData.check_table = check_table;
+            ajaxData.check_current_id = check_current_id;
+            ajaxData.check_updated_at = check_updated_at;
+        }
+
         $.ajax({
+            async: false,
             url: "/notif_update",
+            data: ajaxData,
             success: function(data){
+                if(data.result == 'true'){
+                    changed_id = data.changed_id;
+                }
+                if(parseInt(changed_id) == parseInt($('#entry_id').val())){
+                    changed_id = '';
+                    if($(".swal2-container:visible").length == 0){
+                        Swal.fire({
+                            title: 'ENTRY UPDATED',
+                            html: 'Another user updated this entry.',
+                            icon: 'warning',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonText: 'CLOSE'
+                        }).then((save) => {
+                            if(save.isConfirmed){
+                                $('.btnClose').click();
+                            }
+                        });
+                    }
+                }
                 if(data.user_update != $('#current_updated_at').val()){
                     $('#current_updated_at').val(data.user_update);
                     window.location.reload();
@@ -380,53 +421,6 @@ setInterval(function(){
                 }
             }
         });
-    }
-}, 1000);
-
-setInterval(() => {
-    if($.inArray($(location).attr('pathname'), ['/si','/cr','/bs','/or','/dr']) !== -1){
-        if(
-            standby == false &&
-            $('.modal_repo').is(':visible') &&
-            $('#entry_id').attr('updated_at') &&
-            $('#entry_id').attr('check_table')
-        ){
-            var check_table = $('#entry_id').attr('check_table');
-            var check_current_id = $('#entry_id').val();
-            var check_updated_at = $('#entry_id').attr('updated_at');
-            changed_id = '';
-            $.ajax({
-                url: "/checkLatest",
-                async: false,
-                data: {
-                    check_table: check_table,
-                    check_current_id: check_current_id,
-                    check_updated_at: check_updated_at
-                },
-                success: function(data){
-                    if(data.result == 'true'){
-                        changed_id = data.changed_id;
-                    }
-                }
-            });
-            if(parseInt(changed_id) == parseInt($('#entry_id').val())){
-                changed_id = '';
-                if($(".swal2-container:visible").length == 0){
-                    Swal.fire({
-                        title: 'ENTRY UPDATED',
-                        html: 'Another user updated this entry.',
-                        icon: 'warning',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        confirmButtonText: 'CLOSE'
-                    }).then((save) => {
-                        if(save.isConfirmed){
-                            $('.btnClose').click();
-                        }
-                    });
-                }
-            }
-        }
     }
 }, 1100);
 

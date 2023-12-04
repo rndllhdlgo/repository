@@ -45,7 +45,11 @@
                 setInterval(function(){
                     if($('#loading').is(':hidden') && standby == false){
                         $.ajax({
+                            async: false,
                             url: "/notif_update",
+                            data:{
+                                checking: 'default'
+                            },
                             success: function(data){
                                 if(data.user_update != $('#current_updated_at').val()){
                                     $('#current_updated_at').val(data.user_update);
@@ -86,7 +90,7 @@
                             }
                         });
                     }
-                }, 1000);
+                }, 1100);
             </script>
         @endif
         <script>
