@@ -271,7 +271,6 @@ $(document).on('change', '#pdf_file', function(e){
     for(var i = 0; i < files.length; i++){
         var file = files[i];
         var fileType = getExtension(file.name);
-
         if(fileType === 'jpg' || fileType === 'jpeg'){
             img_count++;
         }
@@ -303,9 +302,7 @@ $(document).on('change', '#pdf_file', function(e){
     
     for(var i = 0; i < files.length; i++){
       var file = files[i];
-
       var reader = new FileReader();
-
       reader.onload = function(e){
         var fileType = getFileType(e.target.result);
 
@@ -315,7 +312,7 @@ $(document).on('change', '#pdf_file', function(e){
                 $("#displayFile").append(embed);
             }
             else{
-                var img = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result); // Create an <img> element
+                var img = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result);
                 $("#displayFile").append(img);
             }
         }
@@ -329,26 +326,6 @@ $(document).on('change', '#pdf_file', function(e){
       }
     }
     $('.divReplaceFile').show();
-});
-
-$(document).on('click', '#btnViewFile', function(){
-    $('#loading').show();
-    var file_url = $('#fetchFileName').attr('href');
-    var rand_str = Math.random().toString(36).substring(2,12);
-    $.ajax({
-        url: '/checkURL',
-        async: false,
-        data:{
-            file_url: file_url
-        },
-        success: function(data){
-            if(data == 'false'){ file_url = '/image/404.jpg'; }
-            $('#displayFile').empty().append(`
-                <embed src="${file_url}?${rand_str}" width="100%" height="600px"/>
-            `);
-            $('#loading').hide();
-        }
-    });
 });
 
 function getFileType(dataURL){
@@ -501,6 +478,26 @@ $(document).on('click', '#btnTogglePreview', function(){
         $('.left-side').show();
         $('#btnViewFile').click();
     }
+});
+
+$(document).on('click', '#btnViewFile', function(){
+    $('#loading').show();
+    var file_url = $('#fetchFileName').attr('href');
+    var rand_str = Math.random().toString(36).substring(2,12);
+    $.ajax({
+        url: '/checkURL',
+        async: false,
+        data:{
+            file_url: file_url
+        },
+        success: function(data){
+            if(data == 'false'){ file_url = '/image/404.jpg'; }
+            $('#displayFile').empty().append(`
+                <embed src="${file_url}?${rand_str}" width="100%" height="600px"/>
+            `);
+            $('#loading').hide();
+        }
+    });
 });
 
 $(document).on('click', '#btnApprove', function(){
