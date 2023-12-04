@@ -21,7 +21,7 @@
     </a>
 </div>
 
-<div class="table-responsive container-fluid pt-2">
+<div class="table-responsive container-fluid pt-2" style="zoom: 90%;">
     <table id="crTable" class="table crTable table-bordered table-striped table-hover display w-100" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>

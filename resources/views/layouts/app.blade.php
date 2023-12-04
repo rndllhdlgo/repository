@@ -132,7 +132,7 @@
             }, 0);
         </script>
     @endif
-    <main class="container-fluid content" style="zoom: 90%">
+    <main class="container-fluid content">
         @yield('content')
     </main>
     @include('modals.modalViewFile')

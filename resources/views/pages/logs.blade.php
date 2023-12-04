@@ -6,7 +6,7 @@
         <div id="page-name"><h4><span class="page-reload">USER ACTIVITY LOGS</span></h4></div>
     </div>
 </div>
-<div class="table-responsive container-fluid pt-2">
+<div class="table-responsive container-fluid pt-2" style="zoom: 90%;">
     <table id="userlogsTable" class="table userlogsTable table-hover table-bordered table-fixed display" style="cursor: pointer; width: 100%;">
         <thead class="bg-default">
             <tr>

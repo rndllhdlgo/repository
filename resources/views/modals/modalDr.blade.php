@@ -1,10 +1,10 @@
-<div id="drModal" class="modal fade modal_repo" data-bs-focus="false" style="height: auto;">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+<div id="drModal" class="modal fade modal_repo" data-bs-focus="false">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header bg-default">
                 <h5 class="modal-title w-100 text-center" id="drTitle"></h5>
                 <button type="button" id="btnTogglePreview" class="btn btn-primary text-right mr-1" style="width: 140px;">Maximize<i class="fa-solid fa-magnifying-glass-plus fa-lg ml-2"></i></button>
-                <button type="button" class="btn-close btn-close-white close btnClose" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close btn-close-white close btnClose pr-2" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="row">

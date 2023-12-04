@@ -9,7 +9,7 @@
         <button class="form-control btn btn-custom addBtn float-end" id="btnAddUser" style="float: left;"><i class="fas fa-plus"></i> ADD NEW</button>
     </div>
 </div>
-<div class="table-responsive container-fluid pt-2">
+<div class="table-responsive container-fluid pt-2" style="zoom: 90%;">
     <table id="userTable" class="table userTable table-bordered table-striped table-hover display w-100" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
