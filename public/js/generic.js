@@ -204,11 +204,17 @@ function save_upload(response){
     }
 }
 
+var pdf_embed;
 $(document).on('change', '#pdf_file', function(e){
+    if(!e.target.files.length){
+        $('#btnViewFile').click();
+        return false;
+    }
     var files_length = $("#pdf_file").get(0).files.length;
     var error_ext = 0;
     var error_mb = 0;
     var total_file_size = 0;
+    pdf_embed = '';
     for(var i = 0; i < files_length; ++i){
         var file1=$("#pdf_file").get(0).files[i].name;
         var file_size = $("#pdf_file").get(0).files[i].size;
@@ -305,12 +311,12 @@ $(document).on('change', '#pdf_file', function(e){
 
         if(['pdf','png','jpg','jpeg'].includes(fileType)){
             if(fileType === 'pdf'){
-                var embed = $("<embed style='height:470px; width:100%;'>").attr("src", e.target.result).addClass("pdf-embed");
-                $("#displayFile").append(embed);
+                pdf_embed = $("<embed style='height: 700px; width: 100%;'>").attr("src", e.target.result).addClass("pdf-embed");
+                $("#displayFile").append(pdf_embed);
             }
             else{
-                var img = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result);
-                $("#displayFile").append(img);
+                var img_embed = $(`<img class="imgPreview" style='width:100%; display: none;'>`).attr("src", e.target.result);
+                $("#displayFile").append(img_embed);
             }
         }
       };
@@ -469,18 +475,33 @@ $(document).on('click', '#btnTogglePreview', function(){
     if($(this).text() == 'Maximize'){
         $(this).html(`Minimize<i class="fa-solid fa-magnifying-glass-minus fa-lg ml-2"></i>`);
         $('.left-side').hide();
-        $('#btnViewFile').click();
+        if(!$('#pdf_file').val()){
+            $('#btnViewFile').click();
+        }
+        else{
+            if(pdf_embed){
+                $('#displayFile').empty().append(pdf_embed);
+            }
+        }
     }
     else{
         $(this).html(`Maximize<i class="fa-solid fa-magnifying-glass-plus fa-lg ml-2"></i>`);
         $('.left-side').show();
-        $('#btnViewFile').click();
+        if(!$('#pdf_file').val()){
+            $('#btnViewFile').click();
+        }
+        else{
+            if(pdf_embed){
+                $('#displayFile').empty().append(pdf_embed);
+            }
+        }
     }
 });
 
 $(document).on('click', '#btnViewFile', function(){
     $('#loading').show();
     $('#pdf_file').val('');
+    pdf_embed = '';
     var file_url = $('#fetchFileName').attr('href');
     var rand_str = Math.random().toString(36).substring(2,12);
     $.ajax({
@@ -492,7 +513,7 @@ $(document).on('click', '#btnViewFile', function(){
         success: function(data){
             if(data == 'false'){ file_url = '/image/404.jpg'; }
             $('#displayFile').empty().append(`
-                <embed src="${file_url}?${rand_str}" width="100%" height="600px"/>
+                <embed src="${file_url}?${rand_str}" width="100%" height="700px"/>
             `);
             $('#loading').hide();
         }
