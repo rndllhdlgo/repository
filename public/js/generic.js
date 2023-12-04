@@ -725,7 +725,7 @@ setInterval(() => {
     $('body').css('padding-right','0px');
     $('#uploaded_by').prop('disabled', true);
 
-    if($('#pdf_file').val() && $('#btnReplaceFile').is(':visible')){
+    if($('#entry_id').val() && $('#pdf_file').val() && $('#btnReplaceFile').is(':visible')){
         $('#btnResetFile').show();
     }
     else{
