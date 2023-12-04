@@ -297,7 +297,7 @@ $(document).on('change', '#pdf_file', function(e){
 
         if(['pdf','png','jpg','jpeg'].includes(fileType)){
             if(fileType === 'pdf'){
-                pdf_embed = $("<embed style='height: 700px; width: 100%;'>").attr("src", e.target.result).addClass("pdf-embed");
+                pdf_embed = $(`<embed width="100%" height="700px">`).attr("src", e.target.result).addClass("pdf-embed");
                 $("#displayFile").append(pdf_embed);
             }
             else{

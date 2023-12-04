@@ -536,3 +536,8 @@ input:checked + .slider .off{
     border-radius: 20px 0px 0px 20px !important;
     text-indent: 10px;
 }
+
+.modal-body {
+    max-height: 90vh;
+    overflow-y: auto;
+}
