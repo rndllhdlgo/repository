@@ -198,9 +198,9 @@ $('#bsAdd').on('click',function(){
 
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
-            <button type="button" id="txtUploadPdf" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+            <button type="button" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
                 <i class="fa-solid fa-file-arrow-up mr-1"></i>
-                <span id="txtUploadPdf">UPLOAD FILE</span>
+                <span>UPLOAD FILE</span>
             </button>
             <span style="visibility:hidden;">
                 <input type="file" id="pdf_file" name="pdf_file[]" class="form-control requiredField" accept=".jpeg,.jpg,.png,.pdf" multiple/>

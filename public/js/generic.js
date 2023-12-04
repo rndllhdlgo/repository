@@ -134,7 +134,7 @@ function edit_pdf(){
         success: function(response){
             save_upload(response);
         },
-        error: function(response){
+        error: function(){
             $('#loading').hide();
             Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
             $('.divReplaceFile').hide();
@@ -260,10 +260,9 @@ $(document).on('change', '#pdf_file', function(e){
     }
 
     var files = e.target.files;
-
     var pdf_count = 0;
     var img_count = 0;
-    if (!files.length) {
+    if(!files.length){
         return false;
     }
     $('.pItem').remove();
@@ -285,7 +284,6 @@ $(document).on('change', '#pdf_file', function(e){
             title: 'MAX LIMIT REACHED',
             html: '<span id="checkUpload">Only 1 PDF file can be uploaded.</span>'
         });
-
         resetUpload();
         return false;
     }
@@ -293,9 +291,8 @@ $(document).on('change', '#pdf_file', function(e){
         Swal.fire({
             icon: 'error',
             title: 'INVALID COMBINATION',
-            html: '<span id="checkUpload">Cannot upload different file types.</span>'
+            html: '<span id="checkUpload">Cannot upload different file type/s combination.</span>'
         });
-
         resetUpload();
         return false;
     }
