@@ -303,7 +303,7 @@ $(document).on('change', '#pdf_file', function(e){
       reader.onload = function(e){
         var fileType = getFileType(e.target.result);
 
-        if(fileType === 'jpg' || fileType === 'jpeg' || fileType === 'pdf'){
+        if(['pdf','png','jpg','jpeg'].includes(fileType)){
             if(fileType === 'pdf'){
                 var embed = $("<embed style='height:470px; width:100%;'>").attr("src", e.target.result).addClass("pdf-embed");
                 $("#displayFile").append(embed);
