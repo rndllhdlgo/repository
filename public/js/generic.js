@@ -318,23 +318,6 @@ $(document).on('click','#btnReturn', function(){
 });
 
 setInterval(function(){
-    if($('#loading').is(':hidden') && standby == false && 1 == 0){
-        $.ajax({
-            url: "/table_reload",
-            data:{
-                current_page: $('#current_page').val(),
-            },
-            success: function(data){
-                if(data.data_update != data_update){
-                    data_update = data.data_update;
-                    table.ajax.reload(null, false);
-                }
-            }
-        });
-    }
-}, 1000);
-
-setInterval(function(){
     if($('#loading').is(':hidden') && standby == false){
         if($('.modal_repo').is(':visible') && $('#entry_id').attr('updated_at') && $('#entry_id').attr('check_table')){
             var checking = 'modal';
@@ -684,7 +667,7 @@ function save_upload(response){
     }
 }
 
-$(document).on('change','#pdf_file', function(e){
+$(document).on('change', '#pdf_file', function(e){
     var files_length = $("#pdf_file").get(0).files.length;
     var error_ext = 0;
     var error_mb = 0;
