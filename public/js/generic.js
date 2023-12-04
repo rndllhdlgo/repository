@@ -288,7 +288,7 @@ $(document).on('change', '#pdf_file', function(e){
         resetUpload();
         return false;
     }
-    
+
     for(var i = 0; i < files.length; i++){
       var file = files[i];
       var reader = new FileReader();
@@ -342,7 +342,7 @@ function resetUpload(){
     else{
         $('#pdf_file').val('');
         $('.pItem').remove();
-    
+
         $('#displayFile').empty().append(`
             <center id="logoUpload" class="mt-5" onclick="$('#pdf_file').click();" title="UPLOAD FILE">
                 <i class="fa-solid fa-file-arrow-up" style="zoom: 1500%;"></i><br><br>
@@ -588,8 +588,29 @@ $(document).on('click', '#btnDisapprove', function(){
                 success: function(data){
                     if(data == 'true'){
                         $('#loading').hide();
-                        Swal.fire("INVALIDATE SUCCESS", "", "success");
+                        Swal.fire({
+                            title: 'INVALIDATE SUCCESS',
+                            html: '<br>',
+                            icon: 'success',
+                            timer: 1000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                         $('.modal').modal('hide');
+                        $('.current_search').val('').keyup();
+                        $(`.paginate_button[data-dt-idx="0"]`).click();
+                        setTimeout(() => {
+                            $.ajax({
+                                url: "/checkNext",
+                                async: false,
+                                data: {
+                                    current_location: current_location,
+                                },
+                                success: function(data){
+                                    $(`.row_id[row_id="${data}"]`).closest('tr').click();
+                                }
+                            });
+                        }, 1100);
                     }
                     else{
                         $('#loading').hide();
