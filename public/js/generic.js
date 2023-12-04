@@ -137,7 +137,6 @@ function edit_pdf(){
         error: function(){
             $('#loading').hide();
             Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
-            $('.divReplaceFile').hide();
             resetUpload();
         }
     });
@@ -192,7 +191,6 @@ function save_upload(response){
         $('.modal').modal('hide');
         return false;
     }
-    $('.divReplaceFile').hide();
     resetUpload();
 }
 
@@ -228,7 +226,6 @@ $(document).on('change', '#pdf_file', function(e){
         });
         $('#pdf_file').val('');
         $('#pdf_file').focus();
-        $('.divReplaceFile').hide();
         resetUpload();
         return false;
     }
@@ -236,7 +233,6 @@ $(document).on('change', '#pdf_file', function(e){
         Swal.fire('INVALID file type!', 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg.', 'error');
         $('#pdf_file').val('');
         $('#pdf_file').focus();
-        $('.divReplaceFile').hide();
         resetUpload();
         return false;
     }
@@ -244,7 +240,6 @@ $(document).on('change', '#pdf_file', function(e){
         Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
         $('#pdf_file').val('');
         $('#pdf_file').focus();
-        $('.divReplaceFile').hide();
         resetUpload();
         return false;
     }
@@ -252,7 +247,6 @@ $(document).on('change', '#pdf_file', function(e){
         Swal.fire('EXCEEDED maximum total file size (20 MB)!', 'Please upload valid file/s with total file size not greater than 20 MB.', 'error');
         $('#pdf_file').val('');
         $('#pdf_file').focus();
-        $('.divReplaceFile').hide();
         resetUpload();
         return false;
     }
@@ -340,7 +334,9 @@ function getExtension(fileName){
 }
 
 function resetUpload(){
+    $('.divReplaceFile').hide();
     if($('#entry_id').val()){
+        $('.divReplaceFile').show();
         $('#btnViewFile').click();
     }
     else{
@@ -464,7 +460,6 @@ function formRestrictions(data){
 
 $(document).on('click', '#btnClear', function(){
     $('.req').remove();
-    $('.divReplaceFile').hide();
     resetUpload();
 });
 
@@ -748,13 +743,6 @@ setInterval(() => {
     }
     else{
         $('#btnResetFile').hide();
-    }
-
-    if(!$('#entry_id').val()){
-        $('#btnTogglePreview').hide();
-    }
-    else{
-        $('#btnTogglePreview').show();
     }
 
     if($('.imgPreview').length){

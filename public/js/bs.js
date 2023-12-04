@@ -252,7 +252,6 @@ function save_pdf(){
         error: function(response){
             $('#loading').hide();
             Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
-            $('.divReplaceFile').hide();
             resetUpload();
         }
     });
