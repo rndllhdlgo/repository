@@ -147,18 +147,12 @@ function save_upload(response){
     $('#loading').hide();
     if(response == 'NO CHANGES'){
         Swal.fire("NO CHANGES FOUND", "", "error");
-        $('.divReplaceFile').hide();
-        resetUpload();
     }
     else if(response == 'MAX SIZE'){
         Swal.fire('EXCEEDED maximum individual file size (2.5 MB)!', 'Please upload valid file/s with file size not greater than 2.5 MB each.', 'error');
-        $('.divReplaceFile').hide();
-        resetUpload();
     }
     else if(response == 'FILE EXTENSION'){
         Swal.fire('INVALID file type!', 'Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg.', 'error');
-        $('.divReplaceFile').hide();
-        resetUpload();
     }
     else if(response == 'FOR VALIDATION'){
         Swal.fire({
@@ -167,6 +161,7 @@ function save_upload(response){
             icon: 'success'
         });
         $('.modal').modal('hide');
+        return false;
     }
     else if(response == 'INVALID'){
         Swal.fire({
@@ -174,16 +169,12 @@ function save_upload(response){
             html: "INVALID FILE FORMAT",
             icon: 'warning',
         });
-        $('.divReplaceFile').hide();
-        resetUpload();
     }
     else if(response == 'DUPLICATE'){
         Swal.fire({
             title: 'ALREADY EXISTS',
             icon: 'error'
         });
-        $('.divReplaceFile').hide();
-        resetUpload();
     }
     else if(response == 'false'){
         Swal.fire({
@@ -191,8 +182,6 @@ function save_upload(response){
             html: 'FILE SUBMIT ERROR',
             icon: 'error'
         });
-        $('.divReplaceFile').hide();
-        resetUpload();
     }
     else{
         Swal.fire({
@@ -201,7 +190,10 @@ function save_upload(response){
             icon: 'success'
         });
         $('.modal').modal('hide');
+        return false;
     }
+    $('.divReplaceFile').hide();
+    resetUpload();
 }
 
 var pdf_embed;
@@ -348,16 +340,21 @@ function getExtension(fileName){
 }
 
 function resetUpload(){
-    $('#pdf_file').val('');
-    $('.pItem').remove();
-
-    $('#displayFile').empty().append(`
-        <center id="logoUpload" class="mt-5" onclick="$('#pdf_file').click();" title="UPLOAD FILE">
-            <i class="fa-solid fa-file-arrow-up" style="zoom: 1500%;"></i><br><br>
-            <h3>CLICK HERE TO UPLOAD FILE</h3>
-            <span style="white-space: normal; width: 45vw;">Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg; AND with file size not greater than 2.5 MB each.</span><br>
-        </center>
-    `);
+    if($('#entry_id').val()){
+        $('#btnViewFile').click();
+    }
+    else{
+        $('#pdf_file').val('');
+        $('.pItem').remove();
+    
+        $('#displayFile').empty().append(`
+            <center id="logoUpload" class="mt-5" onclick="$('#pdf_file').click();" title="UPLOAD FILE">
+                <i class="fa-solid fa-file-arrow-up" style="zoom: 1500%;"></i><br><br>
+                <h3>CLICK HERE TO UPLOAD FILE</h3>
+                <span style="white-space: normal; width: 45vw;">Please upload file/s with valid file type like the following: pdf, png, jpg or jpeg; AND with file size not greater than 2.5 MB each.</span><br>
+            </center>
+        `);
+    }
 }
 
 function formRestrictions(data){
