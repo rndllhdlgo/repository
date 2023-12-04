@@ -342,6 +342,7 @@ function getExtension(fileName){
 }
 
 function resetUpload(){
+    $('#pdf_file').val('');
     $('.pItem').remove();
 
     $('#displayFile').empty().append(`
@@ -479,6 +480,7 @@ $(document).on('click', '#btnTogglePreview', function(){
 
 $(document).on('click', '#btnViewFile', function(){
     $('#loading').show();
+    $('#pdf_file').val('');
     var file_url = $('#fetchFileName').attr('href');
     var rand_str = Math.random().toString(36).substring(2,12);
     $.ajax({
@@ -722,12 +724,21 @@ setInterval(function(){
 setInterval(() => {
     $('body').css('padding-right','0px');
     $('#uploaded_by').prop('disabled', true);
+
+    if($('#pdf_file').val() && $('#btnReplaceFile').is(':visible')){
+        $('#btnResetFile').show();
+    }
+    else{
+        $('#btnResetFile').hide();
+    }
+
     if(!$('#entry_id').val()){
         $('#btnTogglePreview').hide();
     }
     else{
         $('#btnTogglePreview').show();
     }
+
     if($('.imgPreview').length){
         $('#pagi').show();
     }
@@ -735,6 +746,7 @@ setInterval(() => {
         $('#pagi').hide();
 
     }
+
     if($('#pagi').is(':visible')){
         $('.imgPreview:not([id])').each(function(index){
             var newId = 'imgPreview' + (index + 1);

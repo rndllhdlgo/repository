@@ -134,10 +134,16 @@
                                 </ul>
                             </div>
                             <div class="col divReplaceFile">
-                                <button type="button" class="btn btn-primary bp float-end" onclick="$('#pdf_file').click();">
-                                    <i class="fa-solid fa-file-arrow-up mr-1"></i>
-                                    <span>REPLACE FILE</span>
-                                </button>
+                                <span class="float-end">
+                                    <button type="button" id="btnResetFile" class="btn btn-primary bp" style="display: none;" onclick="$('#btnViewFile').click();">
+                                        <i class="fa-solid fa-share fa-flip-horizontal mr-1"></i>
+                                        <span>RESET FILE</span>
+                                    </button>
+                                    <button type="button" id="btnReplaceFile" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                                        <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                                        <span>REPLACE FILE</span>
+                                    </button>
+                                </span>
                                 <span class="d-none">
                                     <input type="file" id="pdf_file" name="pdf_file[]" class="form-control " accept=".jpeg,.jpg,.png,.pdf" multiple/>
                                 </span>
