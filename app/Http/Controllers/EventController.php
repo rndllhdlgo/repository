@@ -53,12 +53,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/sales_invoice/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/sales_invoice/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->sales_invoice;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->sales_invoice.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -74,10 +77,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->sales_invoice.'-'.$str.'.pdf';
-                $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/sales_invoice/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->sales_invoice.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -92,7 +95,7 @@ class EventController extends Controller
             'purchase_order' => strtoupper($request->purchase_order),
             'sales_order' => strtoupper($request->sales_order),
             'delivery_receipt' => strtoupper($request->delivery_receipt),
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'status' => 'FOR VALIDATION'
         ]);
 
@@ -134,12 +137,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/collection_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/collection_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->collection_receipt;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->collection_receipt.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/collection_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -155,10 +161,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->collection_receipt.'-'.$str.'.pdf';
-                $files->storeAs('public/collection_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/collection_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->collection_receipt.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -171,7 +177,7 @@ class EventController extends Controller
             'uploaded_by' => auth()->user()->name,
             'sales_order' => strtoupper($request->sales_order),
             'sales_invoice' => strtoupper($request->sales_invoice),
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'status' => 'FOR VALIDATION'
         ]);
 
@@ -213,12 +219,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/billing_statement/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/billing_statement/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->billing_statement;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->billing_statement.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/billing_statement/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -234,10 +243,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->billing_statement.'-'.$str.'.pdf';
-                $files->storeAs('public/billing_statement/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/billing_statement/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->billing_statement.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -251,7 +260,7 @@ class EventController extends Controller
             'uploaded_by' => auth()->user()->name,
             'sales_order' => strtoupper($request->sales_order),
             'purchase_order' => strtoupper($request->purchase_order),
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'status' => 'FOR VALIDATION'
         ]);
 
@@ -293,12 +302,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/official_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/official_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->official_receipt;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->official_receipt.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -314,10 +326,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->official_receipt.'-'.$str.'.pdf';
-                $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/official_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->official_receipt.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -329,7 +341,7 @@ class EventController extends Controller
             'branch_name' => strtoupper($request->branch_name),
             'uploaded_by' => auth()->user()->name,
             'sales_order' => $request->sales_order,
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'status' => 'FOR VALIDATION'
         ]);
         if($sql){
@@ -370,12 +382,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/delivery_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/delivery_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->delivery_receipt;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->delivery_receipt.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/delivery_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -391,10 +406,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->delivery_receipt.'-'.$str.'.pdf';
-                $files->storeAs('public/delivery_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/delivery_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->delivery_receipt.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -408,7 +423,7 @@ class EventController extends Controller
             'uploaded_by' => auth()->user()->name,
             'purchase_order' => strtoupper($request->purchase_order),
             'sales_order' => strtoupper($request->sales_order),
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'status' => 'FOR VALIDATION'
         ]);
 
@@ -446,12 +461,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/sales_invoice/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/sales_invoice/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->sales_invoice;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->sales_invoice.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -467,10 +485,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->sales_invoice.'-'.$str.'.pdf';
-                $files->storeAs('public/sales_invoice/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/sales_invoice/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->sales_invoice.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -567,11 +585,10 @@ class EventController extends Controller
             'purchase_order' => strtoupper($request->purchase_order),
             'sales_order' => strtoupper($request->sales_order),
             'delivery_receipt' => strtoupper($request->delivery_receipt),
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'remarks' => '',
             'status' => 'FOR VALIDATION',
-            'stage' => '0',
-            'created_at' => Carbon::now()
+            'stage' => '0'
         ]);
 
         if($sql){
@@ -608,12 +625,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/collection_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/collection_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->collection_receipt;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->collection_receipt.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/collection_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -629,10 +649,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->collection_receipt.'-'.$str.'.pdf';
-                $files->storeAs('public/collection_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/collection_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->collection_receipt.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -709,11 +729,10 @@ class EventController extends Controller
                 'uploaded_by' => strtoupper($request->uploaded_by),
                 'sales_order' => strtoupper($request->sales_order),
                 'sales_invoice' => strtoupper($request->sales_invoice),
-                'pdf_file' => $request->company.'-'.$filename,
+                'pdf_file' => $dir.$filename,
                 'remarks' => '',
                 'status' => 'FOR VALIDATION',
-                'stage' => '0',
-                'created_at' => Carbon::now()
+                'stage' => '0'
         ]);
 
         if($sql){
@@ -750,12 +769,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/billing_statement/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/billing_statement/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->billing_statement;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->billing_statement.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/billing_statement/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -771,10 +793,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->sales_invoice.'-'.$str.'.pdf';
-                $files->storeAs('public/billing_statement/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/billing_statement/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->billing_statement.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -861,11 +883,10 @@ class EventController extends Controller
             'uploaded_by' => strtoupper($request->uploaded_by),
             'sales_order' => $request->sales_order,
             'purchase_order' => $request->purchase_order,
-            'pdf_file' => $request->company.'-'.$filename,
+            'pdf_file' => $dir.$filename,
             'remarks' => '',
             'status' => 'FOR VALIDATION',
-            'stage' => '0',
-            'created_at' => Carbon::now()
+            'stage' => '0'
         ]);
 
         if($sql){
@@ -902,12 +923,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/official_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/official_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->official_receipt;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->official_receipt.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -923,10 +947,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->official_receipt.'-'.$str.'.pdf';
-                $files->storeAs('public/official_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/official_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->official_receipt.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -994,11 +1018,10 @@ class EventController extends Controller
                 'branch_name' => strtoupper($request->branch_name),
                 'uploaded_by' => strtoupper($request->uploaded_by),
                 'sales_order' => $request->sales_order,
-                'pdf_file' => $request->company.'-'.$filename,
+                'pdf_file' => $dir.$filename,
                 'remarks' => '',
                 'status' => 'FOR VALIDATION',
-                'stage' => '0',
-                'created_at' => Carbon::now()
+                'stage' => '0'
         ]);
 
         if($sql){
@@ -1035,12 +1058,15 @@ class EventController extends Controller
 
         $file = $request->file('pdf_file');
         $str = Str::random(5);
+        $cache = "public/delivery_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $dir = "storage/delivery_receipt/".Carbon::now()->format('Y-m-d').'/';
+        $document = $request->delivery_receipt;
         if(count($file) >= 1){
             $count = 0;
             foreach($file as $files){
                 if($files->getClientOriginalExtension() === 'pdf'){
-                    $filename = $request->delivery_receipt.'-'.$str.'.'.$files->getClientOriginalExtension();
-                    $files->storeAs('public/delivery_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                    $filename = $request->company.'-'.$document.'-'.$str.'.'.$files->getClientOriginalExtension();
+                    $files->storeAs($cache, $filename);
                 }
                 else if($files->getClientOriginalExtension() === 'jpg'){
                     if($count == 0){
@@ -1056,10 +1082,10 @@ class EventController extends Controller
                 }
             }
             if($count > 0){
-                $filename = $request->delivery_receipt.'-'.$str.'.pdf';
-                $files->storeAs('public/delivery_receipt/'.Carbon::now()->format('Y-m-d'), $request->company.'-'.$filename);
+                $filename = $request->company.'-'.$document.'-'.$str.'.pdf';
+                $files->storeAs($cache, $filename);
                 $imagick->setImageFormat('pdf');
-                $imagePath = public_path("storage/delivery_receipt/".Carbon::now()->format('Y-m-d').'/'.$request->company.'-'.$request->delivery_receipt.'-'.$str.".pdf");
+                $imagePath = public_path($dir.$filename);
                 $imagick->writeImages($imagePath, true);
             }
         }
@@ -1147,11 +1173,10 @@ class EventController extends Controller
                 'uploaded_by' => strtoupper($request->uploaded_by),
                 'purchase_order' => $request->purchase_order,
                 'sales_order' => $request->sales_order,
-                'pdf_file' => $request->company.'-'.$filename,
+                'pdf_file' => $dir.$filename,
                 'remarks' => '',
                 'status' => 'FOR VALIDATION',
-                'stage' => '0',
-                'created_at' => Carbon::now()
+                'stage' => '0'
         ]);
 
         if($sql){
