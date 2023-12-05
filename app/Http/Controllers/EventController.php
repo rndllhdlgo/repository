@@ -575,6 +575,13 @@ class EventController extends Controller
             $delivery_receipt_change = NULL;
         }
 
+        if($request->hasFile('pdf_file')){
+            $pdf_change = " 【ATTACHMENT HAS BEEN CHANGED】";
+        }
+        else{
+            $pdf_change = NULL;
+        }
+
         $sql = SalesInvoice::where('id', $request->entry_id)->update([
             'sales_invoice' => strtoupper($request->sales_invoice),
             'company' => $request->company,
@@ -595,7 +602,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $sales_invoice_change $company_change $client_name_change $branch_name_change $purchase_order_change $sales_order_change $delivery_receipt_change $pdf_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
@@ -721,6 +728,13 @@ class EventController extends Controller
             $sales_invoice_change = NULL;
         }
 
+        if($request->hasFile('pdf_file')){
+            $pdf_change = " 【ATTACHMENT HAS BEEN CHANGED】";
+        }
+        else{
+            $pdf_change = NULL;
+        }
+
         $sql = CollectionReceipt::where('id', $request->entry_id)->update([
                 'collection_receipt' => strtoupper($request->collection_receipt),
                 'company' => $request->company,
@@ -739,7 +753,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $collection_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change $pdf_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
@@ -874,6 +888,13 @@ class EventController extends Controller
             $purchase_order_change = NULL;
         }
 
+        if($request->hasFile('pdf_file')){
+            $pdf_change = " 【ATTACHMENT HAS BEEN CHANGED】";
+        }
+        else{
+            $pdf_change = NULL;
+        }
+
         $sql = BillingStatement::where('id', $request->entry_id)->update([
             'billing_statement' => strtoupper($request->billing_statement),
             'company' => $request->company,
@@ -893,7 +914,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $billing_statement_change $company_change $client_name_change $branch_name_change $sales_order_change $purchase_order_change $pdf_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
@@ -1010,6 +1031,13 @@ class EventController extends Controller
             $sales_order_change = NULL;
         }
 
+        if($request->hasFile('pdf_file')){
+            $pdf_change = " 【ATTACHMENT HAS BEEN CHANGED】";
+        }
+        else{
+            $pdf_change = NULL;
+        }
+
         $sql = OfficialReceipt::where('id', $request->entry_id)
                 ->update([
                 'official_receipt' => strtoupper($request->official_receipt),
@@ -1028,7 +1056,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $official_receipt_change $company_change $client_name_change $branch_name_change $sales_order_change $pdf_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
@@ -1163,6 +1191,13 @@ class EventController extends Controller
             $sales_order_change = NULL;
         }
 
+        if($request->hasFile('pdf_file')){
+            $pdf_change = " 【ATTACHMENT HAS BEEN CHANGED】";
+        }
+        else{
+            $pdf_change = NULL;
+        }
+
         $sql = DeliveryReceipt::where('id', $request->entry_id)
                 ->update([
                 'delivery_receipt' => strtoupper($request->delivery_receipt),
@@ -1183,7 +1218,7 @@ class EventController extends Controller
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
-            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change.";
+            $userlogs->activity = "USER SUCCESSFULLY $edited $current_page ($reference_number) - $request->company with the following changes: $delivery_receipt_change $company_change $client_name_change $business_name_change $branch_name_change $sales_order_change $purchase_order_change $pdf_change.";
             $userlogs->save();
 
             return 'FOR VALIDATION';
