@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use DB;
+use Str;
+use Carbon\Carbon;
 use Spatie\PdfToText\Pdf;
+use Spatie\PdfToImage\Pdf as Jpg;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use App\Models\Company;
 use App\Models\SalesInvoice;
@@ -15,12 +21,6 @@ use App\Models\UserLogs;
 use App\Models\Role;
 use App\Models\RemarkLogs;
 use App\Models\User;
-use Spatie\PdfToImage\Pdf as Jpg;
-use Carbon\Carbon;
-use DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Exceptions\PostTooLargeException;
-use Str;
 
 class EventController extends Controller
 {

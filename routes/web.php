@@ -2,18 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\QueryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\QueryController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BackUpController;
 
 Route::fallback(function(){return redirect('/');});
 Auth::routes(['register' => false, 'verify' => false, 'confirm' => false]);
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::controller(QueryController::class)->group(function(){
+    Route::get('/check_dr', 'check_dr');
+});
 Route::middleware(['session'])->group(function () {
     Route::controller(EventController::class)->group(function(){
         Route::post('/save_si', 'save_si');
@@ -68,4 +72,8 @@ Route::middleware(['session'])->group(function () {
         Route::any('/change/validate', 'change_validate');
         Route::any('/change/password', 'change_password');
     });
+});
+
+Route::controller(BackUpController::class)->group(function(){
+    Route::any('/backup', 'backup');
 });
