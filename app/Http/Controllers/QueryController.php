@@ -34,12 +34,17 @@ class QueryController extends Controller
                                             ->whereDate('updated_at', '>', $request->start_date)
                                             ->orderBy('updated_at', 'DESC')
                                             ->first();
-                $file = $select->pdf_file;
-                $created = substr($select->created_at, 0, 10);
+                if(!$select){
+                    array_push($file_urls, "$file_ref = NOT FOUND");
+                }
+                else{
+                    $file = $select->pdf_file;
+                    $created = substr($select->created_at, 0, 10);
                     if(strpos($file, 'storage/') === false){
                         $file = "/storage/delivery_receipt/$created/$file";
                     }
-                    array_push($file_urls, $file ? "$file_ref = $file" : "$file_ref = NOT FOUND");
+                    array_push($file_urls, "$file_ref = $file");
+                }
             }
             return implode(', ', $file_urls);
         }
