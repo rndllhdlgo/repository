@@ -13,6 +13,8 @@ use App\Models\{
 class BackUpController extends Controller
 {
     public function backup(){
+        $empty_files     = array();
+        $completed_files = array();
         $sales_invoices = SalesInvoice::all();
         if(!$sales_invoices->isEmpty()){
             $sql_sales_invoices = '';
@@ -62,10 +64,10 @@ class BackUpController extends Controller
 
             $sales_invoiceBackUpPath = storage_path('app/public/backupsql/sales_invoices.sql');
             file_put_contents($sales_invoiceBackUpPath, $sql_sales_invoices);
+            array_push($completed_files, "SI");
         }
         else{
-            return 'empty';
-            $sales_invoiceBackUpPath = null;
+            array_push($empty_files, "SI");
         }
 
         $official_receipts = OfficialReceipt::all();
@@ -110,10 +112,10 @@ class BackUpController extends Controller
 
             $official_receiptBackUpPath = storage_path('app/public/backupsql/official_receipts.sql');
             file_put_contents($official_receiptBackUpPath, $sql_official_receipts);
+            array_push($completed_files, "OR");
         }
         else{
-            return 'empty';
-            $official_receiptBackUpPath = null;
+            array_push($empty_files, "OR");
         }
 
         $delivery_receipts = DeliveryReceipt::all();
@@ -163,10 +165,10 @@ class BackUpController extends Controller
 
             $delivery_receiptBackUpPath = storage_path('app/public/backupsql/delivery_receipts.sql');
             file_put_contents($delivery_receiptBackUpPath, $sql_delivery_receipts);
+            array_push($completed_files, "DR");
         }
         else{
-            return 'empty';
-            $delivery_receiptBackUpPath = null;
+            array_push($empty_files, "DR");
         }
 
         $billing_statements = BillingStatement::all();
@@ -216,10 +218,10 @@ class BackUpController extends Controller
 
             $billing_statementBackUpPath = storage_path('app/public/backupsql/billing_statements.sql');
             file_put_contents($billing_statementBackUpPath, $sql_billing_statements);
+            array_push($completed_files, "BS");
         }
         else{
-            return 'empty';
-            $billing_statementBackUpPath = null;
+            array_push($empty_files, "BS");
         }
 
         $collection_receipts = CollectionReceipt::all();
@@ -266,12 +268,12 @@ class BackUpController extends Controller
 
             $collection_receiptBackUpPath = storage_path('app/public/backupsql/collection_receipts.sql');
             file_put_contents($collection_receiptBackUpPath, $sql_collection_receipts);
+            array_push($completed_files, "CR");
         }
         else{
-            return 'empty';
-            $collection_receiptBackUpPath = null;
+            array_push($empty_files, "CR");
         }
 
-        return 'completed';
+        echo nl2br("Completed Files: " . implode(', ', $completed_files) . "\n Empty Files: " . implode(', ', $empty_files));
     }
 }
