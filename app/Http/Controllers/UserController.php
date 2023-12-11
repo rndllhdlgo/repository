@@ -261,6 +261,9 @@ class UserController extends Controller
 
     public function users_email(Request $request){
         $user = User::where('id', $request->uid)->first();
+        if(!filter_var(strtolower($user->email), FILTER_VALIDATE_EMAIL)){
+            return 'false';
+        }
         $email = Password::broker()->sendResetLink(['email'=>strtolower($user->email)]);
         if($email){
             $userlogs = new UserLogs;
