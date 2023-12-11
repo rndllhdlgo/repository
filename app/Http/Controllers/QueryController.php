@@ -30,16 +30,21 @@ class QueryController extends Controller
         if(count($file_refs)){
             foreach($file_refs as $file_ref){
                 $select = DeliveryReceipt::where('delivery_receipt', $file_ref)
-                                            ->where('status', 'VALID')
-                                            ->whereDate('updated_at', '>', $request->start_date)
-                                            ->orderBy('updated_at', 'DESC')
-                                            ->first();
-                if(!$select){
-                    array_push($file_urls, "$file_ref = NOT FOUND");
+                                            ->where('status', 'VALID');
+                                            if($request->file_company != 'NONE'){
+                                                $select->where('company', $request->file_company);
+                                            }
+                                            else{
+                                                $select->whereDate('updated_at', '>', $request->start_date);
+                                            }
+                                            $result = $select->orderBy('updated_at', 'DESC')
+                                                ->first();
+                if(!$result){
+                    array_push($file_urls, "$request->file_company-$file_ref = NOT FOUND");
                 }
                 else{
-                    $file = $select->pdf_file;
-                    $created = substr($select->created_at, 0, 10);
+                    $file = $result->pdf_file;
+                    $created = substr($result->created_at, 0, 10);
                     if(strpos($file, 'storage/') === false){
                         $file = "/storage/delivery_receipt/$created/$file";
                     }
