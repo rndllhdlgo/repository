@@ -304,7 +304,12 @@ $(document).on('click','table.orTable tbody tr',function(){
         `);
     }
 
-    $('#btnViewFile').click();
+    if($('#btnTogglePreview').text() == 'Minimize'){
+        $('#btnTogglePreview').click();
+    }
+    else{
+        $('#btnViewFile').click();
+    }
     $('#btnSave').hide();
     $('#btnClear').hide();
     $('#orModal').modal('show');

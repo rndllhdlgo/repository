@@ -318,7 +318,12 @@ $(document).on('click','table.drTable tbody tr',function(){
         `);
     }
 
-    $('#btnViewFile').click();
+    if($('#btnTogglePreview').text() == 'Minimize'){
+        $('#btnTogglePreview').click();
+    }
+    else{
+        $('#btnViewFile').click();
+    }
     $('#btnSave').hide();
     $('#btnClear').hide();
     $('#drModal').modal('show');

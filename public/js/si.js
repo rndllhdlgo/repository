@@ -323,7 +323,12 @@ $(document).on('click','table.siTable tbody tr',function(){
         `);
     }
 
-    $('#btnViewFile').click();
+    if($('#btnTogglePreview').text() == 'Minimize'){
+        $('#btnTogglePreview').click();
+    }
+    else{
+        $('#btnViewFile').click();
+    }
     $('#btnSave').hide();
     $('#btnClear').hide();
     $('#siModal').modal('show');
