@@ -1,7 +1,7 @@
 <div class="container-fluid text-default d-flex" style="height: 80px; line-height: 70px;">
 	<a href="/" class="xD">
         <b class="text-default" style="font-size: 35px;">{{ env('APP_NAME') }}</b>
-        <img class="ml-2" src="{{asset('image/banner.png')}}" style="margin-top: -17px;">
+        <img class="ml-2" src="{{asset('image/banner.png')}}" style="margin-top: -20px; zoom: 80%;">
     </a>
 	<table class="text-right ml-auto mb-2 align-self-end" style="font-size: 12px; line-height: 12px;">
 		<thead>
