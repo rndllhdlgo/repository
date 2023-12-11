@@ -35,20 +35,21 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
+                    var reset_email = `<span title="Send Password Reset Email" style="border: 1px solid white !important; zoom: 140%;" class="btnResetEmail badge rounded-pill bg-default ml-2" uid="${row.user_id}" style="cursor: pointer;"><i class="fa-regular fa-envelope"></i></span>`;
                     if(current_department != 'SUPERADMIN' && row.role == '1'){
                         if(data == 'ACTIVE'){
-                            return `<div style="width: 120px !important;"><center class="text-success"><b>${data}</b></center></div>`;
+                            return `<div><span class="text-success float-end"><b>${data}</b>${reset_email}</span></div>`;
                         }
                         if(data == 'INACTIVE'){
-                            return `<div style="width: 120px !important;"><center class="text-danger"><b>${data}</b></center></div>`;
+                            return `<div><span class="text-danger float-end"><b>${data}</b>${reset_email}</span></div>`;
                         }
                     }
                     else{
                         if(data == 'ACTIVE'){
-                            return '<center><label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="'+ meta.row +'" checked><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label></center>';
+                            return `<span class="float-end"><label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="${meta.row}" checked><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label>${reset_email}</span>`;
                         }
                         if(data == 'INACTIVE'){
-                            return '<center><label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="'+ meta.row +'"><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label></center>';
+                            return `<span class="float-end"><label class="switch" style="zoom: 80%; margin-top: -5px; margin-bottom: -10px;"><input type="checkbox" class="togBtn" id="${meta.row}"><div class="slider round"><span style="font-size: 110%;" class="on">ACTIVE</span><span style="font-size: 100%;" class="off">INACTIVE</span></div></label>${reset_email}</span>`;
                         }
                     }
                 }
@@ -338,6 +339,42 @@ $('#btnUpdate').on('click',function(){
                 Swal.fire("UPDATE FAILED", "USER ACCOUNT", "error");
                 setTimeout(function(){window.location.href="/users"}, 2000);
             }
+        }
+    });
+});
+
+$(document).on('click', '.btnResetEmail', function(){
+    Swal.fire({
+        title: "SEND PASSWORD RESET EMAIL?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Confirm',
+        allowOutsideClick: false
+    })
+    .then((result) => {
+        if(result.isConfirmed){
+            $('#loading').show();
+            $.ajax({
+                url: "/users/email",
+                headers:{
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    uid: $(this).attr('uid'),
+                },
+                success: function(data){
+                    if(data == 'true'){
+                        $('#loading').hide();
+                        Swal.fire("EMAIL SUCCESS", "Password Reset Email sent successfully!", "success");
+                    }
+                    else{
+                        $('#loading').hide();
+                        Swal.fire("EMAIL FAILED", "Password Reset Email failed to send!", "error");
+                    }
+                }
+            });
         }
     });
 });

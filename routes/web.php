@@ -69,6 +69,7 @@ Route::middleware(['session'])->group(function () {
         Route::any('/users/validate/update', 'validate_users_update');
         Route::any('/users/update', 'users_update');
         Route::any('/users/status', 'users_status');
+        Route::any('/users/email', 'users_email');
         Route::any('/change/validate', 'change_validate');
         Route::any('/change/password', 'change_password');
     });

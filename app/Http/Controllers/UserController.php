@@ -259,6 +259,19 @@ class UserController extends Controller
         return response($result);
     }
 
+    public function users_email(Request $request){
+        $user = User::where('id', $request->uid)->first();
+        $email = Password::broker()->sendResetLink(['email'=>strtolower($user->email)]);
+        if($email){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "EMAIL SENT: User successfully sent password reset email to $user->name.";
+            $userlogs->save();
+        }
+        return $email ? 'true' : 'false';
+    }
+
     public function change_validate(Request $request){
         return Hash::check($request->current, auth()->user()->password) ? 'true' : 'false';
     }
