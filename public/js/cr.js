@@ -188,6 +188,9 @@ $('#crAdd').on('click',function(){
     $('.divReplaceFile').hide();
     $('.req').remove();
 
+    if($('#btnTogglePreview').text() == 'Minimize'){
+        $('#btnTogglePreview').click();
+    }
     $('#file_div').empty().append(`
         <div class="col-7 d-none">
             <button type="button" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
