@@ -1,4 +1,5 @@
 var table;
+var blacklists = [];
 $(document).ready(function(){
     $('table.userTable').dataTable().fnDestroy();
     table = $('table.userTable').DataTable({
@@ -242,10 +243,20 @@ $('#btnSave').on('click',function(){
                                     Swal.fire("SAVE SUCCESS", "New user saved successfully!", "success");
                                     setTimeout(function(){window.location.href="/users"}, 2000);
                                 }
+                                else if(data == 'true - unsent'){
+                                    $('#loading').hide();
+                                    Swal.fire("SAVE SUCCESS w/ ERROR", "New user saved successfully but unable to send password create email!", "info");
+                                    setTimeout(function(){window.location.href="/users"}, 4000);
+                                }
                                 else{
                                     $('#loading').hide();
                                     Swal.fire("SAVE FAILED", "New user save failed!", "error");
                                 }
+                            },
+                            error: function(){
+                                $('#loading').hide();
+                                Swal.fire("SAVE SUCCESS w/ ERROR", "New user saved successfully but unable to send password create email!", "info");
+                                setTimeout(function(){window.location.href="/users"}, 4000);
                             }
                         });
                     }
@@ -344,9 +355,12 @@ $('#btnUpdate').on('click',function(){
 });
 
 $(document).on('click', '.btnResetEmail', function(){
+    var uid = $(this).attr('uid');
+    var uname = $(this).attr('uname');
+    var uemail = $(this).attr('uemail');
     Swal.fire({
         title: "SEND PASSWORD RESET EMAIL?",
-        html: `Email will be sent to ${$(this).attr('uname')} (${$(this).attr('uemail')})?`,
+        html: `Email will be sent to ${uname} (${uemail})?`,
         icon: "question",
         showCancelButton: true,
         cancelButtonColor: '#3085d6',
@@ -356,6 +370,10 @@ $(document).on('click', '.btnResetEmail', function(){
     })
     .then((result) => {
         if(result.isConfirmed){
+            if(blacklists.includes(uemail)){
+                Swal.fire("EMAIL FAILED", "Password Reset Email failed to send!", "error");
+                return false;
+            }
             $('#loading').show();
             $.ajax({
                 url: "/users/email",
@@ -363,7 +381,7 @@ $(document).on('click', '.btnResetEmail', function(){
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data:{
-                    uid: $(this).attr('uid'),
+                    uid: uid,
                 },
                 success: function(data){
                     if(data == 'true'){
@@ -371,9 +389,19 @@ $(document).on('click', '.btnResetEmail', function(){
                         Swal.fire("EMAIL SUCCESS", "Password Reset Email sent successfully!", "success");
                     }
                     else{
+                        if(!blacklists.includes(uemail)){
+                            blacklists.push(uemail);
+                        }
                         $('#loading').hide();
                         Swal.fire("EMAIL FAILED", "Password Reset Email failed to send!", "error");
                     }
+                },
+                error: function(){
+                    if(!blacklists.includes(uemail)){
+                        blacklists.push(uemail);
+                    }
+                    $('#loading').hide();
+                    Swal.fire("EMAIL FAILED", "Password Reset Email failed to send!", "error");
                 }
             });
         }

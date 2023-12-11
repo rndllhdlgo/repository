@@ -99,7 +99,12 @@ class UserController extends Controller
         else {
             $result = 'true';
 
-            Password::broker()->sendResetLink(['email'=>strtolower($request->email)]);
+            try{
+                Password::broker()->sendResetLink(['email'=>strtolower($request->email)]);
+            }
+            catch(\Exception $e){
+                $result = 'true - unsent';
+            }
 
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
@@ -264,7 +269,12 @@ class UserController extends Controller
         if(!filter_var(strtolower($user->email), FILTER_VALIDATE_EMAIL)){
             return 'false';
         }
-        $email = Password::broker()->sendResetLink(['email'=>strtolower($user->email)]);
+        try{
+            $email = Password::broker()->sendResetLink(['email'=>strtolower($user->email)]);
+        }
+        catch(\Exception $e){
+            return 'false';
+        }
         if($email){
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
