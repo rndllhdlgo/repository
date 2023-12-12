@@ -5,7 +5,7 @@ $(document).ready(function(){
         scrollX:        true,
         scrollCollapse: true,
         fixedColumns:{
-            left: 5,
+            left: 3,
         },
         dom: 'lBftrip',
         buttons: [
@@ -26,7 +26,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [7,8,9],
+                "targets": [0,1,7,8,9],
                 "visible": false,
                 "searchable": true
             },
@@ -41,7 +41,7 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
-                    return moment(data).format('MMM. DD, YYYY');
+                    return moment(data).format('MMM. DD, YYYY h:mm A');
                 }, width: '16vh'
             },
             {
@@ -50,7 +50,7 @@ $(document).ready(function(){
                     if(type === "sort" || type === 'type'){
                         return data;
                     }
-                    return moment(data).format('MMM. DD, YYYY');
+                    return moment(data).format('MMM. DD, YYYY h:mm A');
                 }, width: '16vh'
             },
             {
@@ -136,9 +136,8 @@ $(document).ready(function(){
         ],
         initComplete: function(){
             $(document).prop('title', $('#page-name').text());
+            pane_index.push(0, 1);
             setInterval(() => {
-                $('button[data-cv-idx="0"]').remove();
-                $('button[data-cv-idx="1"]').remove();
                 $('button[data-cv-idx="2"]').remove();
                 $('button[data-cv-idx="3"]').remove();
                 $('button[data-cv-idx="4"]').remove();

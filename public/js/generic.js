@@ -803,3 +803,26 @@ function paging(id){
     $('.imgPreview').hide();
     $('#imgPreview'+id).show();
 }
+
+var pane_index = [];
+$(document).on('click', '.buttons-columnVisibility', function(){
+    var idxToAdd = parseInt($(this).attr('data-cv-idx'));
+    if(idxToAdd > 4){
+        return false;
+    }
+    if(!$(this).hasClass('dt-button-active') && pane_index.indexOf(idxToAdd) === -1){
+        pane_index.push(idxToAdd);
+    }
+    else{
+        pane_index.splice(pane_index.indexOf(idxToAdd), 1);
+    }
+    $('.left-pane').each(function(){
+        if(pane_index.indexOf(parseInt($(this).attr('pane-index'))) === -1){
+            $(this).removeClass('always-default');
+        }
+        else{
+            if(!$(this).hasClass('always-default'))
+            $(this).addClass('always-default');
+        }
+    });
+});

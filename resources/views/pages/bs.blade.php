@@ -25,23 +25,23 @@
     <table id="bsTable" class="table bsTable table-bordered table-striped table-hover display w-100" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
-                <th class="always-default">
+                <th class="left-pane always-default" pane-index="0">
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
                     DATE CREATED
                 </th>
-                <th class="always-default">
+                <th class="left-pane always-default" pane-index="1">
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
                     DATE MODIFIED
                 </th>
-                <th class="always-default">
+                <th class="left-pane always-default" pane-index="2">
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
                     BS NUMBER
                 </th>
-                <th class="always-default">
+                <th class="left-pane always-default" pane-index="3">
                     <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
                     COMPANY
                 </th>
-                <th class="always-default">
+                <th class="left-pane always-default" pane-index="4">
                     <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
                     BILLED TO
                 </th>

@@ -512,7 +512,13 @@ input:checked + .slider .off{
     color: white !important;
     z-index: 999 !important;
 }
+
 .th-default{
+    background-color: #0d1a80 !important;
+    color: white !important;
+}
+
+.left-pane{
     background-color: #0d1a80 !important;
     color: white !important;
 }
