@@ -21,44 +21,52 @@
     </a>
 </div>
 
-<div class="table-responsive container-fluid pt-2" style="zoom: 90%;">
+<div class="table-responsive container-fluid pt-2" style="min-height: 600px; zoom: 90%;">
     <table id="drTable" class="table drTable table-bordered table-striped table-hover display w-100" style="cursor: pointer; width: 100%;">
         <thead style="font-weight:bolder" class="bg-default">
             <tr>
                 <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="0" style="border:1px solid #808080"/>
-                    DR NUMBER
+                    DATE CREATED
                 </th>
                 <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="1" style="border:1px solid #808080"/>
-                    COMPANY
+                    DATE MODIFIED
                 </th>
                 <th class="always-default">
                     <input type="search" class="form-control filter-input" data-column="2" style="border:1px solid #808080"/>
+                    DR NUMBER
+                </th>
+                <th class="always-default">
+                    <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
+                    COMPANY
+                </th>
+                <th class="always-default">
+                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
                     DELIVERED TO
                 </th>
                 <th class="th-default">
-                    <input type="search" class="form-control filter-input" data-column="3" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
                     BUSINESS NAME
                 </th>
                 <th class="th-default">
-                    <input type="search" class="form-control filter-input" data-column="4" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
                     BRANCH NAME
                 </th>
                 <th class="th-default">
-                    <input type="search" class="form-control filter-input" data-column="5" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
                     UPLOADED BY
                 </th>
                 <th class="th-default">
-                    <input type="search" class="form-control filter-input" data-column="6" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
                     PURCHASE ORDER NO.
                 </th>
                 <th class="th-default">
-                    <input type="search" class="form-control filter-input" data-column="7" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="9" style="border:1px solid #808080"/>
                     SALES ORDER NO.
                 </th>
                 <th class="th-default">
-                    <input type="search" class="form-control filter-input" data-column="8" style="border:1px solid #808080"/>
+                    <input type="search" class="form-control filter-input" data-column="10" style="border:1px solid #808080"/>
                     STATUS
                 </th>
             </tr>

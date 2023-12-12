@@ -5,7 +5,7 @@ $(document).ready(function(){
         scrollX:        true,
         scrollCollapse: true,
         fixedColumns:{
-            left: 3,
+            left: 5,
         },
         dom: 'lBftrip',
         buttons: [
@@ -26,7 +26,7 @@ $(document).ready(function(){
         order: [],
         columnDefs: [
             {
-                "targets": [4,5],
+                "targets": [6,7],
                 "visible": false,
                 "searchable": true
             },
@@ -35,6 +35,24 @@ $(document).ready(function(){
             url: 'or_data'
         },
         columns: [
+            {
+                data: 'created_at',
+                "render": function(data, type, row){
+                    if(type === "sort" || type === 'type'){
+                        return data;
+                    }
+                    return moment(data).format('MMM. DD, YYYY');
+                }, width: '16vh'
+            },
+            {
+                data: 'updated_at',
+                "render": function(data, type, row){
+                    if(type === "sort" || type === 'type'){
+                        return data;
+                    }
+                    return moment(data).format('MMM. DD, YYYY');
+                }, width: '16vh'
+            },
             {
                 data: 'official_receipt',
                 name: 'official_receipt',
@@ -115,13 +133,10 @@ $(document).ready(function(){
                 $('button[data-cv-idx="1"]').remove();
                 $('button[data-cv-idx="2"]').remove();
                 $('button[data-cv-idx="3"]').remove();
-                $('button[data-cv-idx="6"]').remove();
+                $('button[data-cv-idx="4"]').remove();
+                $('button[data-cv-idx="5"]').remove();
+                $('button[data-cv-idx="8"]').remove();
             }, 0);
-            $('.buttons-colvis').click();
-            $('.dt-button-collection').hide();
-            setTimeout(() => {
-                $('body').click();
-            }, 200);
             display_search();
             $('#loading').hide();
         }
