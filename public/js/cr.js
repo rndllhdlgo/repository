@@ -191,7 +191,7 @@ $(document).ready(function(){
 });
 
 $('#crAdd').on('click',function(){
-    openModal('crTitle', 'ADD COLLECTION RECEIPT', 'crModal');
+    addModal('crTitle', 'ADD COLLECTION RECEIPT', 'crModal');
 });
 
 function save_pdf(){

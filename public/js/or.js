@@ -190,7 +190,7 @@ $(document).ready(function(){
 });
 
 $('#orAdd').on('click',function(){
-    openModal('orTitle', 'ADD OFFICIAL RECEIPT', 'orModal');
+    addModal('orTitle', 'ADD OFFICIAL RECEIPT', 'orModal');
 });
 
 function save_pdf(){

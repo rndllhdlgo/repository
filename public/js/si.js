@@ -200,7 +200,7 @@ $(document).ready(function(){
 });
 
 $('#siAdd').on('click',function(){
-    openModal('siTitle', 'ADD SALES INVOICE', 'siModal');
+    addModal('siTitle', 'ADD SALES INVOICE', 'siModal');
 });
 
 function save_pdf(){

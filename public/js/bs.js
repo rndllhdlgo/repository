@@ -199,7 +199,7 @@ $(document).ready(function(){
 });
 
 $('#bsAdd').on('click',function(){
-    openModal('bsTitle', 'ADD BILLING STATEMENT', 'bsModal');
+    addModal('bsTitle', 'ADD BILLING STATEMENT', 'bsModal');
 });
 
 function save_pdf(){

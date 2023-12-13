@@ -199,7 +199,7 @@ $(document).ready(function(){
 });
 
 $('#drAdd').on('click',function(){
-    openModal('drTitle', 'ADD DELIVERY RECEIPT', 'drModal');
+    addModal('drTitle', 'ADD DELIVERY RECEIPT', 'drModal');
 });
 
 function save_pdf(){

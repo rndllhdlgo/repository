@@ -2,11 +2,11 @@ $(document).on('contextmenu', '.preventRightClick', function(e){
     e.preventDefault();
 });
 
-function openModal(page_title, page_html, modal_title){
+function addModal(modal_title, modal_heading, modal_id){
     $('#entry_id').val('');
     $('#entry_id').attr('updated_at', '');
     $('#entry_id').attr('check_table', '');
-    $(`#${page_title}`).html(`${page_html}`);
+    $(`#${modal_title}`).html(`${modal_heading}`);
     $('#form_reset').trigger('reset');
     $('.pdf_file').empty();
     $('#btnApprove').hide();
@@ -36,7 +36,7 @@ function openModal(page_title, page_html, modal_title){
         </div>`
     );
     resetUpload();
-    $(`#${modal_title}`).modal('show');
+    $(`#${modal_id}`).modal('show');
 }
 
 $(document).on('click', '#btnEdit', function(){
