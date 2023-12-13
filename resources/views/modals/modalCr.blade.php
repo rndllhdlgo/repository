@@ -106,6 +106,7 @@
                                     <button type="reset"  id="btnClear" class="btn btn-primary float-end bp"><i class="fas fa-eraser"></i> CLEAR</button>
                                     <button type="button" id="btnSave"  class="btn btn-primary float-end bp btnRequired"><i class="fas fa-save"></i> SAVE</button>
                                     <button type="button" id="btnEdit"  class="btn btn-primary float-end bp btnRequired"><i class="fas fa-save"></i> UPDATE</button>
+                                    <button type="button" id="btnRequestEdit"  class="btn btn-primary float-end bp"><i class="fa-solid fa-share fa-flip-horizontal"></i> REQUEST FOR CORRECTION</button>
                                 </div>
                             </div>
                         </form>

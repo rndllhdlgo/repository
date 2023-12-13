@@ -28,6 +28,7 @@ Route::middleware(['session'])->group(function () {
         Route::post('/edit', 'edit');
         Route::post('/approve', 'approve');
         Route::post('/disapprove', 'disapprove');
+        Route::any('/requestEdit', 'requestEdit');
         Route::post('/return_to_encoder', 'return_to_encoder');
         Route::post('/edit_si', 'edit_si');
         Route::post('/edit_cr', 'edit_cr');

@@ -80,6 +80,9 @@ $(document).ready(function(){
                         }
                         return `<span class="text-danger" title="INVALID"><b>${data.toUpperCase()}</b></span>`;
                     }
+                    else if(row.status == 'FOR CORRECTION' && current_role == 'ADMIN'){
+                        return `<span class="text-danger" title="FOR CORRECTION"><i class="fa-solid fa-triangle-exclamation"></i> <b>${data.toUpperCase()}</b></span>`;
+                    }
                     return `<span title="VALID">${data.toUpperCase()}</span>`;
                 }
             },
@@ -120,6 +123,9 @@ $(document).ready(function(){
                         return `<span class="text-success"><b>${data.toUpperCase()}</b></span>`;
                     }
                     else if(data == 'INVALID'){
+                        return `<span class="text-danger"><b>${data.toUpperCase()}</b></span>`;
+                    }
+                    else if(data == 'FOR CORRECTION'){
                         return `<span class="text-danger"><b>${data.toUpperCase()}</b></span>`;
                     }
                     return `<span>${data.toUpperCase()}</span>`;
@@ -184,39 +190,7 @@ $(document).ready(function(){
 });
 
 $('#orAdd').on('click',function(){
-    $('#entry_id').val('');
-    $('#entry_id').attr('updated_at', '');
-    $('#entry_id').attr('check_table', '');
-    $('#orTitle').html('ADD OFFICIAL RECEIPT');
-    $('#form_reset').trigger('reset');
-    $('.pdf_file').empty();
-    $('#btnApprove').hide();
-    $('#btnDisapprove').hide();
-    $('#btnSave').show();
-    $('#btnEdit').hide();
-    $('#btnClear').show();
-    $('#uploaded_by_div').hide();
-    $('#status_div').hide();
-    $('.form_disable').prop('disabled', false);
-    $('.divReplaceFile').hide();
-    $('.req').remove();
-
-    if($('#btnTogglePreview').text() == 'Minimize'){
-        $('#btnTogglePreview').click();
-    }
-    $('#file_div').empty().append(`
-        <div class="col-7 d-none">
-            <button type="button" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
-                <i class="fa-solid fa-file-arrow-up mr-1"></i>
-                <span>UPLOAD FILE</span>
-            </button>
-            <span style="visibility:hidden;">
-                <input type="file" id="pdf_file" name="pdf_file[]" class="form-control requiredField" accept=".jpeg,.jpg,.png,.pdf" multiple/>
-            </span>
-        </div>`
-    );
-    resetUpload();
-    $('#orModal').modal('show');
+    openModal('orTitle', 'ADD OFFICIAL RECEIPT', 'orModal');
 });
 
 function save_pdf(){

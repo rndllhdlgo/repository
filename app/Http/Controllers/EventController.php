@@ -1938,6 +1938,9 @@ class EventController extends Controller
                     $count++;
                 }
             }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
+            }
         }
         $si_count = $count;
 
@@ -1973,6 +1976,9 @@ class EventController extends Controller
                 if($current_role == 'ENCODER'){
                     $count++;
                 }
+            }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
             }
         }
         $cr_count = $count;
@@ -2010,6 +2016,9 @@ class EventController extends Controller
                     $count++;
                 }
             }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
+            }
         }
         $bs_count = $count;
 
@@ -2046,6 +2055,9 @@ class EventController extends Controller
                     $count++;
                 }
             }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
+            }
         }
         $or_count = $count;
 
@@ -2081,6 +2093,9 @@ class EventController extends Controller
                 if($current_role == 'ENCODER'){
                     $count++;
                 }
+            }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
             }
         }
         $dr_count = $count;
@@ -2131,5 +2146,26 @@ class EventController extends Controller
                     ->first()
                     ->id;
         return $next ? $next : '0';
+    }
+
+    public function requestEdit(Request $request){
+        if($request->current_page == 'dr'){
+            $current_page = 'DELIVERY RECEIPT';
+            $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
+            $company = DeliveryReceipt::where('id', $request->entry_id)->first()->company;
+            $sql = DeliveryReceipt::where('id', $request->entry_id)->update(['status' => 'FOR CORRECTION']);
+        }
+
+        if($sql){
+            $userlogs = new UserLogs;
+            $userlogs->username = auth()->user()->name;
+            $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
+            $userlogs->activity = "USER SUCCESSFULLY REQUESTED CORRECTION $current_page ($reference_number) - $company.";
+            $userlogs->save();
+            return 'true';
+        }
+        else{
+            return 'false';
+        }
     }
 }

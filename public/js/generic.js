@@ -2,6 +2,43 @@ $(document).on('contextmenu', '.preventRightClick', function(e){
     e.preventDefault();
 });
 
+function openModal(page_title, page_html, modal_title){
+    $('#entry_id').val('');
+    $('#entry_id').attr('updated_at', '');
+    $('#entry_id').attr('check_table', '');
+    $(`#${page_title}`).html(`${page_html}`);
+    $('#form_reset').trigger('reset');
+    $('.pdf_file').empty();
+    $('#btnApprove').hide();
+    $('#btnDisapprove').hide();
+    $('#btnSave').show();
+    $('#btnEdit').hide();
+    $('#btnClear').show();
+    $('#uploaded_by_div').hide();
+    $('#status_div').hide();
+    $('.form_disable').prop('disabled', false);
+    $('.divReplaceFile').hide();
+    $('.req').remove();
+    $('#btnRequestEdit').hide();
+
+    if($('#btnTogglePreview').text() == 'Minimize'){
+        $('#btnTogglePreview').click();
+    }
+    $('#file_div').empty().append(`
+        <div class="col-7 d-none">
+            <button type="button" class="btn btn-primary bp" onclick="$('#pdf_file').click();">
+                <i class="fa-solid fa-file-arrow-up mr-1"></i>
+                <span>UPLOAD FILE</span>
+            </button>
+            <span style="visibility:hidden;">
+                <input type="file" id="pdf_file" name="pdf_file[]" class="form-control requiredField" accept=".jpeg,.jpg,.png,.pdf" multiple/>
+            </span>
+        </div>`
+    );
+    resetUpload();
+    $(`#${modal_title}`).modal('show');
+}
+
 $(document).on('click', '#btnEdit', function(){
     Swal.fire({
         title: 'Do you want to update?',
@@ -54,9 +91,7 @@ $(document).on('click', '#btnEdit', function(){
                         else if(data == 'true'){
                             $('#loading').hide();
                             Swal.fire("UPDATE SUCCESS", "", "success");
-                            if(current_role != 'ADMIN'){
-                                $('.modal').modal('hide');
-                            }
+                            $('.modal').modal('hide');
                         }
                         else{
                             $('#loading').hide();
@@ -354,6 +389,7 @@ function resetUpload(){
 }
 
 function formRestrictions(data){
+    $('#btnRequestEdit').hide();
     if(current_role == 'ENCODER'){
         if(data.remarks){
             $('#remarks_text').val(data.remarks);
@@ -383,6 +419,7 @@ function formRestrictions(data){
                 );
                 $('.divReplaceFile').hide();
                 $('#btnEdit').hide();
+                $('#btnRequestEdit').show();
             }
         }
         else{
@@ -414,9 +451,31 @@ function formRestrictions(data){
     }
 
     if(current_role == 'ADMIN'){
+        $('.form_disable').prop('disabled', false);
+        $('#btnEdit').show();
         $('#remarks_div').show();
         $('#remarks_text').val(data.remarks);
-        if(data.status == 'VALID'){
+        if(data.status == 'FOR CORRECTION'){
+            $('.form_disable').prop('disabled', true);
+            Swal.fire({
+                title: "FOR CORRECTION",
+                html: "Please click <b class='text-danger'>RETURN TO ENCODER</b> button for correction.",
+                icon: "info"
+            });
+            $('#btnApprove').hide();
+            $('#btnDisapprove').hide();
+            $('#btnEdit').hide();
+            $('#btnReturn').show();
+            setTimeout(() => {
+                $('.divReplaceFile').hide();
+            }, 100);
+            $('#file_div').empty().append(`
+                <div class="col mt-2">
+                    <span class="pdf_file"></span>
+                </div>`
+            );
+        }
+        else if(data.status == 'VALID'){
             $('#btnApprove').hide();
             $('#btnDisapprove').hide();
             $('#btnReturn').show();
@@ -823,6 +882,47 @@ $(document).on('click', '.buttons-columnVisibility', function(){
         else{
             if(!$(this).hasClass('always-default'))
             $(this).addClass('always-default');
+        }
+    });
+});
+
+$(document).on('click','#btnRequestEdit', function(){
+    Swal.fire({
+        title: 'Request ADMIN to Return to ENCODER for correction?',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showDenyButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+        actions: 'my-actions',
+        confirmButton: 'order-2',
+        denyButton: 'order-3',
+        }
+    }).then((save) => {
+        if(save.isConfirmed){
+            $.ajax({
+                url: "/requestEdit",
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    entry_id: $('#entry_id').val(),
+                    current_page: $('#current_page').val(),
+                },
+                success: function(data){
+                    if(data == 'true'){
+                        $('#loading').hide();
+                        Swal.fire("REQUEST SUCCESS", "", "success");
+                        $('.modal').modal('hide');
+                    }
+                    else{
+                        $('#loading').hide();
+                        Swal.fire("REQUEST FAILED", "", "error");
+                    }
+                }
+            });
         }
     });
 });
