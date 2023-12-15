@@ -255,9 +255,9 @@ $('#btnSave').on('click', function(){
         confirmButtonText: 'Yes',
         denyButtonText: 'No',
         customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
+            actions: 'my-actions',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
         }
     }).then((save) => {
         if(save.isConfirmed){

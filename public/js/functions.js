@@ -12,6 +12,7 @@ var current_timeout = $('#current_timeout').val();
 var current_mailserver = $('#current_mailserver').val();
 var changed_id, data_update, standby = true;
 var si_update = 'NULL', cr_update = 'NULL', bs_update = 'NULL', or_update = 'NULL', dr_update = 'NULL';
+var adjust_hour = 8;
 
 setInterval(() => {
     if($('#loading').is(':visible')){
@@ -140,7 +141,7 @@ function formatDate(dateString){
 }
 
 function adjust_datetime(datetime){
-    return moment(moment(datetime, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD HH:mm:ss")).add(8, 'hours').format("YYYY-MM-DD HH:mm:ss")
+    return moment(moment(datetime, 'YYYY-MM-DD HH:mm:ss').format("YYYY-MM-DD HH:mm:ss")).add(adjust_hour, 'hours').format("YYYY-MM-DD HH:mm:ss")
 }
 
 function decodeHtml(str){

@@ -48,9 +48,9 @@ $(document).on('click', '#btnEdit', function(){
         confirmButtonText: 'Yes',
         denyButtonText: 'No',
         customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
+            actions: 'my-actions',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
         }
     }).then((save) => {
         if(save.isConfirmed){
@@ -627,9 +627,9 @@ $(document).on('click', '#btnDisapprove', function(){
         confirmButtonText: 'Yes',
         denyButtonText: 'No',
         customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
+            actions: 'my-actions',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
         }
     }).then((save) => {
         if(save.isConfirmed){
@@ -691,9 +691,9 @@ $(document).on('click', '#btnReturn', function(){
         confirmButtonText: 'Yes',
         denyButtonText: 'No',
         customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
+            actions: 'my-actions',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
         }
     }).then((save) => {
         if(save.isConfirmed){
@@ -895,9 +895,9 @@ $(document).on('click','#btnRequestEdit', function(){
         confirmButtonText: 'Yes',
         denyButtonText: 'No',
         customClass: {
-        actions: 'my-actions',
-        confirmButton: 'order-2',
-        denyButton: 'order-3',
+            actions: 'my-actions',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
         }
     }).then((save) => {
         if(save.isConfirmed){
