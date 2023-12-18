@@ -37,7 +37,7 @@ $(document).ready(function(){
                         return data;
                     }
                     var reset_email = `<span title="Send Password Reset Email" style="border: 1px solid white !important; zoom: 140%;" class="btnResetEmail badge rounded-pill bg-default ml-2" uid="${row.user_id}" uname="${row.user_name}" uemail="${row.user_email}" style="cursor: pointer;"><i class="fa-regular fa-envelope"></i></span>`;
-                    if(current_department != 'SUPERADMIN' && row.role == '1'){
+                    if(row.department == current_department && row.role == '1'){
                         if(data == 'ACTIVE'){
                             return `<div><span class="text-success float-end"><b>${data}</b>${reset_email}</span></div>`;
                         }
