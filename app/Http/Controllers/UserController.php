@@ -43,7 +43,8 @@ class UserController extends Controller
             if(auth()->user()->department != 'SUPERUSER'){
                 $list->where('department', auth()->user()->department);
             }
-            $list->orderBy('user_status', 'ASC')
+        $list->where('users.status', '!=', 'DELETED')
+            ->orderBy('users.status', 'ASC')
             ->orderBy('role_name', 'ASC')
             ->orderBy('user_name', 'ASC')
             ->orderBy('users.id', 'ASC')
