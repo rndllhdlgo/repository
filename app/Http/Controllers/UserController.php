@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\UserLogs;
 use App\Models\CompanyPermission;
 use App\Models\Company;
+use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
@@ -33,7 +34,8 @@ class UserController extends Controller
     }
 
     public function users_data(){
-        $list = User::query()->selectRaw('users.id, users.id AS user_id, users.name AS user_name, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
+        try{
+            $list = User::query()->selectRaw('users.id, users.id AS user_id, users.name AS user_name, users.department, users.userlevel, users.status AS user_status, users.email AS user_email, roles.name AS role_name, roles.id AS role')
             ->join('roles', 'roles.id', 'users.userlevel')
             ->with([
                 'companies' => function ($query){
@@ -50,6 +52,10 @@ class UserController extends Controller
             ->orderBy('users.id', 'ASC')
             ->get();
         return DataTables::of($list)->make(true);
+        }
+        catch(\QueryException $error){
+            return response()->json(['error' => 'Table account not found'], 500);
+        }
     }
 
     public function validate_users_save(Request $request){

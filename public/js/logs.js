@@ -10,6 +10,25 @@ $(document).ready(function(){
         serverSide: false,
         ajax:{
             url: '/index/data',
+            "dataType": "json",
+            "error": function(xhr, error, thrown){
+                if(xhr.status == 500){
+                    $('#loading').hide();
+                    Swal.fire({
+                        title: 'DATA PROBLEM!',
+                        html: '<h3>Data does not load properly.<br>Please refresh the page, or if it keeps happening, contact the <b>ADMINISTRATOR</b>.</h3>',
+                        confirmButtonText: "REFRESH",
+                        icon: 'error',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        width: 700
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                            window.location.reload();
+                        }
+                    });
+                }
+            }
         },
         columns: [
             {

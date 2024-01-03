@@ -9,7 +9,11 @@ class CheckIpAddress
 {
     public function handle($request, Closure $next){
         if(env('APP_MAINTENANCE') == 'true'){
-            abort(403, 'THIS SITE IS UNDER MAINTENANCE');
+            abort(503, 'THIS SITE IS UNDER MAINTENANCE');
+        }
+
+        if(env('APP_MIDDLEWARE') == 'false'){
+            return $next($request);
         }
 
         $userIp = $request->ip();
