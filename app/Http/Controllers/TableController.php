@@ -10,6 +10,7 @@ use App\Models\BillingStatement;
 use App\Models\OfficialReceipt;
 use App\Models\DeliveryReceipt;
 use DataTables;
+use Illuminate\Database\QueryException;
 
 class TableController extends Controller
 {
@@ -18,47 +19,73 @@ class TableController extends Controller
     }
 
     public function si_data(){
-        $data = SalesInvoice::whereIn('company', auth()->user()->companies->pluck('company'))
-            ->orderBy('status', 'ASC')
-            ->orderBy('stage', 'DESC')
-            ->orderBy('updated_at','DESC')
-            ->get();
-        return DataTables::of($data)->make(true);
+        try{
+            $data = SalesInvoice::whereIn('company', auth()->user()->companies->pluck('company'))
+                ->orderBy('status', 'ASC')
+                ->orderBy('stage', 'DESC')
+                ->orderBy('updated_at','DESC')
+                ->get();
+            return DataTables::of($data)->make(true);
+        }
+        catch(\QueryException $error){
+            return response()->json(['error' => 'Table SI not found'], 500);
+        }
     }
 
     public function cr_data(){
-        $data = CollectionReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
-            ->orderBy('status', 'ASC')
-            ->orderBy('stage', 'DESC')
-            ->orderBy('updated_at','DESC')
-            ->get();
-        return DataTables::of($data)->make(true);
+        try{
+            $data = CollectionReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
+                ->orderBy('status', 'ASC')
+                ->orderBy('stage', 'DESC')
+                ->orderBy('updated_at','DESC')
+                ->get();
+            return DataTables::of($data)->make(true);
+        }
+        catch(\QueryException $error){
+            return response()->json(['error' => 'Table CR not found'], 500);
+        }
     }
 
     public function bs_data(){
-        $data = BillingStatement::whereIn('company', auth()->user()->companies->pluck('company'))
-            ->orderBy('status', 'ASC')
-            ->orderBy('stage', 'DESC')
-            ->orderBy('updated_at','DESC')
-            ->get();
-        return DataTables::of($data)->make(true);
+        try{
+            $data = BillingStatement::whereIn('company', auth()->user()->companies->pluck('company'))
+                ->orderBy('status', 'ASC')
+                ->orderBy('stage', 'DESC')
+                ->orderBy('updated_at','DESC')
+                ->get();
+            return DataTables::of($data)->make(true);
+        }
+        catch(\QueryException $error){
+            return response()->json(['error' => 'Table BS not found'], 500);
+        }
     }
 
     public function or_data(){
-        $data = OfficialReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
-            ->orderBy('status', 'ASC')
-            ->orderBy('stage', 'DESC')
-            ->orderBy('updated_at','DESC')
-            ->get();
-        return DataTables::of($data)->make(true);
+        try{
+            $data = OfficialReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
+                ->orderBy('status', 'ASC')
+                ->orderBy('stage', 'DESC')
+                ->orderBy('updated_at','DESC')
+                ->get();
+            return DataTables::of($data)->make(true);
+        }
+        catch(\QueryException $error){
+            return response()->json(['error' => 'Table OR not found'], 500);
+        }
+
     }
 
     public function dr_data(){
-        $data = DeliveryReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
-            ->orderBy('status', 'ASC')
-            ->orderBy('stage', 'DESC')
-            ->orderBy('updated_at','DESC')
-            ->get();
-        return DataTables::of($data)->make(true);
+        try{
+            $data = DeliveryReceipt::whereIn('company', auth()->user()->companies->pluck('company'))
+                ->orderBy('status', 'ASC')
+                ->orderBy('stage', 'DESC')
+                ->orderBy('updated_at','DESC')
+                ->get();
+            return DataTables::of($data)->make(true);
+        }
+        catch(\QueryException $error){
+            return response()->json(['error' => 'Table DR not found'], 500);
+        }
     }
 }
