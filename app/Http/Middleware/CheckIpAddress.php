@@ -12,10 +12,6 @@ class CheckIpAddress
             abort(503, 'THIS SITE IS UNDER MAINTENANCE');
         }
 
-        if(env('APP_MIDDLEWARE') == 'false'){
-            return $next($request);
-        }
-
         $userIp = $request->ip();
         $checkIp = Ipaddress::where('ipaddress', $userIp)->first();
         if (!$checkIp) {
