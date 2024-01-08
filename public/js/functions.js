@@ -145,6 +145,7 @@ function adjust_datetime(datetime){
 }
 
 function decodeHtml(str){
+    if(!str) return '';
     var map = {'&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#039;': "'"};
     return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function(m){return map[m];});
 }
