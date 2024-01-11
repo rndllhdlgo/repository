@@ -10,7 +10,6 @@ use App\Models\BillingStatement;
 use App\Models\OfficialReceipt;
 use App\Models\DeliveryReceipt;
 use DataTables;
-use Illuminate\Database\QueryException;
 
 class TableController extends Controller
 {
@@ -27,7 +26,7 @@ class TableController extends Controller
                 ->get();
             return DataTables::of($data)->make(true);
         }
-        catch(\QueryException $error){
+        catch(\Exception $error){
             return response()->json(['error' => 'Table SI not found'], 500);
         }
     }
@@ -41,7 +40,7 @@ class TableController extends Controller
                 ->get();
             return DataTables::of($data)->make(true);
         }
-        catch(\QueryException $error){
+        catch(\Exception $error){
             return response()->json(['error' => 'Table CR not found'], 500);
         }
     }
@@ -55,7 +54,7 @@ class TableController extends Controller
                 ->get();
             return DataTables::of($data)->make(true);
         }
-        catch(\QueryException $error){
+        catch(\Exception $error){
             return response()->json(['error' => 'Table BS not found'], 500);
         }
     }
@@ -69,7 +68,7 @@ class TableController extends Controller
                 ->get();
             return DataTables::of($data)->make(true);
         }
-        catch(\QueryException $error){
+        catch(\Exception $error){
             return response()->json(['error' => 'Table OR not found'], 500);
         }
 
@@ -84,7 +83,7 @@ class TableController extends Controller
                 ->get();
             return DataTables::of($data)->make(true);
         }
-        catch(\QueryException $error){
+        catch(\Exception $error){
             return response()->json(['error' => 'Table DR not found'], 500);
         }
     }
