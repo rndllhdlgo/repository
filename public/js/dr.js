@@ -21,7 +21,7 @@ $(document).ready(function(){
             lengthMenu: "Show _MENU_ DELIVERY RECEIPT",
             emptyTable: "NO DATA AVAILABLE",
         },
-        processing: true,
+        // processing: true,
         serverSide: false,
         order: [],
         columnDefs: [
