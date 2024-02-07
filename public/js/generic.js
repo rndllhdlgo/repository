@@ -926,3 +926,19 @@ $(document).on('click','#btnRequestEdit', function(){
         }
     });
 });
+
+function tableError(){
+    Swal.fire({
+        title: 'DATA PROBLEM!',
+        html: '<h4>Data does not load properly.<br>Please refresh the page, or if it keeps happening, contact the <b>ADMINISTRATOR</b>.</h4>',
+        confirmButtonText: "REFRESH",
+        icon: 'error',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        width: 700
+    }).then((result) => {
+        if(result.isConfirmed){
+            window.location.reload();
+        }
+    });
+}
