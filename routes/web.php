@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BackUpController;
+use App\Http\Controllers\TemplateController;
 
 Route::fallback(function(){return redirect('/');});
 Auth::routes(['register' => false, 'verify' => false, 'confirm' => false]);
@@ -78,4 +79,9 @@ Route::middleware(['session'])->group(function () {
 
 Route::controller(BackUpController::class)->group(function(){
     Route::any('/backup', 'backup');
+});
+
+Route::controller(TemplateController::class)->group(function(){
+    Route::get('/export_blade', 'export_blade');
+    Route::get('/export_action', 'export_action');
 });

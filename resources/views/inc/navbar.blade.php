@@ -41,21 +41,21 @@
 		@else
 			<ul class="navbar-nav">
 				@if(auth()->user()->department != 'WAREHOUSE')
-				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE<span id="si_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2"></span></a>
-				</li>
-				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('cr') ? 'navactive' : '' }}" href="/cr">COLLECTION RECEIPT<span id="cr_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2"></span></a>
-				</li>
-				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('bs') ? 'navactive' : '' }}" href="/bs">BILLING STATEMENT<span id="bs_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2"></span></a>
-				</li>
-				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('or') ? 'navactive' : '' }}" href="/or">OFFICIAL RECEIPT<span id="or_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2"></span></a>
-				</li>
+					<li class="nav-item mr-1">
+						<a class="nav-link {{ Request::is('si') ? 'navactive' : '' }}" href="/si">SALES INVOICE<span id="si_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2">@if (auth()->user()->userlevel == "1") {{$si_count}} @endif</span></a>
+					</li>
+					<li class="nav-item mr-1">
+						<a class="nav-link {{ Request::is('cr') ? 'navactive' : '' }}" href="/cr">COLLECTION RECEIPT<span id="cr_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2">@if (auth()->user()->userlevel == "1") {{$cr_count}} @endif</span></a>
+					</li>
+					<li class="nav-item mr-1">
+						<a class="nav-link {{ Request::is('bs') ? 'navactive' : '' }}" href="/bs">BILLING STATEMENT<span id="bs_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2">@if (auth()->user()->userlevel == "1") {{$bs_count}} @endif</span></a>
+					</li>
+					<li class="nav-item mr-1">
+						<a class="nav-link {{ Request::is('or') ? 'navactive' : '' }}" href="/or">OFFICIAL RECEIPT<span id="or_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2">@if (auth()->user()->userlevel == "1") {{$or_count}} @endif</span></a>
+					</li>
 				@endif
 				<li class="nav-item mr-1">
-					<a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT<span id="dr_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2"></span></a>
+					<a class="nav-link {{ Request::is('dr') ? 'navactive' : '' }}" href="/dr">DELIVERY RECEIPT<span id="dr_notif" style="border: 1px solid white !important;" class="badge rounded-pill bg-danger ml-2">@if (auth()->user()->userlevel == "1") {{$dr_count}} @endif</span></a>
 				</li>
 			</ul>
 		@endif

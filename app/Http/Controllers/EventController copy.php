@@ -24,9 +24,6 @@ use App\Models\User;
 use App\Events\{
     NewCr,
     NewSi,
-    NewBs,
-    NewOr,
-    NewDr
 };
 
 class EventController extends Controller
@@ -312,9 +309,6 @@ class EventController extends Controller
         ]);
 
         if($sql){
-            $count = $this->get_count('billing_statements');
-
-            event(new NewBs($count));
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -395,9 +389,6 @@ class EventController extends Controller
             'status' => 'FOR VALIDATION'
         ]);
         if($sql){
-            $count = $this->get_count('official_receipts');
-
-            event(new NewOr($count));
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -481,9 +472,6 @@ class EventController extends Controller
         ]);
 
         if($sql){
-            $count = $this->get_count('delivery_receipts');
-
-            event(new NewDr($count));
             $userlogs = new UserLogs;
             $userlogs->username = auth()->user()->name;
             $userlogs->role = auth()->user()->department.' - '.Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -1831,31 +1819,6 @@ class EventController extends Controller
         }
 
         if($sql){
-            if($request->current_page == 'si'){
-                $count = $this->get_count('sales_invoices');
-                event(new NewSi($count));
-            }
-
-            if($request->current_page == 'cr'){
-                $count = $this->get_count('collection_receipts');
-                event(new NewCr($count));
-            }
-
-            if($request->current_page == 'bs'){
-                $count = $this->get_count('billing_statements');
-                event(new NewBs($count));
-            }
-
-            if($request->current_page == 'or'){
-                $count = $this->get_count('official_receipts');
-                event(new NewOr($count));
-            }
-
-            if($request->current_page == 'dr'){
-                $count = $this->get_count('delivery_receipts');
-                event(new NewDr($count));
-            }
-
             $remarklogs = new RemarkLogs;
             $remarklogs->username = auth()->user()->name;
             $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -1985,6 +1948,202 @@ class EventController extends Controller
     }
 
     public function notif_update(Request $request){
+        $current_role = Role::where('id', auth()->user()->userlevel)->first()->name;
+        // if(SalesInvoice::count() == 0){
+        //     $si_update = 'NULL';
+        // }
+        // else{
+        //     $si_update = SalesInvoice::latest('updated_at')->first()->updated_at;
+        // }
+
+        // $si_datas = SalesInvoice::whereIn('company', auth()->user()->companies->pluck('company'))->get();
+        // $si_count = 0;
+        // $count = 0;
+
+        // foreach($si_datas as $si_data){
+        //     $status = $si_data->status;
+        //     $stage = $si_data->stage;
+        //     if($status == 'FOR VALIDATION'){
+        //         if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+        //             $count+=0;
+        //         }
+        //         else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+        //             $count++;
+        //         }
+        //         else if($stage == '0' && $current_role == 'ENCODER'){
+        //             $count+=0;
+        //         }
+        //         else if($stage == '0' && $current_role == 'ADMIN'){
+        //             $count++;
+        //         }
+        //     }
+        //     else if($status == 'INVALID'){
+        //         if($current_role == 'ENCODER'){
+        //             $count++;
+        //         }
+        //     }
+        //     else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+        //         $count++;
+        //     }
+        // }
+        // $si_count = $count;
+
+        // if(CollectionReceipt::count() == 0){
+        //     $cr_update = 'NULL';
+        // }
+        // else{
+        //     $cr_update = CollectionReceipt::latest('updated_at')->first()->updated_at;
+        // }
+
+        // $cr_datas = CollectionReceipt::whereIn('company', auth()->user()->companies->pluck('company'))->get();
+        // $cr_count = 0;
+        // $count = 0;
+
+        // foreach($cr_datas as $cr_data){
+        //     $status = $cr_data->status;
+        //     $stage = $cr_data->stage;
+        //     if($status == 'FOR VALIDATION'){
+        //         if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+        //             $count+=0;
+        //         }
+        //         else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+        //             $count++;
+        //         }
+        //         else if($stage == '0' && $current_role == 'ENCODER'){
+        //             $count+=0;
+        //         }
+        //         else if($stage == '0' && $current_role == 'ADMIN'){
+        //             $count++;
+        //         }
+        //     }
+        //     else if($status == 'INVALID'){
+        //         if($current_role == 'ENCODER'){
+        //             $count++;
+        //         }
+        //     }
+        //     else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+        //         $count++;
+        //     }
+        // }
+        // $cr_count = $count;
+
+        if(BillingStatement::count() == 0){
+            $bs_update = 'NULL';
+        }
+        else{
+            $bs_update = BillingStatement::latest('updated_at')->first()->updated_at;
+        }
+
+        $bs_datas = BillingStatement::whereIn('company', auth()->user()->companies->pluck('company'))->get();
+        $bs_count = 0;
+        $count = 0;
+
+        foreach($bs_datas as $bs_data){
+            $status = $bs_data->status;
+            $stage = $bs_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
+            }
+        }
+        $bs_count = $count;
+
+        if(OfficialReceipt::count() == 0){
+            $or_update = 'NULL';
+        }
+        else{
+            $or_update = OfficialReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        $or_datas = OfficialReceipt::whereIn('company', auth()->user()->companies->pluck('company'))->get();
+        $or_count = 0;
+        $count = 0;
+
+        foreach($or_datas as $or_data){
+            $status = $or_data->status;
+            $stage = $or_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
+            }
+        }
+        $or_count = $count;
+
+        if(DeliveryReceipt::count() == 0){
+            $dr_update = 'NULL';
+        }
+        else{
+            $dr_update = DeliveryReceipt::latest('updated_at')->first()->updated_at;
+        }
+
+        $dr_datas = DeliveryReceipt::whereIn('company', auth()->user()->companies->pluck('company'))->get();
+        $dr_count = 0;
+        $count = 0;
+
+        foreach($dr_datas as $dr_data){
+            $status = $dr_data->status;
+            $stage = $dr_data->stage;
+            if($status == 'FOR VALIDATION'){
+                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
+                    $count+=0;
+                }
+                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                    $count++;
+                }
+                else if($stage == '0' && $current_role == 'ENCODER'){
+                    $count+=0;
+                }
+                else if($stage == '0' && $current_role == 'ADMIN'){
+                    $count++;
+                }
+            }
+            else if($status == 'INVALID'){
+                if($current_role == 'ENCODER'){
+                    $count++;
+                }
+            }
+            else if($status == 'FOR CORRECTION' && $current_role == 'ADMIN'){
+                $count++;
+            }
+        }
+        $dr_count = $count;
+
         if($request->checking != 'default'){
             $latest = DB::table($request->check_table)
                         ->where('id', $request->check_current_id)
@@ -2006,6 +2165,11 @@ class EventController extends Controller
 
         return $data = array(
             'result' => $result, 'changed_id' => $changed_id,
+            'si_update' => $si_update, 'si_count' => $si_count,
+            'cr_update' => $cr_update, 'cr_count' => $cr_count,
+            'bs_update' => $bs_update, 'bs_count' => $bs_count,
+            'or_update' => $or_update, 'or_count' => $or_count,
+            'dr_update' => $dr_update, 'dr_count' => $dr_count,
             'user_update' => $user_update, 'acc_update' => $acc_update, 'log_update' => $log_update,
         );
     }
@@ -2029,34 +2193,6 @@ class EventController extends Controller
     }
 
     public function requestEdit(Request $request){
-        if($request->current_page == 'si'){
-            $current_page = 'SALES INVOICE';
-            $reference_number = SalesInvoice::where('id', $request->entry_id)->first()->sales_invoice;
-            $company = SalesInvoice::where('id', $request->entry_id)->first()->company;
-            $sql = SalesInvoice::where('id', $request->entry_id)->update(['status' => 'FOR CORRECTION']);
-        }
-
-        if($request->current_page == 'cr'){
-            $current_page = 'COLLECTION RECEIPT';
-            $reference_number = CollectionReceipt::where('id', $request->entry_id)->first()->collection_receipt;
-            $company = CollectionReceipt::where('id', $request->entry_id)->first()->company;
-            $sql = CollectionReceipt::where('id', $request->entry_id)->update(['status' => 'FOR CORRECTION']);
-        }
-
-        if($request->current_page == 'bs'){
-            $current_page = 'BILLING STATEMENT';
-            $reference_number = BillingStatement::where('id', $request->entry_id)->first()->billing_statement;
-            $company = BillingStatement::where('id', $request->entry_id)->first()->company;
-            $sql = BillingStatement::where('id', $request->entry_id)->update(['status' => 'FOR CORRECTION']);
-        }
-
-        if($request->current_page == 'or'){
-            $current_page = 'OFFICIAL RECEIPT';
-            $reference_number = OfficialReceipt::where('id', $request->entry_id)->first()->official_receipt;
-            $company = OfficialReceipt::where('id', $request->entry_id)->first()->company;
-            $sql = OfficialReceipt::where('id', $request->entry_id)->update(['status' => 'FOR CORRECTION']);
-        }
-
         if($request->current_page == 'dr'){
             $current_page = 'DELIVERY RECEIPT';
             $reference_number = DeliveryReceipt::where('id', $request->entry_id)->first()->delivery_receipt;
