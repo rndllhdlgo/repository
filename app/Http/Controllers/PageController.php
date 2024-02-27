@@ -23,10 +23,7 @@ class PageController extends Controller
             $status = $data->status;
             $stage = $data->stage;
             if($status == 'FOR VALIDATION'){
-                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
-                    $count+=0;
-                }
-                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
                     $count++;
                 }
                 else if($stage == '0' && $current_role == 'ENCODER'){

@@ -92,6 +92,7 @@ $(document).on('click', '#btnEdit', function(){
                             $('#loading').hide();
                             Swal.fire("UPDATE SUCCESS", "", "success");
                             $('.modal').modal('hide');
+                            table.ajax.reload();
                         }
                         else{
                             $('#loading').hide();
@@ -195,6 +196,7 @@ function save_upload(response){
             icon: 'success'
         });
         $('.modal').modal('hide');
+        table.ajax.reload();
         return false;
     }
     else if(response == 'INVALID'){
@@ -774,60 +776,60 @@ $(document).ready(function(){
             console.error('Error initializing Echo:', error);
         }
 
-        setInterval(function(){
-            if($('#loading').is(':hidden') && standby == false){
-                if($('.modal_repo').is(':visible') && $('#entry_id').attr('updated_at') && $('#entry_id').attr('check_table')){
-                    var checking = 'modal';
-                    var check_table = $('#entry_id').attr('check_table');
-                    var check_current_id = $('#entry_id').val();
-                    var check_updated_at = $('#entry_id').attr('updated_at');
-                    changed_id = '';
-                }
-                else{
-                    var checking = 'default';
-                    changed_id = '';
-                }
+        // setInterval(function(){
+        //     if($('#loading').is(':hidden') && standby == false){
+        //         if($('.modal_repo').is(':visible') && $('#entry_id').attr('updated_at') && $('#entry_id').attr('check_table')){
+        //             var checking = 'modal';
+        //             var check_table = $('#entry_id').attr('check_table');
+        //             var check_current_id = $('#entry_id').val();
+        //             var check_updated_at = $('#entry_id').attr('updated_at');
+        //             changed_id = '';
+        //         }
+        //         else{
+        //             var checking = 'default';
+        //             changed_id = '';
+        //         }
 
-                var ajaxData = { checking: checking };
-                if(checking === 'modal'){
-                    ajaxData.check_table = check_table;
-                    ajaxData.check_current_id = check_current_id;
-                    ajaxData.check_updated_at = check_updated_at;
-                }
+        //         var ajaxData = { checking: checking };
+        //         if(checking === 'modal'){
+        //             ajaxData.check_table = check_table;
+        //             ajaxData.check_current_id = check_current_id;
+        //             ajaxData.check_updated_at = check_updated_at;
+        //         }
 
-                $.ajax({
-                    async: false,
-                    url: "/notif_update",
-                    data: ajaxData,
-                    success: function(data){
-                        if(data.result == 'true'){
-                            changed_id = data.changed_id;
-                        }
-                        if(parseInt(changed_id) == parseInt($('#entry_id').val())){
-                            changed_id = '';
-                            if($(".swal2-container:visible").length == 0){
-                                Swal.fire({
-                                    title: 'ENTRY UPDATED',
-                                    html: 'Another user updated this entry.',
-                                    icon: 'warning',
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false,
-                                    confirmButtonText: 'CLOSE'
-                                }).then((save) => {
-                                    if(save.isConfirmed){
-                                        $('.btnClose').click();
-                                    }
-                                });
-                            }
-                        }
-                        if(data.user_update != $('#current_updated_at').val()){
-                            $('#current_updated_at').val(data.user_update);
-                            window.location.reload();
-                        }
-                    }
-                });
-            }
-        }, 1100);
+        //         $.ajax({
+        //             async: false,
+        //             url: "/notif_update",
+        //             data: ajaxData,
+        //             success: function(data){
+        //                 if(data.result == 'true'){
+        //                     changed_id = data.changed_id;
+        //                 }
+        //                 if(parseInt(changed_id) == parseInt($('#entry_id').val())){
+        //                     changed_id = '';
+        //                     if($(".swal2-container:visible").length == 0){
+        //                         Swal.fire({
+        //                             title: 'ENTRY UPDATED',
+        //                             html: 'Another user updated this entry.',
+        //                             icon: 'warning',
+        //                             allowOutsideClick: false,
+        //                             allowEscapeKey: false,
+        //                             confirmButtonText: 'CLOSE'
+        //                         }).then((save) => {
+        //                             if(save.isConfirmed){
+        //                                 $('.btnClose').click();
+        //                             }
+        //                         });
+        //                     }
+        //                 }
+        //                 if(data.user_update != $('#current_updated_at').val()){
+        //                     $('#current_updated_at').val(data.user_update);
+        //                     window.location.reload();
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }, 1100);
     }
 });
 

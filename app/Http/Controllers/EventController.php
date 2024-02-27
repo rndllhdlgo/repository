@@ -45,10 +45,7 @@ class EventController extends Controller
             $status = $data->status;
             $stage = $data->stage;
             if($status == 'FOR VALIDATION'){
-                if($current_role == 'BOSS' || $current_role == 'VIEWER'){
-                    $count+=0;
-                }
-                else if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
+                if(($stage == '1' && $current_role == 'ENCODER') || ($stage == '1' && $current_role == 'ADMIN')){
                     $count++;
                 }
                 else if($stage == '0' && $current_role == 'ENCODER'){
@@ -1911,6 +1908,31 @@ class EventController extends Controller
         }
 
         if($sql){
+            if($request->current_page == 'si'){
+                $count = $this->get_count('sales_invoices');
+                event(new NewSi($count));
+            }
+
+            if($request->current_page == 'cr'){
+                $count = $this->get_count('collection_receipts');
+                event(new NewCr($count));
+            }
+
+            if($request->current_page == 'bs'){
+                $count = $this->get_count('billing_statements');
+                event(new NewBs($count));
+            }
+
+            if($request->current_page == 'or'){
+                $count = $this->get_count('official_receipts');
+                event(new NewOr($count));
+            }
+
+            if($request->current_page == 'dr'){
+                $count = $this->get_count('delivery_receipts');
+                event(new NewDr($count));
+            }
+
             $remarklogs = new RemarkLogs;
             $remarklogs->username = auth()->user()->name;
             $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;
@@ -1966,6 +1988,31 @@ class EventController extends Controller
         }
 
         if($sql){
+            if($request->current_page == 'si'){
+                $count = $this->get_count('sales_invoices');
+                event(new NewSi($count));
+            }
+
+            if($request->current_page == 'cr'){
+                $count = $this->get_count('collection_receipts');
+                event(new NewCr($count));
+            }
+
+            if($request->current_page == 'bs'){
+                $count = $this->get_count('billing_statements');
+                event(new NewBs($count));
+            }
+
+            if($request->current_page == 'or'){
+                $count = $this->get_count('official_receipts');
+                event(new NewOr($count));
+            }
+
+            if($request->current_page == 'dr'){
+                $count = $this->get_count('delivery_receipts');
+                event(new NewDr($count));
+            }
+
             $remarklogs = new RemarkLogs;
             $remarklogs->username = auth()->user()->name;
             $remarklogs->role = Role::where('id', auth()->user()->userlevel)->first()->name;

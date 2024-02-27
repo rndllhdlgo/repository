@@ -67,26 +67,6 @@
                                         table.ajax.reload(null, false);
                                     }
                                 }
-                                // if(data.si_update != si_update){
-                                //     si_update = data.si_update;
-                                //     $('#si_notif').html(data.si_count);
-                                // }
-                                // if(data.cr_update != cr_update){
-                                //     cr_update = data.cr_update;
-                                //     $('#cr_notif').html(data.cr_count);
-                                // }
-                                // if(data.bs_update != bs_update){
-                                //     bs_update = data.bs_update;
-                                //     $('#bs_notif').html(data.bs_count);
-                                // }
-                                // if(data.or_update != or_update){
-                                //     or_update = data.or_update;
-                                //     $('#or_notif').html(data.or_count);
-                                // }
-                                // if(data.dr_update != dr_update){
-                                //     dr_update = data.dr_update;
-                                //     $('#dr_notif').html(data.dr_count);
-                                // }
                             }
                         });
                     }
