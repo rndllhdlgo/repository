@@ -2,7 +2,7 @@
 
 namespace App\Models;
 use App\Models\User;
-use App\Events\NewCr;
+use App\Events\NewLogs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -17,7 +17,7 @@ class UserLogs extends Model
         parent::boot();
 
         static::created(function ($userLog) {
-            event(new NewCr('userlogs', $userLog));
+            event(new NewLogs('addLogs', $userLog));
         });
     }
 

@@ -32,6 +32,7 @@
     @endif
     @if(!Auth::guest())
         <script src="/js/functions.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
+        <script src="/js/websocket.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
         @if(Request::is('si') || Request::is('cr') || Request::is('bs') || Request::is('or') || Request::is('dr'))
             <script src="/js/generic.js?ver={{\Illuminate\Support\Str::random(50)}}"></script>
             <style>
@@ -40,7 +41,7 @@
                 }
             </style>
         @endif
-        @if(Request::is('users') || Request::is('logs'))
+        {{-- @if(Request::is('users') || Request::is('logs'))
             <script>
                 setInterval(function(){
                     if($('#loading').is(':hidden') && standby == false){
@@ -72,7 +73,7 @@
                     }
                 }, 1100);
             </script>
-        @endif
+        @endif --}}
         <script>
             setInterval(() => {
                 if(parseInt($('#si_notif').text()) == 0){

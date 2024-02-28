@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Spatie\PdfToText\Pdf;
 use Spatie\PdfToImage\Pdf as Jpg;

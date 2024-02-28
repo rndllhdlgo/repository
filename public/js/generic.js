@@ -730,47 +730,45 @@ $(document).ready(function(){
     if(current_role == 'ADMIN'){
         try {
             setTimeout(() => {
-                window.Echo.channel('NewSi')
-                    .listen('.App\\Events\\NewSi', (e) => {
-                        $('#si_notif').html(e.data);
-                        if($('#current_page').val() == 'si'){
-                            table.ajax.reload();
-                        }
-                    });
+                // window.Echo.channel('NewSi')
+                //     .listen('.App\\Events\\NewSi', (e) => {
+                //         $('#si_notif').html(e.data);
+                //         if($('#current_page').val() == 'si'){
+                //             table.ajax.reload();
+                //         }
+                //     });
 
-                window.Echo.channel('NewCr')
-                    .listen('.App\\Events\\NewCr', (e) => {
-                        if(e.data != 'userlogs'){
-                            $('#cr_notif').html(e.data);
-                            if($('#current_page').val() == 'cr'){
-                                table.ajax.reload();
-                            }
-                        }
-                    });
+                // window.Echo.channel('NewCr')
+                //     .listen('.App\\Events\\NewCr', (e) => {
+                //         $('#cr_notif').html(e.data);
+                //         if($('#current_page').val() == 'cr'){
+                //             table.ajax.reload();
+                //         }
+                //     });
 
-                window.Echo.channel('NewBs')
-                    .listen('.App\\Events\\NewBs', (e) => {
-                        $('#bs_notif').html(e.data);
-                        if($('#current_page').val() == 'bs'){
-                            table.ajax.reload();
-                        }
-                    });
+                // window.Echo.channel('NewBs')
+                //     .listen('.App\\Events\\NewBs', (e) => {
+                //         $('#bs_notif').html(e.data);
+                //         if($('#current_page').val() == 'bs'){
+                //             table.ajax.reload();
+                //         }
+                //     });
 
-                window.Echo.channel('NewOr')
-                    .listen('.App\\Events\\NewOr', (e) => {
-                        $('#or_notif').html(e.data);
-                        if($('#current_page').val() == 'or'){
-                            table.ajax.reload();
-                        }
-                    });
+                // window.Echo.channel('NewOr')
+                //     .listen('.App\\Events\\NewOr', (e) => {
+                //         $('#or_notif').html(e.data);
+                //         if($('#current_page').val() == 'or'){
+                //             table.ajax.reload();
+                //         }
+                //     });
 
-                window.Echo.channel('NewDr')
-                    .listen('.App\\Events\\NewDr', (e) => {
-                        $('#dr_notif').html(e.data);
-                        if($('#current_page').val() == 'dr'){
-                            table.ajax.reload();
-                        }
-                    });
+                // window.Echo.channel('NewDr')
+                //     .listen('.App\\Events\\NewDr', (e) => {
+                //         $('#dr_notif').html(e.data);
+                //         if($('#current_page').val() == 'dr'){
+                //             table.ajax.reload();
+                //         }
+                //     });
             }, 200);
         } catch (error) {
             console.error('Error initializing Echo:', error);
