@@ -18,6 +18,7 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::controller(QueryController::class)->group(function(){
     Route::get('/check_dr', 'check_dr');
+    Route::get('/sample_dr', 'sample_dr');
 });
 Route::middleware(['session'])->group(function () {
     Route::controller(EventController::class)->group(function(){

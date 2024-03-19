@@ -56,6 +56,16 @@ class QueryController extends Controller
         return 'UNASSIGNED';
     }
 
+    public function sample_dr(Request $request){
+        $data = DeliveryReceipt::where('company', $request->company)
+            ->where('status', 'VALID')
+            ->take($request->qty)
+            ->get()
+            ->pluck('delivery_receipt')
+            ->toArray();
+        return implode(',',$data);
+    }
+
     public function pluck_function(Request $request){
         if($request->file_refs){
             return DeliveryReceipt::whereIn('delivery_receipt', explode(', ',$request->file_refs))
